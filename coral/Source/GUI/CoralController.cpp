@@ -813,21 +813,10 @@ void CoralController::init(CoralMainWindow* main_window, CoralSystemTrayView* sy
 
 		survey_tip_ = !settings_.getBool("survey_displayed");
 
-#if defined(_WIN32)
-		if (!settings_.getBool("run_minimized"))
-		{
-			showMainWindow();
-		}
-		else
-		{
-			hideMainWindow();
-		}
-#else
-		if (std::getenv("CORAL_SHOW") != nullptr || std::getenv("CORAL_SHOW") != nullptr)
+		if (std::getenv("CORAL_SHOW") != nullptr || !settings_.getBool("run_minimized"))
 			showMainWindow();
 		else
 			hideMainWindow();
-#endif
 
 		auto power = CoralModel::getModel().getPowerState();
 		main_window_->setIcon(power, false);

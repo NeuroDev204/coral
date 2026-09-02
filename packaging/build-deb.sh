@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPO="$(cd "$ROOT/../.." && pwd)"
 VERSION="${CORAL_VERSION:-1.2.12}"
-REVISION="${CORAL_REVISION:-1}"
+REVISION="${CORAL_REVISION:-2}"
 ARCH="$(dpkg --print-architecture)"
 PKG_NAME="coral"
 PKG_VER="${VERSION}-${REVISION}"
@@ -97,7 +97,7 @@ cat > "$PKG/etc/xdg/autostart/coral.desktop" <<'EOF'
 [Desktop Entry]
 Name=Coral
 Comment=Start Coral audio enhancement in the system tray
-Exec=/usr/bin/coral
+Exec=/usr/bin/coral --run_minimized
 TryExec=/usr/bin/coral
 Icon=coral
 Terminal=false
@@ -113,13 +113,41 @@ Coral ${VERSION}
 Install:
   sudo apt install ./${PKG_NAME}_${PKG_VER}_${ARCH}.deb
 
-apt pulls in GTK, PulseAudio/PipeWire, tray, and pactl automatically.
-Launch from the app menu, or click the tray icon. Close/minimize hides to tray.
+No extra setup. apt installs libraries, then Coral starts and routes
+system audio. Close/minimize hides to the tray; it also starts on login.
+
+The apt note about an unsandboxed local file is normal for a .deb in
+your Downloads folder and does not mean install failed.
 EOF
 
 cat > "$PKG/DEBIAN/postinst" <<'EOF'
 #!/bin/sh
 set -e
+
+start_for_installing_user() {
+  u="${SUDO_USER:-}"
+  if [ -z "$u" ] || [ "$u" = "root" ]; then
+    return 0
+  fi
+  uid="$(id -u "$u" 2>/dev/null)" || return 0
+  runtime="/run/user/$uid"
+  if [ ! -d "$runtime" ]; then
+    return 0
+  fi
+  if pgrep -u "$uid" -x coral >/dev/null 2>&1; then
+    return 0
+  fi
+  home="$(getent passwd "$u" | cut -d: -f6)"
+  runuser -u "$u" -- env \
+    HOME="$home" \
+    DISPLAY="${DISPLAY:-:0}" \
+    WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}" \
+    XDG_RUNTIME_DIR="$runtime" \
+    DBUS_SESSION_BUS_ADDRESS="unix:path=$runtime/bus" \
+    CORAL_SHOW=1 \
+    /usr/bin/coral >/dev/null 2>&1 &
+}
+
 if [ "$1" = configure ]; then
   if command -v gtk-update-icon-cache >/dev/null 2>&1; then
     gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
@@ -127,6 +155,7 @@ if [ "$1" = configure ]; then
   if command -v update-desktop-database >/dev/null 2>&1; then
     update-desktop-database -q /usr/share/applications >/dev/null 2>&1 || true
   fi
+  start_for_installing_user || true
 fi
 exit 0
 EOF

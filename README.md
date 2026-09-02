@@ -4,11 +4,13 @@ Linux system-wide audio enhancer. Coral creates a virtual sink, processes deskto
 
 ## Install (Ubuntu / Debian amd64)
 
-Download `coral_1.2.12-1_amd64.deb` from [Releases](https://github.com/NeuroDev204/coral/releases) and install with apt so libraries are pulled in automatically:
+Download the `.deb` from [Releases](https://github.com/NeuroDev204/coral/releases) and install:
 
 ```bash
-sudo apt install ./coral_1.2.12-1_amd64.deb
+sudo apt install ./coral_1.2.12-2_amd64.deb
 ```
+
+No extra setup. Coral starts after install, pulls in libraries via apt, and comes back on login. An apt note about an unsandboxed local file is normal for a .deb in Downloads — it does not mean install failed.
 
 Then open **Coral** from the app menu, or click the tray icon. Close / minimize hides to the tray.
 
