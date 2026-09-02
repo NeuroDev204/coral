@@ -21,8 +21,7 @@ namespace
 
 	bool isAppVirtualSink(const std::string& name)
 	{
-		return name.find("CoralSink") != std::string::npos
-			|| name.find("FxSoundSink") != std::string::npos;
+		return name.find("CoralSink") != std::string::npos;
 	}
 
 	std::string shellQuote(const std::string& value)
@@ -277,7 +276,7 @@ std::string getDefaultSinkName() {
 
 static void unloadCoralModules()
 {
-	FILE* pipe = popen("pactl list modules short 2>/dev/null | grep -iE 'fxsound|coralsink' | awk '{print $1}'", "r");
+	FILE* pipe = popen("pactl list modules short 2>/dev/null | grep -iE 'coralsink' | awk '{print $1}'", "r");
 	if (pipe) {
 		char buffer[64];
 		std::vector<std::string> modules_to_unload;

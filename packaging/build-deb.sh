@@ -171,8 +171,6 @@ Maintainer: Coral Linux Port <coral-linux@local>
 Installed-Size: ${SIZE_KB}
 Depends: ${DEPENDS}
 Recommends: gnome-shell-extension-appindicator | xfce4-indicator-plugin
-Conflicts: fxsound
-Replaces: fxsound
 Homepage: https://github.com/NeuroDev204/coral
 Description: Coral - system-wide audio enhancement
  Coral is a Linux audio enhancer. It creates a virtual sink, processes
