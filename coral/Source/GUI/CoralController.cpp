@@ -1942,7 +1942,12 @@ void CoralController::powerOn(bool on)
 			stopTimer();
 		}
 
+#if defined(_WIN32)
 		audio_passthru_->restoreDefaultPlaybackDevice();
+#endif
+		// On Linux keep CoralSink and the passthrough thread. Tearing the
+		// virtual sink down while apps move back to hardware plays both
+		// paths at once (echo / "nhái âm"). DSP bypass already outputs dry audio.
 	}
 }
 
