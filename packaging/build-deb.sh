@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPO="$(cd "$ROOT/../.." && pwd)"
 VERSION="${CORAL_VERSION:-1.2.12}"
-REVISION="${CORAL_REVISION:-3}"
+REVISION="${CORAL_REVISION:-4}"
 ARCH="$(dpkg --print-architecture)"
 PKG_NAME="coral"
 PKG_VER="${VERSION}-${REVISION}"

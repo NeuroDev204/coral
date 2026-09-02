@@ -527,13 +527,14 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         .channels = 2
     };
 
-    // Buffer attributes for low latency and smooth streaming
+    // Larger buffers: 5–20ms fragments caused occasional crackle when DSP
+    // or PipeWire hiccuped. 48ms playback / 24ms capture stays smooth.
     pa_buffer_attr buffer_attr;
     buffer_attr.maxlength = (uint32_t)-1;
-    buffer_attr.tlength = pa_usec_to_bytes(20000, &ss); // 20ms target latency
+    buffer_attr.tlength = pa_usec_to_bytes(48000, &ss);
     buffer_attr.prebuf = (uint32_t)-1;
-    buffer_attr.minreq = pa_usec_to_bytes(5000, &ss);   // 5ms min request
-    buffer_attr.fragsize = pa_usec_to_bytes(5000, &ss); // 5ms fragment size
+    buffer_attr.minreq = pa_usec_to_bytes(24000, &ss);
+    buffer_attr.fragsize = pa_usec_to_bytes(24000, &ss);
 
     int error = 0;
 
@@ -548,7 +549,7 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         return 1;
     }
 
-    const int num_samples = 512; // 512 sample sets = ~10.6ms at 48kHz
+    const int num_samples = 1024; // ~21ms at 48kHz
     const int buf_size = num_samples * 2 * sizeof(short);
     short *input_buffer = (short*)malloc(buf_size);
     short *output_buffer = (short*)malloc(buf_size);
@@ -570,33 +571,52 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         return w;
     };
 
-    int check_counter = 0;
+    std::mutex route_mu;
+    std::string desired_hw_sink = resolveBestHardwareSink(targeted_playback_device_guid_);
+    std::atomic<bool> stop_watch{false};
+
+    if (!desired_hw_sink.empty()) {
+        s_write = open_write_stream(desired_hw_sink);
+        if (s_write) {
+            current_hw_sink = desired_hw_sink;
+            hw_sink_name_ = desired_hw_sink;
+            setSinkUnityGain(desired_hw_sink);
+            std::cerr << "DSP: Output automatically routed to -> " << current_hw_sink << std::endl;
+        }
+    }
+
+    // pactl/amixer must not run on the audio thread: popen stalls the
+    // callback and amixer unmute clicks the analog path ("rẹt rẹt").
+    std::thread watch([&]() {
+        while (!stop_watch.load() && !i_kill_processing_thread_) {
+            for (int i = 0; i < 10 && !stop_watch.load() && !i_kill_processing_thread_; ++i)
+                usleep(100000);
+            if (stop_watch.load() || i_kill_processing_thread_)
+                break;
+            applyPreferredCardProfile();
+            const std::string best = resolveBestHardwareSink(targeted_playback_device_guid_);
+            std::lock_guard<std::mutex> lock(route_mu);
+            desired_hw_sink = best;
+        }
+    });
 
     while (!i_kill_processing_thread_) {
-        // Automatically check for headphone/device hotplug or change every 50 chunks (~500ms)
-        if (++check_counter % 50 == 0 || !s_write) {
-            const bool profile_changed = applyPreferredCardProfile();
-            if (profile_changed && s_write) {
+        std::string want;
+        {
+            std::lock_guard<std::mutex> lock(route_mu);
+            want = desired_hw_sink;
+        }
+        if ((want != current_hw_sink || !s_write) && !want.empty()) {
+            if (s_write) {
                 pa_simple_free(s_write);
                 s_write = nullptr;
-                current_hw_sink.clear();
-                usleep(150000);
             }
-            std::string best_sink = resolveBestHardwareSink(targeted_playback_device_guid_);
-            if (best_sink != current_hw_sink || !s_write) {
-                if (s_write) {
-                    pa_simple_free(s_write);
-                    s_write = nullptr;
-                }
-                s_write = open_write_stream(best_sink);
-                if (s_write) {
-                    current_hw_sink = best_sink;
-                    hw_sink_name_ = best_sink;
-                    setSinkUnityGain(best_sink);
-                    std::cerr << "DSP: Output automatically routed to -> " << (current_hw_sink.empty() ? "Default" : current_hw_sink) << std::endl;
-                }
-            } else if (s_write) {
-                unmuteAnalogMixers();
+            s_write = open_write_stream(want);
+            if (s_write) {
+                current_hw_sink = want;
+                hw_sink_name_ = want;
+                setSinkUnityGain(want);
+                std::cerr << "DSP: Output automatically routed to -> " << current_hw_sink << std::endl;
             }
         }
 
@@ -646,6 +666,10 @@ DWORD AudioPassthruPrivate::threadWorker(void)
             }
         }
     }
+
+    stop_watch.store(true);
+    if (watch.joinable())
+        watch.join();
 
     free(input_buffer);
     free(output_buffer);
