@@ -44,6 +44,8 @@ namespace
 		system(full.c_str());
 	}
 
+	void unmuteAnalogMixers();
+
 	// Hardware sink volume is independent of CoralSink. GNOME's slider only
 	// moves the default sink (CoralSink), so a leftover 50% on headphones
 	// makes output quieter than the UI suggests and volume keys cannot raise it.
@@ -54,6 +56,7 @@ namespace
 		const std::string quoted = shellQuote(sink);
 		pactlRun("pactl set-sink-mute " + quoted + " 0");
 		pactlRun("pactl set-sink-volume " + quoted + " 100%");
+		unmuteAnalogMixers();
 	}
 
 	std::string getSinkVolumePercent(const std::string& sink)
@@ -89,6 +92,109 @@ namespace
 			return;
 		pactlRun("pactl set-sink-mute " + shellQuote(to_sink) + " 0");
 		pactlRun("pactl set-sink-volume " + shellQuote(to_sink) + " " + percent);
+	}
+
+	void unmuteAnalogMixers()
+	{
+		// PipeWire sink mute is not the same as the ALSA Headphone switch.
+		// sof-hda-dsp often keeps Headphone [off] while the Speaker profile is
+		// active, so a plugged jack is silent.
+		pactlRun("amixer -q sset Master unmute");
+		pactlRun("amixer -q sset Speaker unmute");
+		pactlRun("amixer -q sset Headphone unmute");
+	}
+
+	// sof/UCM exposes Headphones and Speaker as exclusive card profiles. If we
+	// keep a stream open on Speaker, PipeWire will not switch when the jack is
+	// inserted. Follow the headphone port and switch the profile ourselves.
+	bool applyPreferredCardProfile()
+	{
+		FILE* pipe = popen("pactl list cards 2>/dev/null", "r");
+		if (!pipe)
+			return false;
+
+		auto trim = [](const std::string& s) {
+			size_t first = s.find_first_not_of(" \t\r\n");
+			size_t last = s.find_last_not_of(" \t\r\n");
+			if (first == std::string::npos)
+				return std::string();
+			return s.substr(first, last - first + 1);
+		};
+		auto lower = [](std::string s) {
+			for (auto& c : s)
+				c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
+			return s;
+		};
+
+		struct CardState {
+			std::string name;
+			std::string active;
+			std::string hp_profile;
+			std::string spk_profile;
+			bool hp_port_available = false;
+		};
+
+		std::vector<CardState> cards;
+		CardState cur;
+		bool in_profiles = false;
+		bool in_ports = false;
+		char line[1024];
+
+		auto flush = [&]() {
+			if (!cur.name.empty())
+				cards.push_back(cur);
+			cur = CardState();
+			in_profiles = false;
+			in_ports = false;
+		};
+
+		while (fgets(line, sizeof(line), pipe)) {
+			const std::string trimmed = trim(line);
+			if (trimmed.rfind("Name: ", 0) == 0) {
+				flush();
+				cur.name = trimmed.substr(6);
+			} else if (trimmed.rfind("Active Profile: ", 0) == 0) {
+				cur.active = trimmed.substr(16);
+			} else if (trimmed == "Profiles:") {
+				in_profiles = true;
+				in_ports = false;
+			} else if (trimmed == "Ports:") {
+				in_profiles = false;
+				in_ports = true;
+			} else if (in_profiles) {
+				const auto colon = trimmed.find(':');
+				if (colon == std::string::npos)
+					continue;
+				const std::string pname = trimmed.substr(0, colon);
+				const bool avail = trimmed.find("available: no") == std::string::npos;
+				const std::string low = lower(pname);
+				if (avail && low.find("headphone") != std::string::npos && cur.hp_profile.empty())
+					cur.hp_profile = pname;
+				if (avail && low.find("speaker") != std::string::npos && cur.spk_profile.empty())
+					cur.spk_profile = pname;
+			} else if (in_ports && trimmed.find("[Out]") != std::string::npos) {
+				const std::string low = lower(trimmed);
+				if (low.find("headphone") != std::string::npos && trimmed.find("not available") == std::string::npos)
+					cur.hp_port_available = true;
+			}
+		}
+		flush();
+		pclose(pipe);
+
+		bool changed = false;
+		for (const auto& card : cards) {
+			std::string want;
+			if (card.hp_port_available && !card.hp_profile.empty())
+				want = card.hp_profile;
+			else if (!card.spk_profile.empty())
+				want = card.spk_profile;
+			if (want.empty() || want == card.active)
+				continue;
+			pactlRun("pactl set-card-profile " + shellQuote(card.name) + " " + shellQuote(want));
+			std::cerr << "DSP: Card profile " << card.name << " -> " << want << std::endl;
+			changed = true;
+		}
+		return changed;
 	}
 }
 
@@ -431,7 +537,9 @@ DWORD AudioPassthruPrivate::threadWorker(void)
 
     int error = 0;
 
-    usleep(50000);
+    usleep(300000);
+    applyPreferredCardProfile();
+    unmuteAnalogMixers();
 
     std::string monitor = std::string(kCoralSink) + ".monitor";
     pa_simple *s_read = pa_simple_new(NULL, "Coral", PA_STREAM_RECORD, monitor.c_str(), "Capture", &ss, NULL, &buffer_attr, &error);
@@ -467,6 +575,13 @@ DWORD AudioPassthruPrivate::threadWorker(void)
     while (!i_kill_processing_thread_) {
         // Automatically check for headphone/device hotplug or change every 50 chunks (~500ms)
         if (++check_counter % 50 == 0 || !s_write) {
+            const bool profile_changed = applyPreferredCardProfile();
+            if (profile_changed && s_write) {
+                pa_simple_free(s_write);
+                s_write = nullptr;
+                current_hw_sink.clear();
+                usleep(150000);
+            }
             std::string best_sink = resolveBestHardwareSink(targeted_playback_device_guid_);
             if (best_sink != current_hw_sink || !s_write) {
                 if (s_write) {
@@ -480,6 +595,8 @@ DWORD AudioPassthruPrivate::threadWorker(void)
                     setSinkUnityGain(best_sink);
                     std::cerr << "DSP: Output automatically routed to -> " << (current_hw_sink.empty() ? "Default" : current_hw_sink) << std::endl;
                 }
+            } else if (s_write) {
+                unmuteAnalogMixers();
             }
         }
 

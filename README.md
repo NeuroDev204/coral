@@ -7,7 +7,7 @@ Linux system-wide audio enhancer. Coral creates a virtual sink, processes deskto
 Download the `.deb` from [Releases](https://github.com/NeuroDev204/coral/releases) and install:
 
 ```bash
-sudo apt install ./coral_1.2.12-2_amd64.deb
+sudo apt install ./coral_1.2.12-3_amd64.deb
 ```
 
 No extra setup. Coral starts after install, pulls in libraries via apt, and comes back on login. An apt note about an unsandboxed local file is normal for a .deb in Downloads — it does not mean install failed.
