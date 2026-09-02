@@ -60,7 +60,7 @@ void FxView::showErrorNotification(bool show)
     if (show)
     {
         error_notification_.setMessage(TRANS("Coral is unable to play processed audio through the selected output device.\nAnother application could be using it in exclusive mode or the device could be\ndisconnected. To disable exclusive mode follow these "),
-            { TRANS("steps."), "https://www.fxsound.com/learning-center/no-sound-with-fxsound-realtek" });
+            { TRANS("steps."), "https://github.com/NeuroDev204/coral/issues" });
         auto component_bounds = endpoint_list_.getBounds();
         auto x = component_bounds.getX() - (FxNotification::MAX_WIDTH - component_bounds.getWidth());
         component_bounds.setX(x);

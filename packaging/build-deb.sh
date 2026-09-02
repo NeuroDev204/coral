@@ -81,7 +81,7 @@ cat > "$PKG/usr/share/applications/coral.desktop" <<'EOF'
 Name=Coral
 GenericName=Audio Enhancer
 Comment=Warm, clear system-wide audio enhancement
-Exec=env FXSOUND_SHOW=1 /usr/bin/coral
+Exec=env CORAL_SHOW=1 /usr/bin/coral
 TryExec=/usr/bin/coral
 Icon=coral
 Terminal=false
@@ -173,7 +173,7 @@ Depends: ${DEPENDS}
 Recommends: gnome-shell-extension-appindicator | xfce4-indicator-plugin
 Conflicts: fxsound
 Replaces: fxsound
-Homepage: https://www.fxsound.com
+Homepage: https://github.com/NeuroDev204/coral
 Description: Coral - system-wide audio enhancement
  Coral is a Linux audio enhancer. It creates a virtual sink, processes
  system audio (EQ, ambience, surround, bass, dynamic boost), and plays

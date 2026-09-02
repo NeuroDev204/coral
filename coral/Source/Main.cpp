@@ -39,11 +39,11 @@ extern "C" {
 #endif
 
 //==============================================================================
-class FxSoundApplication : public JUCEApplication
+class CoralApplication : public JUCEApplication
 {
 public:
     //==============================================================================
-    FxSoundApplication() { }
+    CoralApplication() { }
 
     const String getApplicationName() override       { return ProjectInfo::projectName; }
     const String getApplicationVersion() override    { return ProjectInfo::versionString; }
@@ -348,4 +348,4 @@ private:
 
 //==============================================================================
 // This macro generates the main() routine that launches the app.
-START_JUCE_APPLICATION (FxSoundApplication)
+START_JUCE_APPLICATION (CoralApplication)

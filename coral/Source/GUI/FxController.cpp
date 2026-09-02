@@ -62,7 +62,7 @@ private:
 			addAndMakeVisible(error_message_);
 
 			error_link_.setButtonText(TRANS("troubleshooting steps here."));
-			error_link_.setURL(URL(L"https://www.fxsound.com/learning-center/installation-troubleshooting"));
+			error_link_.setURL(URL(L"https://github.com/NeuroDev204/coral/issues"));
 			error_link_.setJustificationType(Justification::topLeft);
 			addAndMakeVisible(error_link_);
 
@@ -71,7 +71,7 @@ private:
 			addAndMakeVisible(contact_message_);
 
 			contact_link_.setButtonText(TRANS("Contact us"));
-			contact_link_.setURL(URL(L"https://www.fxsound.com/support"));
+			contact_link_.setURL(URL(L"https://github.com/NeuroDev204/coral/issues"));
 			contact_link_.setJustificationType(Justification::topLeft);
 			addAndMakeVisible(contact_link_);
 
@@ -125,7 +125,7 @@ private:
 };
 
 #if defined(_WIN32)
-FxController::FxController() : message_window_(L"FxSoundHotkeys", (WNDPROC)eventCallback)
+FxController::FxController() : message_window_(L"CoralHotkeys", (WNDPROC)eventCallback)
 #else
 FxController::FxController()
 #endif
@@ -706,7 +706,7 @@ void FxController::printStatus()
 
 	// Best-effort console output for interactive use. Attaches to this
 	// (already-running) instance's own parent console - i.e. whichever
-	// console FxSound.exe was originally launched from - not the console of
+	// console coral was originally launched from - not the console of
 	// the process that just forwarded this command.
 #if defined(_WIN32)
 	if (AttachConsole(ATTACH_PARENT_PROCESS))
@@ -749,7 +749,7 @@ void FxController::init(FxMainWindow* main_window, FxSystemTrayView* system_tray
 			RegDeleteTree(HKEY_CURRENT_USER, L"Software\\DFX");
 #endif
 
-			FxModel::getModel().pushMessage(" ", { TRANS("Click here to see what's new on this version!"), "https://www.fxsound.com/changelog" });
+			FxModel::getModel().pushMessage(" ", { TRANS("Click here to see what's new on this version!"), "https://github.com/NeuroDev204/coral/releases" });
 
 			settings_.setString("version", app_version);
 #if defined(_WIN32)
@@ -773,7 +773,7 @@ void FxController::init(FxMainWindow* main_window, FxSystemTrayView* system_tray
 		audio_passthru_->registerCallback(this);
 
 #if defined(_WIN32)
-		auto path = File(File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"FxSound\\Presets");
+		auto path = File(File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"Coral\\Presets");
 #else
 		auto path = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Coral").getChildFile("Presets");
 #endif
@@ -823,7 +823,7 @@ void FxController::init(FxMainWindow* main_window, FxSystemTrayView* system_tray
 			hideMainWindow();
 		}
 #else
-		if (std::getenv("FXSOUND_SHOW") != nullptr)
+		if (std::getenv("CORAL_SHOW") != nullptr || std::getenv("FXSOUND_SHOW") != nullptr)
 			showMainWindow();
 		else
 			hideMainWindow();
@@ -855,7 +855,7 @@ String FxController::getAutoSavePath() const
 {
 	auto data_dir = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName());
 #if defined(_WIN32)
-	return data_dir + L"FxSound\\AutoSave";
+	return data_dir + L"Coral\\AutoSave";
 #else
 	return data_dir + "/Coral/AutoSave";
 #endif
@@ -917,16 +917,16 @@ void FxController::initPresets()
 	// Candidate search directories for Factsoft in priority order
 	Array<File> factsoft_candidates;
 	factsoft_candidates.add(home_dir.getChildFile(".local").getChildFile("share").getChildFile("coral").getChildFile("Factsoft"));
-	factsoft_candidates.add(home_dir.getChildFile(".local").getChildFile("share").getChildFile("fxsound").getChildFile("Factsoft"));
 	factsoft_candidates.add(user_app_data.getChildFile("Coral").getChildFile("Factsoft"));
 	factsoft_candidates.add(user_app_data.getChildFile("FxSound").getChildFile("Factsoft"));
+	factsoft_candidates.add(home_dir.getChildFile(".local").getChildFile("share").getChildFile("fxsound").getChildFile("Factsoft"));
 	factsoft_candidates.add(working_dir.getChildFile("Factsoft"));
 	factsoft_candidates.add(exe_dir.getChildFile("Factsoft"));
-	factsoft_candidates.add(exe_dir.getParentDirectory().getChildFile("share").getChildFile("fxsound").getChildFile("Factsoft"));
+	factsoft_candidates.add(exe_dir.getParentDirectory().getChildFile("share").getChildFile("coral").getChildFile("Factsoft"));
 	factsoft_candidates.add(File("/usr/share/coral/Factsoft"));
+	factsoft_candidates.add(File("/usr/local/share/coral/Factsoft"));
 	factsoft_candidates.add(File("/usr/share/fxsound/Factsoft"));
 	factsoft_candidates.add(File("/usr/local/share/fxsound/Factsoft"));
-	factsoft_candidates.add(File("/home/neuro/Documents/Tools/fxsound-linux/linux/fxsound-app/Factsoft"));
 
 	File factsoft_dir;
 	for (const auto& candidate : factsoft_candidates)
@@ -968,7 +968,7 @@ void FxController::initPresets()
 		}
 	}
 
-	// 2. Load user presets from ~/.config/FxSound/Presets (or userApplicationDataDirectory/FxSound/Presets)
+	// 2. Load user presets from ~/.config/Coral/Presets
 	auto user_presets_dir = user_app_data.getChildFile("Coral").getChildFile("Presets");
 	if (user_presets_dir.isDirectory())
 	{
@@ -1017,7 +1017,7 @@ void FxController::initPresets()
 	}
 
 	auto data_dir = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName());
-	FileSearchPath user_preset_search_path(data_dir + L"FxSound\\Presets");
+	FileSearchPath user_preset_search_path(data_dir + L"Coral\\Presets");
 	auto user_preset_paths = user_preset_search_path.findChildFiles(File::findFiles, false, "*.fac");
 	for (auto path : user_preset_paths)
 	{
@@ -1304,7 +1304,7 @@ void FxController::setOutput(const String output_device_id, bool notify)
 
 				if (!isTimerRunning())
 				{
-					// FxSound is off and the selected output device is the default playback device
+					// Coral is off and the selected output device is the default playback device
 					if (sound_device.isDefaultDevice)
 					{
 						break;
@@ -1386,7 +1386,7 @@ void FxController::savePreset(const String& preset_name)
 	if (preset_name.isEmpty())
 	{
 #if defined(_WIN32)
-		auto path = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"FxSound\\Presets";
+		auto path = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"Coral\\Presets";
 #else
 		auto path = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Coral").getChildFile("Presets").getFullPathName();
 #endif
@@ -1400,7 +1400,7 @@ void FxController::savePreset(const String& preset_name)
 	else
 	{
 #if defined(_WIN32)
-		auto path = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"FxSound\\Presets";
+		auto path = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"Coral\\Presets";
 #else
 		auto path = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Coral").getChildFile("Presets").getFullPathName();
 #endif
@@ -1435,7 +1435,7 @@ void FxController::renamePreset(const String& new_name)
 	if (preset.type == FxModel::PresetType::UserPreset)
 	{
 #if defined(_WIN32)
-		auto path = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"FxSound\\Presets";
+		auto path = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"Coral\\Presets";
 #else
 		auto path = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Coral").getChildFile("Presets").getFullPathName();
 #endif
@@ -1581,7 +1581,7 @@ void FxController::resetPresets()
 bool FxController::exportPresets(const Array< FxModel::Preset>& presets)
 {
 #if defined(_WIN32)
-	auto path_name = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory).getFullPathName()) + L"FxSound\\Presets\\Export\\";
+	auto path_name = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory).getFullPathName()) + L"Coral\\Presets\\Export\\";
 #else
 	auto path_name = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory).getChildFile("Coral").getChildFile("Presets").getChildFile("Export").getFullPathName());
 #endif
@@ -1620,7 +1620,7 @@ bool FxController::exportPresets(const Array< FxModel::Preset>& presets)
 bool FxController::importPresets(const Array<File>& preset_files, StringArray& imported_presets, StringArray& skipped_presets)
 {
 #if defined(_WIN32)
-	auto path_name = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"FxSound\\Presets";
+	auto path_name = File::addTrailingSeparator(File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName()) + L"Coral\\Presets";
 #else
 	auto path_name = File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getChildFile("Coral").getChildFile("Presets").getFullPathName();
 #endif
@@ -1820,7 +1820,7 @@ void FxController::updateOutputs(std::vector<SoundDevice>& sound_devices)
 	setOutput(preferred_device.pwszID.c_str());
 }
 
-// Handled when FxSound processing is on
+// Handled when Coral processing is on
 void FxController::selectProcessingOutput(std::vector<SoundDevice>& sound_devices)
 {
 	auto available = audio_passthru_->isPlaybackDeviceAvailable();
@@ -1871,7 +1871,7 @@ void FxController::selectProcessingOutput(std::vector<SoundDevice>& sound_device
 	}
 }
 
-// Handled when FxSound processing is off
+// Handled when Coral processing is off
 void FxController::syncOutputWithSystemDefault(std::vector<SoundDevice>& sound_devices)
 {
 	active_output_devices_.clear();

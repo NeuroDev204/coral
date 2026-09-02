@@ -479,11 +479,11 @@ FxSettingsDialog::HelpSettingsPane::HelpSettingsPane() : SettingsPane("Help"), a
 	maintenance_title_.setColour(Label::ColourIds::textColourId, getLookAndFeel().findColour(TextButton::textColourOnId));
 	maintenance_title_.setJustificationType(Justification::centredLeft);
 
-	changelog_link_.setURL(URL(L"https://www.fxsound.com/changelog"));
+	changelog_link_.setURL(URL(L"https://github.com/NeuroDev204/coral/releases"));
 	changelog_link_.setJustificationType(Justification::topLeft);
 	quicktour_link_.setJustificationType(Justification::topLeft);
 	submitlogs_link_.setJustificationType(Justification::topLeft);
-	helpcenter_link_.setURL(URL(L"https://www.fxsound.com/learning-center"));
+	helpcenter_link_.setURL(URL(L"https://github.com/NeuroDev204/coral/issues"));
 	helpcenter_link_.setJustificationType(Justification::topLeft);
     feedback_link_.setURL(URL("https://james722808.typeform.com/to/QfEP5QrP"));
 	feedback_link_.setJustificationType(Justification::topLeft);

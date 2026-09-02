@@ -20,7 +20,7 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-constexpr wchar_t CHECK_ANNOUNCEMENT_URL[] = L"https://www.fxsound.com/tmp/check_announcement.json";
+constexpr wchar_t CHECK_ANNOUNCEMENT_URL[] = L"https://github.com/NeuroDev204/coral/releases";
 constexpr char ATTRIB_URL[] = "url";
 constexpr char ATTRIB_WIDTH[] = "width";
 constexpr char ATTRIB_HEIGHT[] = "height";

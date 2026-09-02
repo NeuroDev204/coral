@@ -1,26 +1,26 @@
 # fxmcp
 
-An MCP (Model Context Protocol) server that exposes [FxSound](https://fxsound.com)'s
-diagnostics (`fxdiag.exe`) and control surface (`FxSound.exe`'s command-line
+An MCP (Model Context Protocol) server that exposes [Coral](https://github.com/NeuroDev204/coral)'s
+diagnostics (`fxdiag.exe`) and control surface (`Coral.exe`'s command-line
 options, driven through `FxController::applyConfig`) as MCP resources,
 tools, and prompts — so an AI assistant can inspect the current audio
 environment and drive presets, EQ, effects, and output device selection.
 
-Windows-only (it shells out to `FxSound.exe`/`fxdiag.exe` and uses the
+Windows-only (it shells out to `Coral.exe`/`fxdiag.exe` and uses the
 Windows registry/process APIs to find and drive them).
 
 ## Requirements
 
 - Windows
-- [FxSound](https://fxsound.com) installed
+- [Coral](https://github.com/NeuroDev204/coral) installed
 - Go 1.26+ (only needed to build from source)
 
 ## Building
 
-Release binaries for all three architectures FxSound itself ships for
+Release binaries for all three architectures Coral itself ships for
 (x64, x86, arm64) are built with `build.ps1`, which places each one at
 `fxsound-app\bin\<arch>\fxmcp.exe` — alongside that architecture's
-`FxSound.exe`/`fxdiag.exe`, matching `fxdiag.vcxproj`'s own
+`Coral.exe`/`fxdiag.exe`, matching `fxdiag.vcxproj`'s own
 `copy $(TargetPath) ..\bin\$(PlatformTarget)\` post-build convention:
 
 ```powershell
@@ -58,13 +58,13 @@ for JSON-RPC input on stdin:
 You should see a line on stderr like:
 
 ```
-fxmcp: resolved FxSound.exe=C:\Program Files\FxSound LLC\FxSound\FxSound.exe fxdiag.exe=C:\Program Files\FxSound LLC\FxSound\fxdiag.exe
+fxmcp: resolved Coral.exe=C:\Program Files\Coral LLC\Coral\Coral.exe fxdiag.exe=C:\Program Files\Coral LLC\Coral\fxdiag.exe
 ```
 
 If instead you see a `warning: could not locate ...` line, `fxmcp` couldn't
-find FxSound via the Program Files default location, the Windows uninstall
+find Coral via the Program Files default location, the Windows uninstall
 registry, or `PATH` — resources/tools that need it will fail until that's
-resolved (reinstall FxSound, or check it's on `PATH`).
+resolved (reinstall Coral, or check it's on `PATH`).
 
 Press Ctrl+C to stop it.
 
@@ -93,11 +93,11 @@ Press Ctrl+C to stop it.
 5. Verify it's connected: open Claude Desktop, look for a tools/MCP icon in
    the composer showing "fxsound" is connected (exact UI varies by
    version), or just ask it directly, e.g.:
-   > "What FxSound tools do you have available?"
+   > "What Coral tools do you have available?"
 
    Claude should list the tools described below (`fxsound_get_status`,
    `fxsound_set_power`, etc.) if the connection is working.
-6. Try a real request, e.g. "Is FxSound running, and what preset is
+6. Try a real request, e.g. "Is Coral running, and what preset is
    selected?" or "Switch my output device to my headphones" — Claude will
    call the relevant resources/tools and report back.
 
@@ -112,7 +112,7 @@ common cause.
 | URI | Contents |
 |---|---|
 | `fxsound://diagnostics` | Windows playback device + audio session snapshot (from `fxdiag.exe --json`) |
-| `fxsound://status` | Full live FxSound state: power, presets, output, equalizer, effects |
+| `fxsound://status` | Full live Coral state: power, presets, output, equalizer, effects |
 | `fxsound://presets` | Selected preset + built-in/user-defined preset lists |
 | `fxsound://equalizer` | Band count, per-band frequency/gain, master gain, volume leveling, filter Q, balance |
 | `fxsound://effects` | Clarity/ambience/surround/dynamicboost/bass levels (0-10 scale) |
@@ -120,7 +120,7 @@ common cause.
 
 ### Tools
 - `fxsound_is_running`, `fxsound_get_status` — read-only
-- `fxsound_set_power`, `fxsound_select_preset`, `fxsound_set_output_device` — single-setting, work whether or not FxSound is already running
+- `fxsound_set_power`, `fxsound_select_preset`, `fxsound_set_output_device` — single-setting, work whether or not Coral is already running
 - `fxsound_save_preset`, `fxsound_overwrite_preset`, `fxsound_undo_preset`, `fxsound_rename_preset`, `fxsound_delete_preset` — preset management, require a running instance
 - `fxsound_set_eq_bands`, `fxsound_set_eq_band_gains`, `fxsound_set_effects` — batch EQ/effects changes, require a running instance
 - `fxsound_apply_settings` — composite tool covering the full flag surface in one atomic call
@@ -144,15 +144,15 @@ is unit-tested normally and needs nothing running. Everything that touches
 a real process spawn, the Windows registry, or `status.json` polling is
 covered by integration tests in `cmd/fxmcp/*_test.go` that build the real
 binary and drive it as an actual MCP client over stdio — these need
-FxSound installed to run meaningfully, and several subtests additionally
-skip themselves (rather than fail) if FxSound isn't currently running,
+Coral installed to run meaningfully, and several subtests additionally
+skip themselves (rather than fail) if Coral isn't currently running,
 since some commands are only understood by a running instance. This
 doesn't run meaningfully in a non-Windows CI.
 
 `cmd/fxmcp/write_tools_test.go` in particular exercises every write tool
-against your real, running FxSound instance and restores your original
+against your real, running Coral instance and restores your original
 power/preset/output/equalizer/effects settings afterward (best-effort) —
-expect brief, visible changes to your actual FxSound app while it runs.
+expect brief, visible changes to your actual Coral app while it runs.
 
 ### Keeping the embedded docs in sync
 
@@ -173,7 +173,7 @@ go build .\...
   frequency range for `--set_band_freq` is per-band and computed inside
   the DSP engine (`dfx_dsp_.getEqBandFrequencyRange`), which isn't exposed
   via `status.json` or any documented constant. An out-of-range frequency
-  is still silently dropped by FxSound itself rather than rejected by this
+  is still silently dropped by Coral itself rather than rejected by this
   server. Band *index* bounds and gain range (`fxsound_set_eq_band_gains`)
   are fully validated.
 - **No automation/trigger support yet** (e.g. "apply the gaming preset
@@ -182,6 +182,6 @@ go build .\...
   host-spawned-per-session model, and was deliberately deferred — see the
   design discussion for the tradeoffs.
 - **No tool to change a Windows app's own per-app mixer volume/mute**
-  (e.g. un-muting Zoom directly) — only FxSound's own settings are
+  (e.g. un-muting Zoom directly) — only Coral's own settings are
   controllable; diagnosing that kind of issue is supported (`fxsound://diagnostics`
   reports it), fixing it isn't.

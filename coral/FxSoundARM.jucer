@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="F3FTdD" name="FxSound" projectType="guiapp" version="1.2.12.0"
-              displaySplashScreen="1" jucerFormatVersion="1" companyName="FxSound LLC"
-              companyWebsite="https://www.fxsound.com" companyCopyright="Copyright (C) 2026 FxSound LLC"
+<JUCERPROJECT id="F3FTdD" name="Coral" projectType="guiapp" version="1.2.12.0"
+              displaySplashScreen="1" jucerFormatVersion="1" companyName="Coral"
+              companyWebsite="https://github.com/NeuroDev204/coral" companyCopyright="Copyright (C) 2026 Coral"
               defines="UNICODE" postExportShellCommandWin="type %%1%%\ProjectARM\status_icons.rc &gt;&gt; %%1%%\ProjectARM\resources.rc"
               cppLanguageStandard="17">
-  <MAINGROUP id="fy4sG5" name="FxSound">
+  <MAINGROUP id="fy4sG5" name="Coral">
     <GROUP id="{9737D476-EEC4-7E5E-0B04-48E2783CC448}" name="Fonts">
       <FILE id="Z6Zv1m" name="Gilroy-Bold.ttf" compile="0" resource="1" file="Fonts/Gilroy-Bold.ttf"/>
       <FILE id="pxR00h" name="Gilroy-Regular.ttf" compile="0" resource="1"

@@ -1,8 +1,8 @@
-# FxSound Command Line Options
+# Coral Command Line Options
 
-FxSound accepts a set of command line options that let you configure the app on launch, or push new settings to an already-running instance.
+Coral accepts a set of command line options that let you configure the app on launch, or push new settings to an already-running instance.
 
-For example, run `fxsound.exe --preset="Bass Booster"` at any time to switch the running instance's preset without restarting it or affecting any other setting.
+For example, run `coral --preset="Bass Booster"` at any time to switch the running instance's preset without restarting it or affecting any other setting.
 
 Each option's value must be attached directly to the option with `=` — e.g. `--power=1`. A space between the option and its value is **not** supported for these options; `--power 1` is parsed as two separate, unrelated arguments and the value is silently ignored.
 
@@ -14,7 +14,7 @@ Values containing spaces (preset names, device names) must be wrapped in double 
 
 | Option | Value | Description |
 |---|---|---|
-| `--power=<0\|1>` | `0` = off, `1` = on | Turns FxSound's audio processing (DFX) on or off. |
+| `--power=<0\|1>` | `0` = off, `1` = on | Turns Coral's audio processing (DFX) on or off. |
 | `--preset=<name>` | Preset name (case-sensitive) | Selects the active preset. Only takes effect if power is currently on. Exclusive with the other preset commands below - see [Preset commands](#preset-commands). |
 | `--save_preset=<name>` | New preset name | Saves the current (modified) settings as a new user preset and selects it. `name` is sanitized first - see [Preset commands](#preset-commands). No-op if power is off, the current preset isn't modified, or `name` is empty after sanitizing. Exclusive with the other preset commands below. |
 | `--overwrite_preset` | *(flag, no value)* | Overwrites the currently selected user preset with its modified settings. No-op if power is off, the preset isn't modified, or the selected preset is a built-in preset. Exclusive with the other preset commands below. |
@@ -32,8 +32,8 @@ Values containing spaces (preset names, device names) must be wrapped in double 
 | `--set_band_freq=<band:freq[,band:freq...]>` | `band` = 0-based band index, `freq` = frequency in Hz | Sets one or more equalizer band center frequencies on a running instance. `band` must be less than the current number of bands; `freq` must fall within that band's allowed range or the pair is ignored. Running instance only. |
 | `--set_band_gain=<band:gain[,band:gain...]>` | `band` = 0-based band index, `gain` = decimal, `-12.0`–`+12.0` | Sets one or more equalizer band boost/cut values in dB on a running instance. `band` must be less than the current number of bands, or the pair is ignored. Running instance only. |
 | `--set_effect=<name:value[,name:value...]>` | `name` = one of `fidelity`/`clarity`, `ambience`, `surround`, `dynamicboost`/`dynamic_boost`, `bass`/`bassboost`/`bass_boost`; `value` = decimal, `0.0`–`10.0` | Sets one or more effect levels on a running instance. Out-of-range values are ignored (left unchanged) rather than reset to a default. Running instance only. |
-| `--status` | *(flag, no value)* | Writes the running instance's current state (power, presets, output devices, equalizer, effects) as JSON to `%APPDATA%\FxSound\status.json`; any other options passed alongside `--status` are ignored. |
-| `--run_minimized` | *(flag, no value)* | Starts FxSound minimized to the system tray without showing the main window. On a running instance, only affects visibility for that launch (hides the main window instead of bringing it to the front). |
+| `--status` | *(flag, no value)* | Writes the running instance's current state (power, presets, output devices, equalizer, effects) as JSON to `~/.config/Coral/status.json`; any other options passed alongside `--status` are ignored. |
+| `--run_minimized` | *(flag, no value)* | Starts Coral minimized to the system tray without showing the main window. On a running instance, only affects visibility for that launch (hides the main window instead of bringing it to the front). |
 
 ## Preset commands
 
@@ -56,73 +56,73 @@ Each step runs in that order on the *result* of the previous one, so a name that
 Save the current modified settings as a new preset on a running instance:
 
 ```
-fxsound.exe --save_preset="My Preset"
+coral --save_preset="My Preset"
 ```
 
 Overwrite the currently selected user preset with its unsaved changes:
 
 ```
-fxsound.exe --overwrite_preset
+coral --overwrite_preset
 ```
 
 Discard unsaved changes to the currently selected preset:
 
 ```
-fxsound.exe --undo_preset
+coral --undo_preset
 ```
 
 Rename the currently selected user preset:
 
 ```
-fxsound.exe --rename_preset="New Name"
+coral --rename_preset="New Name"
 ```
 
 Delete the currently selected user preset:
 
 ```
-fxsound.exe --delete_preset
+coral --delete_preset
 ```
 
 Note: the preset name in `--save_preset` and `--rename_preset` is sanitized before use - see [Name sanitizing](#name-sanitizing).
 
-Start FxSound minimized, with a specific preset and output device:
+Start Coral minimized, with a specific preset and output device:
 
 ```
-fxsound.exe --preset="Bass Booster" --output="Speakers (Realtek High Definition Audio)" --run_minimized
+coral --preset="Bass Booster" --output="Speakers (Realtek High Definition Audio)" --run_minimized
 ```
 
 Switch a running instance to Pro view and turn power on:
 
 ```
-fxsound.exe --view=2 --power=1
+coral --view=2 --power=1
 ```
 
 Tune the equalizer on a running instance:
 
 ```
-fxsound.exe --num_bands=15 --filter_q=2.0 --master_gain=3.0 --volume_leveling=2.0
+coral --num_bands=15 --filter_q=2.0 --master_gain=3.0 --volume_leveling=2.0
 ```
 
 Set individual equalizer band frequencies and gains on a running instance:
 
 ```
-fxsound.exe --set_band_freq="0:60,1:150" --set_band_gain="0:3.0,1:-2.5"
+coral --set_band_freq="0:60,1:150" --set_band_gain="0:3.0,1:-2.5"
 ```
 
 Set effect levels on a running instance:
 
 ```
-fxsound.exe --set_effect="bass:7.5,ambience:4.0"
+coral --set_effect="bass:7.5,ambience:4.0"
 ```
 
 Change the display language:
 
 ```
-fxsound.exe --language=fr
+coral --language=fr
 ```
 
 Print the running instance's current status as JSON:
 
 ```
-fxsound.exe --status
+coral --status
 ```

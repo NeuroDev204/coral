@@ -2,8 +2,6 @@
 
 Linux system-wide audio enhancer. Coral creates a virtual sink, processes desktop audio (EQ, ambience, surround, bass, dynamic boost), and plays it back on your headphones or speakers.
 
-This is a Linux port of [FxSound](https://github.com/fxsound2/fxsound-app) (AGPL-3.0).
-
 ## Install (Ubuntu / Debian amd64)
 
 Download `coral_1.2.12-1_amd64.deb` from [Releases](https://github.com/NeuroDev204/coral/releases) and install with apt so libraries are pulled in automatically:

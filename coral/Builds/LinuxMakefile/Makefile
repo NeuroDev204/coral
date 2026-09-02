@@ -129,7 +129,7 @@ all : $(JUCE_OUTDIR)/$(JUCE_TARGET_APP)
 $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) : $(OBJECTS_APP) $(RESOURCES)
 	@command -v $(PKG_CONFIG) >/dev/null 2>&1 || { echo >&2 "pkg-config not installed. Please, install it."; exit 1; }
 	@$(PKG_CONFIG) --print-errors freetype2 libcurl
-	@echo Linking "FxSound - App"
+	@echo Linking "Coral - App"
 	-$(V_AT)mkdir -p $(JUCE_BINDIR)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
@@ -331,11 +331,11 @@ $(JUCE_OBJDIR)/include_juce_opengl_a8a032b.o: ../../JuceLibraryCode/include_juce
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 clean:
-	@echo Cleaning FxSound
+	@echo Cleaning Coral
 	$(V_AT)$(CLEANCMD)
 
 strip:
-	@echo Stripping FxSound
+	@echo Stripping Coral
 	-$(V_AT)$(STRIP) --strip-unneeded $(JUCE_OUTDIR)/$(TARGET)
 
 -include $(OBJECTS_APP:%.o=%.d)
