@@ -369,7 +369,6 @@ Installer/
 release/
 bin/
 coral_deb/usr/bin/
-fxsound_*.deb
 coral_*.deb
 
 
