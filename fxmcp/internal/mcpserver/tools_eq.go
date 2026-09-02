@@ -8,10 +8,10 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 )
 
-// formatFloat renders v the way FxController's parsing expects: the
+// formatFloat renders v the way CoralController's parsing expects: the
 // shortest exact decimal representation, avoiding forced trailing zeros
 // (e.g. "7.5", "3", "-2.5") while still round-tripping exactly.
 func formatFloat(v float64) string {
@@ -20,28 +20,28 @@ func formatFloat(v float64) string {
 
 func (a *App) registerEqTools(s *mcp.Server) {
 	mcp.AddTool(s, &mcp.Tool{
-		Name: "fxsound_set_eq_bands",
+		Name: "coral_set_eq_bands",
 		Description: "Sets one or more equalizer band center frequencies in a single call. Requires " +
-			"FxSound to be running. Each band index must be less than the current band count (see " +
-			"fxsound://equalizer's num_bands); frequency range is per-band and enforced server-side, so an " +
+			"Coral to be running. Each band index must be less than the current band count (see " +
+			"coral://equalizer's num_bands); frequency range is per-band and enforced server-side, so an " +
 			"out-of-range frequency is silently ignored rather than rejected here.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: boolPtr(false)},
 	}, a.toolSetEqBands)
 
 	mcp.AddTool(s, &mcp.Tool{
-		Name: "fxsound_set_eq_band_gains",
+		Name: "coral_set_eq_band_gains",
 		Description: fmt.Sprintf("Sets one or more equalizer band boost/cut values in dB in a single call. "+
-			"Requires FxSound to be running. Each band index must be less than the current band count (see "+
-			"fxsound://equalizer's num_bands), and each gain must be within %.0f to %.0f dB.",
-			fxsound.MinBandGainDb, fxsound.MaxBandGainDb),
+			"Requires Coral to be running. Each band index must be less than the current band count (see "+
+			"coral://equalizer's num_bands), and each gain must be within %.0f to %.0f dB.",
+			coral.MinBandGainDb, coral.MaxBandGainDb),
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: boolPtr(false)},
 	}, a.toolSetEqBandGains)
 
 	mcp.AddTool(s, &mcp.Tool{
-		Name: "fxsound_set_effects",
+		Name: "coral_set_effects",
 		Description: fmt.Sprintf("Sets one or more effect levels in a single call: fidelity/clarity, "+
-			"ambience, surround, dynamicboost, bass. Requires FxSound to be running. Each value must be "+
-			"within %.0f to %.0f.", fxsound.MinEffectValue, fxsound.MaxEffectValue),
+			"ambience, surround, dynamicboost, bass. Requires Coral to be running. Each value must be "+
+			"within %.0f to %.0f.", coral.MinEffectValue, coral.MaxEffectValue),
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: boolPtr(false)},
 	}, a.toolSetEffects)
 }
@@ -64,18 +64,18 @@ func (a *App) toolSetEqBands(ctx context.Context, _ *mcp.CallToolRequest, in set
 		return nil, applyResult{}, err
 	}
 	numBands := status.Equalizer.NumBands
-	if err := fxsound.ValidateBandBatch(len(in.Bands), numBands); err != nil {
+	if err := coral.ValidateBandBatch(len(in.Bands), numBands); err != nil {
 		return nil, applyResult{}, err
 	}
-	pairs := make([]fxsound.KV, 0, len(in.Bands))
+	pairs := make([]coral.KV, 0, len(in.Bands))
 	for _, b := range in.Bands {
-		if err := fxsound.ValidateBandIndex(b.Index, numBands); err != nil {
+		if err := coral.ValidateBandIndex(b.Index, numBands); err != nil {
 			return nil, applyResult{}, err
 		}
-		pairs = append(pairs, fxsound.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.FrequencyHz)})
+		pairs = append(pairs, coral.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.FrequencyHz)})
 	}
-	flags := map[string]string{"set_band_freq": fxsound.FormatPairs(pairs)}
-	if err := fxsound.Apply(ctx, a.Paths, flags, true); err != nil {
+	flags := map[string]string{"set_band_freq": coral.FormatPairs(pairs)}
+	if err := coral.Apply(ctx, a.Paths, flags, true); err != nil {
 		return nil, applyResult{}, err
 	}
 	return nil, applyResult{Applied: true, Detail: fmt.Sprintf("set frequency for %d band(s)", len(in.Bands))}, nil
@@ -99,21 +99,21 @@ func (a *App) toolSetEqBandGains(ctx context.Context, _ *mcp.CallToolRequest, in
 		return nil, applyResult{}, err
 	}
 	numBands := status.Equalizer.NumBands
-	if err := fxsound.ValidateBandBatch(len(in.Bands), numBands); err != nil {
+	if err := coral.ValidateBandBatch(len(in.Bands), numBands); err != nil {
 		return nil, applyResult{}, err
 	}
-	pairs := make([]fxsound.KV, 0, len(in.Bands))
+	pairs := make([]coral.KV, 0, len(in.Bands))
 	for _, b := range in.Bands {
-		if err := fxsound.ValidateBandIndex(b.Index, numBands); err != nil {
+		if err := coral.ValidateBandIndex(b.Index, numBands); err != nil {
 			return nil, applyResult{}, err
 		}
-		if err := fxsound.ValidateBandGain(b.GainDb); err != nil {
+		if err := coral.ValidateBandGain(b.GainDb); err != nil {
 			return nil, applyResult{}, err
 		}
-		pairs = append(pairs, fxsound.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.GainDb)})
+		pairs = append(pairs, coral.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.GainDb)})
 	}
-	flags := map[string]string{"set_band_gain": fxsound.FormatPairs(pairs)}
-	if err := fxsound.Apply(ctx, a.Paths, flags, true); err != nil {
+	flags := map[string]string{"set_band_gain": coral.FormatPairs(pairs)}
+	if err := coral.Apply(ctx, a.Paths, flags, true); err != nil {
 		return nil, applyResult{}, err
 	}
 	return nil, applyResult{Applied: true, Detail: fmt.Sprintf("set gain for %d band(s)", len(in.Bands))}, nil
@@ -127,19 +127,19 @@ func (a *App) toolSetEffects(ctx context.Context, _ *mcp.CallToolRequest, in set
 	if len(in.Effects) == 0 {
 		return nil, applyResult{}, errors.New("effects must be non-empty")
 	}
-	pairs := make([]fxsound.KV, 0, len(in.Effects))
+	pairs := make([]coral.KV, 0, len(in.Effects))
 	for name, value := range in.Effects {
-		canonical, err := fxsound.NormalizeEffectName(name)
+		canonical, err := coral.NormalizeEffectName(name)
 		if err != nil {
 			return nil, applyResult{}, err
 		}
-		if err := fxsound.ValidateEffectValue(value); err != nil {
+		if err := coral.ValidateEffectValue(value); err != nil {
 			return nil, applyResult{}, err
 		}
-		pairs = append(pairs, fxsound.KV{Key: canonical, Value: formatFloat(value)})
+		pairs = append(pairs, coral.KV{Key: canonical, Value: formatFloat(value)})
 	}
-	flags := map[string]string{"set_effect": fxsound.FormatPairs(pairs)}
-	if err := fxsound.Apply(ctx, a.Paths, flags, true); err != nil {
+	flags := map[string]string{"set_effect": coral.FormatPairs(pairs)}
+	if err := coral.Apply(ctx, a.Paths, flags, true); err != nil {
 		return nil, applyResult{}, err
 	}
 	return nil, applyResult{Applied: true, Detail: fmt.Sprintf("set %d effect(s)", len(in.Effects))}, nil

@@ -107,8 +107,8 @@ namespace BinaryData
     extern const char*   arrow_prev_blue_svg;
     const int            arrow_prev_blue_svgSize = 499;
 
-    extern const char*   FxSound_Black_Bars_svg;
-    const int            FxSound_Black_Bars_svgSize = 589;
+    extern const char*   Coral_Black_Bars_svg;
+    const int            Coral_Black_Bars_svgSize = 589;
 
     extern const char*   minimize_black_svg;
     const int            minimize_black_svgSize = 940;
@@ -167,17 +167,17 @@ namespace BinaryData
     extern const char*   dropdown_arrow_hover_svg;
     const int            dropdown_arrow_hover_svgSize = 675;
 
-    extern const char*   FxSound_Logo_svg;
-    const int            FxSound_Logo_svgSize = 7254;
+    extern const char*   Coral_Logo_svg;
+    const int            Coral_Logo_svgSize = 7254;
 
-    extern const char*   FxSound_White_Bars_svg;
-    const int            FxSound_White_Bars_svgSize = 589;
+    extern const char*   Coral_White_Bars_svg;
+    const int            Coral_White_Bars_svgSize = 589;
 
-    extern const char*   fxsound_png;
-    const int            fxsound_pngSize = 388;
+    extern const char*   coral_app_png;
+    const int            coral_app_pngSize = 388;
 
-    extern const char*   fxsound_large_png;
-    const int            fxsound_large_pngSize = 3334;
+    extern const char*   coral_app_large_png;
+    const int            coral_app_large_pngSize = 3334;
 
     extern const char*   maximize_svg;
     const int            maximize_svgSize = 816;
@@ -215,95 +215,95 @@ namespace BinaryData
     extern const char*   Slider_Thumb_bw_svg;
     const int            Slider_Thumb_bw_svgSize = 4061;
 
-    extern const char*   FxSound_ar_txt;
-    const int            FxSound_ar_txtSize = 0;
+    extern const char*   Coral_ar_txt;
+    const int            Coral_ar_txtSize = 0;
 
-    extern const char*   FxSound_ba_txt;
-    const int            FxSound_ba_txtSize = 0;
+    extern const char*   Coral_ba_txt;
+    const int            Coral_ba_txtSize = 0;
 
-    extern const char*   FxSound_cs_txt;
-    const int            FxSound_cs_txtSize = 0;
+    extern const char*   Coral_cs_txt;
+    const int            Coral_cs_txtSize = 0;
 
-    extern const char*   FxSound_de_txt;
-    const int            FxSound_de_txtSize = 0;
+    extern const char*   Coral_de_txt;
+    const int            Coral_de_txtSize = 0;
 
-    extern const char*   FxSound_es_txt;
-    const int            FxSound_es_txtSize = 0;
+    extern const char*   Coral_es_txt;
+    const int            Coral_es_txtSize = 0;
 
-    extern const char*   FxSound_fa_txt;
-    const int            FxSound_fa_txtSize = 0;
+    extern const char*   Coral_fa_txt;
+    const int            Coral_fa_txtSize = 0;
 
-    extern const char*   FxSound_fi_txt;
-    const int            FxSound_fi_txtSize = 0;
+    extern const char*   Coral_fi_txt;
+    const int            Coral_fi_txtSize = 0;
 
-    extern const char*   FxSound_fr_txt;
-    const int            FxSound_fr_txtSize = 0;
+    extern const char*   Coral_fr_txt;
+    const int            Coral_fr_txtSize = 0;
 
-    extern const char*   FxSound_hr_txt;
-    const int            FxSound_hr_txtSize = 0;
+    extern const char*   Coral_hr_txt;
+    const int            Coral_hr_txtSize = 0;
 
-    extern const char*   fxsound_hu_txt;
-    const int            fxsound_hu_txtSize = 0;
+    extern const char*   coral_hu_txt;
+    const int            coral_hu_txtSize = 0;
 
-    extern const char*   FxSound_id_txt;
-    const int            FxSound_id_txtSize = 0;
+    extern const char*   Coral_id_txt;
+    const int            Coral_id_txtSize = 0;
 
-    extern const char*   FxSound_it_txt;
-    const int            FxSound_it_txtSize = 0;
+    extern const char*   Coral_it_txt;
+    const int            Coral_it_txtSize = 0;
 
-    extern const char*   FxSound_ja_txt;
-    const int            FxSound_ja_txtSize = 0;
+    extern const char*   Coral_ja_txt;
+    const int            Coral_ja_txtSize = 0;
 
-    extern const char*   FxSound_ko_txt;
-    const int            FxSound_ko_txtSize = 0;
+    extern const char*   Coral_ko_txt;
+    const int            Coral_ko_txtSize = 0;
 
-    extern const char*   FxSound_nl_txt;
-    const int            FxSound_nl_txtSize = 0;
+    extern const char*   Coral_nl_txt;
+    const int            Coral_nl_txtSize = 0;
 
-    extern const char*   FxSound_no_txt;
-    const int            FxSound_no_txtSize = 0;
+    extern const char*   Coral_no_txt;
+    const int            Coral_no_txtSize = 0;
 
-    extern const char*   FxSound_pl_txt;
-    const int            FxSound_pl_txtSize = 0;
+    extern const char*   Coral_pl_txt;
+    const int            Coral_pl_txtSize = 0;
 
-    extern const char*   FxSound_ptbr_txt;
-    const int            FxSound_ptbr_txtSize = 0;
+    extern const char*   Coral_ptbr_txt;
+    const int            Coral_ptbr_txtSize = 0;
 
-    extern const char*   FxSound_pt_txt;
-    const int            FxSound_pt_txtSize = 0;
+    extern const char*   Coral_pt_txt;
+    const int            Coral_pt_txtSize = 0;
 
-    extern const char*   FxSound_ro_txt;
-    const int            FxSound_ro_txtSize = 0;
+    extern const char*   Coral_ro_txt;
+    const int            Coral_ro_txtSize = 0;
 
-    extern const char*   FxSound_ru_txt;
-    const int            FxSound_ru_txtSize = 0;
+    extern const char*   Coral_ru_txt;
+    const int            Coral_ru_txtSize = 0;
 
-    extern const char*   FxSound_sl_txt;
-    const int            FxSound_sl_txtSize = 0;
+    extern const char*   Coral_sl_txt;
+    const int            Coral_sl_txtSize = 0;
 
-    extern const char*   FxSound_sv_txt;
-    const int            FxSound_sv_txtSize = 0;
+    extern const char*   Coral_sv_txt;
+    const int            Coral_sv_txtSize = 0;
 
-    extern const char*   FxSound_th_txt;
-    const int            FxSound_th_txtSize = 0;
+    extern const char*   Coral_th_txt;
+    const int            Coral_th_txtSize = 0;
 
-    extern const char*   FxSound_tr_txt;
-    const int            FxSound_tr_txtSize = 0;
+    extern const char*   Coral_tr_txt;
+    const int            Coral_tr_txtSize = 0;
 
-    extern const char*   FxSound_txt;
-    const int            FxSound_txtSize = 0;
+    extern const char*   Coral_txt;
+    const int            Coral_txtSize = 0;
 
-    extern const char*   FxSound_ua_txt;
-    const int            FxSound_ua_txtSize = 0;
+    extern const char*   Coral_ua_txt;
+    const int            Coral_ua_txtSize = 0;
 
-    extern const char*   FxSound_vi_txt;
-    const int            FxSound_vi_txtSize = 0;
+    extern const char*   Coral_vi_txt;
+    const int            Coral_vi_txtSize = 0;
 
-    extern const char*   FxSound_zhCN_txt;
-    const int            FxSound_zhCN_txtSize = 0;
+    extern const char*   Coral_zhCN_txt;
+    const int            Coral_zhCN_txtSize = 0;
 
-    extern const char*   FxSound_zhTW_txt;
-    const int            FxSound_zhTW_txtSize = 0;
+    extern const char*   Coral_zhTW_txt;
+    const int            Coral_zhTW_txtSize = 0;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
     const int namedResourceListSize = 99;

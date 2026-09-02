@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="F3FTdD" name="Coral" projectType="guiapp" version="1.2.12.0"
+              displaySplashScreen="1" jucerFormatVersion="1" companyName="Coral"
+              companyWebsite="https://github.com/NeuroDev204/coral" companyCopyright="Copyright (C) 2026 Coral"
+              defines="UNICODE" postExportShellCommandWin="type %%1%%\ProjectARM\status_icons.rc &gt;&gt; %%1%%\ProjectARM\resources.rc"
+              cppLanguageStandard="17">
+  <MAINGROUP id="fy4sG5" name="Coral">
+    <GROUP id="{9737D476-EEC4-7E5E-0B04-48E2783CC448}" name="Fonts">
+      <FILE id="Z6Zv1m" name="Gilroy-Bold.ttf" compile="0" resource="1" file="Fonts/Gilroy-Bold.ttf"/>
+      <FILE id="pxR00h" name="Gilroy-Regular.ttf" compile="0" resource="1"
+            file="Fonts/Gilroy-Regular.ttf"/>
+      <FILE id="AX57ui" name="Gilroy-Semibold.ttf" compile="0" resource="1"
+            file="Fonts/Gilroy-Semibold.ttf"/>
+    </GROUP>
+    <GROUP id="{1003D6EA-45C1-E8E4-DFD9-451D205D2F09}" name="Images">
+      <FILE id="MYtqrx" name="flip.svg" compile="0" resource="1" file="Images/flip.svg"/>
+      <FILE id="Az6d9b" name="flip_black.svg" compile="0" resource="1" file="Images/flip_black.svg"/>
+      <FILE id="G5cKv4" name="flip_blue.svg" compile="0" resource="1" file="Images/flip_blue.svg"/>
+      <FILE id="fa4GNH" name="flip_white.svg" compile="0" resource="1" file="Images/flip_white.svg"/>
+      <FILE id="gkE8aV" name="restore_defaults.svg" compile="0" resource="1"
+            file="Images/restore_defaults.svg"/>
+      <FILE id="K5v6lK" name="restore_defaults_black.svg" compile="0" resource="1"
+            file="Images/restore_defaults_black.svg"/>
+      <FILE id="osFcho" name="restore_defaults_blue.svg" compile="0" resource="1"
+            file="Images/restore_defaults_blue.svg"/>
+      <FILE id="fGpSnn" name="restore_defaults_white.svg" compile="0" resource="1"
+            file="Images/restore_defaults_white.svg"/>
+      <FILE id="Q5mIgS" name="arrow_down_black.svg" compile="0" resource="1"
+            file="Images/arrow_down_black.svg"/>
+      <FILE id="uNwSXC" name="arrow_down_white.svg" compile="0" resource="1"
+            file="Images/arrow_down_white.svg"/>
+      <FILE id="xRhpOC" name="arrow_up_black.svg" compile="0" resource="1"
+            file="Images/arrow_up_black.svg"/>
+      <FILE id="IfSChk" name="arrow_up_white.svg" compile="0" resource="1"
+            file="Images/arrow_up_white.svg"/>
+      <FILE id="LLs9LM" name="equalizer.svg" compile="0" resource="0" file="Images/equalizer.svg"/>
+      <FILE id="JhrNeR" name="arrow_down.svg" compile="0" resource="1" file="Images/arrow_down.svg"/>
+      <FILE id="oHJfgg" name="arrow_down_blue.svg" compile="0" resource="1"
+            file="Images/arrow_down_blue.svg"/>
+      <FILE id="j2y7wl" name="arrow_up.svg" compile="0" resource="1" file="Images/arrow_up.svg"/>
+      <FILE id="XM9MOx" name="arrow_up_blue.svg" compile="0" resource="1"
+            file="Images/arrow_up_blue.svg"/>
+      <FILE id="elWkZ9" name="logo-red.svg" compile="0" resource="1" file="Images/logo-red.svg"/>
+      <FILE id="tdpWdf" name="logo-white.svg" compile="0" resource="1" file="Images/logo-white.svg"/>
+      <FILE id="OtMUHf" name="maximize_black.svg" compile="0" resource="1"
+            file="Images/maximize_black.svg"/>
+      <FILE id="aVxHzb" name="maximize_hover_blue.svg" compile="0" resource="1"
+            file="Images/maximize_hover_blue.svg"/>
+      <FILE id="YBuEqD" name="menu_black.svg" compile="0" resource="1" file="Images/menu_black.svg"/>
+      <FILE id="boQ07d" name="menu_hover_blue.svg" compile="0" resource="1"
+            file="Images/menu_hover_blue.svg"/>
+      <FILE id="xZzl0H" name="min_window_black.svg" compile="0" resource="1"
+            file="Images/min_window_black.svg"/>
+      <FILE id="q9qSeQ" name="min_window_hover_blue.svg" compile="0" resource="1"
+            file="Images/min_window_hover_blue.svg"/>
+      <FILE id="et8FM6" name="logo-blue.svg" compile="0" resource="1" file="Images/logo-blue.svg"/>
+      <FILE id="uo2HxO" name="donate_blue.svg" compile="0" resource="1" file="Images/donate_blue.svg"/>
+      <FILE id="ZquXUG" name="donate_hover_blue.svg" compile="0" resource="1"
+            file="Images/donate_hover_blue.svg"/>
+      <FILE id="i9JLzk" name="dropdown_arrow_hover_blue.svg" compile="0"
+            resource="1" file="Images/dropdown_arrow_hover_blue.svg"/>
+      <FILE id="greHxw" name="arrow_next_blue.svg" compile="0" resource="1"
+            file="Images/arrow_next_blue.svg"/>
+      <FILE id="dL6mgY" name="arrow_prev_blue.svg" compile="0" resource="1"
+            file="Images/arrow_prev_blue.svg"/>
+      <FILE id="EEuBay" name="Coral Black Bars.svg" compile="0" resource="1"
+            file="Images/Coral Black Bars.svg"/>
+      <FILE id="C4a4vj" name="minimize_black.svg" compile="0" resource="1"
+            file="Images/minimize_black.svg"/>
+      <FILE id="nlbXz0" name="minimize_hover_blue.svg" compile="0" resource="1"
+            file="Images/minimize_hover_blue.svg"/>
+      <FILE id="jREvXS" name="power_off_black.svg" compile="0" resource="1"
+            file="Images/power_off_black.svg"/>
+      <FILE id="UWf4rx" name="power_on_blue.svg" compile="0" resource="1"
+            file="Images/power_on_blue.svg"/>
+      <FILE id="b3Im5h" name="Slider_Thumb_blue.svg" compile="0" resource="1"
+            file="Images/Slider_Thumb_blue.svg"/>
+      <FILE id="vRx1Bp" name="logo-black.svg" compile="0" resource="1" file="Images/logo-black.svg"/>
+      <FILE id="Pi4f5D" name="donate.svg" compile="0" resource="1" file="Images/donate.svg"/>
+      <FILE id="YOkKP8" name="donate_hover.svg" compile="0" resource="1"
+            file="Images/donate_hover.svg"/>
+      <FILE id="fIP0kb" name="speaker.svg" compile="0" resource="1" file="Images/speaker.svg"/>
+      <FILE id="WpX8ql" name="min_window.svg" compile="0" resource="1" file="Images/min_window.svg"/>
+      <FILE id="jcmz9o" name="min_window_hover.svg" compile="0" resource="1"
+            file="Images/min_window_hover.svg"/>
+      <FILE id="jKom9G" name="arrow_next_bw.svg" compile="0" resource="1"
+            file="Images/arrow_next_bw.svg"/>
+      <FILE id="JzXfVb" name="arrow_prev.svg" compile="0" resource="1" file="Images/arrow_prev.svg"/>
+      <FILE id="KniXTC" name="arrow_next.svg" compile="0" resource="1" file="Images/arrow_next.svg"/>
+      <FILE id="tuJiX7" name="arrow_prev_bw.svg" compile="0" resource="1"
+            file="Images/arrow_prev_bw.svg"/>
+      <FILE id="njSlcA" name="Button_OFF.svg" compile="0" resource="1" file="Images/Button_OFF.svg"/>
+      <FILE id="Rw7cG4" name="Button_ON.svg" compile="0" resource="1" file="Images/Button_ON.svg"/>
+      <FILE id="nM5WiO" name="dropdown_arrow_bw.svg" compile="0" resource="1"
+            file="Images/dropdown_arrow_bw.svg"/>
+      <FILE id="iIvSNh" name="dropdown_arrow_hover.svg" compile="0" resource="1"
+            file="Images/dropdown_arrow_hover.svg"/>
+      <FILE id="usPkJw" name="Coral Logo White.png" compile="0" resource="1"
+            file="Images/Coral Logo White.png"/>
+      <FILE id="U9DNmz" name="Coral Logo.svg" compile="0" resource="1"
+            file="Images/Coral Logo.svg"/>
+      <FILE id="KPjArf" name="Coral White Bars.png" compile="0" resource="1"
+            file="Images/Coral White Bars.png"/>
+      <FILE id="KEHCfx" name="Coral White Bars.svg" compile="0" resource="1"
+            file="Images/Coral White Bars.svg"/>
+      <FILE id="KpuESS" name="coral_app.png" compile="0" resource="1" file="Images/coral_app.png"/>
+      <FILE id="EFMcqw" name="coral_app_large.png" compile="0" resource="1"
+            file="Images/coral_app_large.png"/>
+      <FILE id="rh0i9g" name="logo-red.png" compile="0" resource="1" file="Images/logo-red.png"/>
+      <FILE id="RvANme" name="logo-white.png" compile="0" resource="1" file="Images/logo-white.png"/>
+      <FILE id="ZgOLJX" name="maximize.svg" compile="0" resource="1" file="Images/maximize.svg"/>
+      <FILE id="O5DD0s" name="maximize_hover.svg" compile="0" resource="1"
+            file="Images/maximize_hover.svg"/>
+      <FILE id="qABIK3" name="menu.svg" compile="0" resource="1" file="Images/menu.svg"/>
+      <FILE id="KkDGmO" name="menu_hover.svg" compile="0" resource="1" file="Images/menu_hover.svg"/>
+      <FILE id="Cukyd0" name="minimize.svg" compile="0" resource="1" file="Images/minimize.svg"/>
+      <FILE id="Juc5J3" name="minimize_hover.svg" compile="0" resource="1"
+            file="Images/minimize_hover.svg"/>
+      <FILE id="XHXCI7" name="power_off.svg" compile="0" resource="1" file="Images/power_off.svg"/>
+      <FILE id="cOSNtH" name="power_on.svg" compile="0" resource="1" file="Images/power_on.svg"/>
+      <FILE id="v6YSgI" name="question.svg" compile="0" resource="1" file="Images/question.svg"/>
+      <FILE id="KOKcdP" name="settings.svg" compile="0" resource="1" file="Images/settings.svg"/>
+      <FILE id="RVTNkc" name="Slider_Thumb.svg" compile="0" resource="1"
+            file="Images/Slider_Thumb.svg"/>
+      <FILE id="kCcjcE" name="Slider_Thumb_bw.svg" compile="0" resource="1"
+            file="Images/Slider_Thumb_bw.svg"/>
+    </GROUP>
+    <GROUP id="{D719274A-0BE1-FA67-529B-B012A702512B}" name="Source">
+      <GROUP id="{7D838BF2-5642-7BE7-DF78-745226F70630}" name="GUI">
+        <GROUP id="{59F271E4-F186-3EBD-DA7B-97C454130F71}" name="Components">
+          <FILE id="s2Aspj" name="CoralAudioControls.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralAudioControls.cpp"/>
+          <FILE id="dX6M5i" name="CoralAudioControls.h" compile="0" resource="0"
+                file="Source/GUI/CoralAudioControls.h"/>
+          <FILE id="Rgr4wj" name="CoralOutputPreference.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralOutputPreference.cpp"/>
+          <FILE id="tWVZ0P" name="CoralOutputPreference.h" compile="0" resource="0"
+                file="Source/GUI/CoralOutputPreference.h"/>
+          <FILE id="m61HtG" name="CoralAudioSlider.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralAudioSlider.cpp"/>
+          <FILE id="QluxCZ" name="CoralAudioSlider.h" compile="0" resource="0" file="Source/GUI/CoralAudioSlider.h"/>
+          <FILE id="DJqpJR" name="CoralBalanceSlider.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralBalanceSlider.cpp"/>
+          <FILE id="GM1Bld" name="CoralBalanceSlider.h" compile="0" resource="0"
+                file="Source/GUI/CoralBalanceSlider.h"/>
+          <FILE id="qb7R1e" name="CoralPresetNameEditor.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralPresetNameEditor.cpp"/>
+          <FILE id="kYhKSD" name="CoralPresetNameEditor.h" compile="0" resource="0"
+                file="Source/GUI/CoralPresetNameEditor.h"/>
+          <FILE id="s2OsmF" name="CoralHotkeyLabel.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralHotkeyLabel.cpp"/>
+          <FILE id="hu90ED" name="CoralHotkeyLabel.h" compile="0" resource="0" file="Source/GUI/CoralHotkeyLabel.h"/>
+          <FILE id="Tdb1eI" name="CoralLanguage.cpp" compile="1" resource="0" file="Source/GUI/CoralLanguage.cpp"/>
+          <FILE id="YH14mJ" name="CoralLanguage.h" compile="0" resource="0" file="Source/GUI/CoralLanguage.h"/>
+          <FILE id="Qbcp2S" name="CoralVisualizer.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralVisualizer.cpp"/>
+          <FILE id="ZTvcaq" name="CoralVisualizer.h" compile="0" resource="0" file="Source/GUI/CoralVisualizer.h"/>
+          <FILE id="PFkZyE" name="CoralEqualizer.cpp" compile="1" resource="0" file="Source/GUI/CoralEqualizer.cpp"/>
+          <FILE id="tp9RTX" name="CoralEqualizer.h" compile="0" resource="0" file="Source/GUI/CoralEqualizer.h"/>
+          <FILE id="WojPjZ" name="CoralNotification.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralNotification.cpp"/>
+          <FILE id="MLmEyk" name="CoralNotification.h" compile="0" resource="0"
+                file="Source/GUI/CoralNotification.h"/>
+          <FILE id="bEG4VO" name="CoralHyperlink.cpp" compile="1" resource="0" file="Source/GUI/CoralHyperlink.cpp"/>
+          <FILE id="b7rUVk" name="CoralHyperlink.h" compile="0" resource="0" file="Source/GUI/CoralHyperlink.h"/>
+          <FILE id="DkAjMK" name="CoralComboBox.cpp" compile="1" resource="0" file="Source/GUI/CoralComboBox.cpp"
+                xcodeResource="1"/>
+          <FILE id="WuT1Cs" name="CoralComboBox.h" compile="0" resource="0" file="Source/GUI/CoralComboBox.h"/>
+          <FILE id="pY8N2i" name="CoralPowerButton.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralPowerButton.cpp"/>
+          <FILE id="VTb6MM" name="CoralPowerButton.h" compile="0" resource="0" file="Source/GUI/CoralPowerButton.h"/>
+        </GROUP>
+        <GROUP id="{F847142A-EC2B-3BDE-DD50-1DA2CB4E9C78}" name="Views">
+          <FILE id="heuftZ" name="CoralSystemTrayView.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralSystemTrayView.cpp"/>
+          <FILE id="gZOMvw" name="CoralSystemTrayView.h" compile="0" resource="0"
+                file="Source/GUI/CoralSystemTrayView.h"/>
+          <FILE id="uC1bA1" name="CoralView.cpp" compile="1" resource="0" file="Source/GUI/CoralView.cpp"/>
+          <FILE id="e0V6RH" name="CoralLiteView.cpp" compile="1" resource="0" file="Source/GUI/CoralLiteView.cpp"/>
+          <FILE id="gNJQUb" name="CoralLiteView.h" compile="0" resource="0" file="Source/GUI/CoralLiteView.h"/>
+          <FILE id="mGa2kJ" name="CoralProView.cpp" compile="1" resource="0" file="Source/GUI/CoralProView.cpp"/>
+          <FILE id="IElYx2" name="CoralProView.h" compile="0" resource="0" file="Source/GUI/CoralProView.h"/>
+          <FILE id="zOgvhq" name="CoralView.h" compile="0" resource="0" file="Source/GUI/CoralView.h"/>
+        </GROUP>
+        <GROUP id="{1A4CB6D4-AC3C-F275-3031-1CBADB1439D6}" name="Dialogs">
+          <FILE id="GLoltX" name="CoralPresetImportDialog.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralPresetImportDialog.cpp"/>
+          <FILE id="gZpHY4" name="CoralPresetImportDialog.h" compile="0" resource="0"
+                file="Source/GUI/CoralPresetImportDialog.h"/>
+          <FILE id="tRv7tW" name="CoralPresetExportDialog.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralPresetExportDialog.cpp"/>
+          <FILE id="CNLuUQ" name="CoralPresetExportDialog.h" compile="0" resource="0"
+                file="Source/GUI/CoralPresetExportDialog.h"/>
+          <FILE id="ThbgoU" name="CoralSettingsDialog.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralSettingsDialog.cpp"/>
+          <FILE id="vERb0s" name="CoralSettingsDialog.h" compile="0" resource="0"
+                file="Source/GUI/CoralSettingsDialog.h"/>
+        </GROUP>
+        <GROUP id="{16207F4A-0AB0-2942-D69D-4F03B1DF7E0E}" name="Theme">
+          <FILE id="aHBzEn" name="CoralTheme.cpp" compile="1" resource="0" file="Source/GUI/CoralTheme.cpp"/>
+          <FILE id="infVRZ" name="CoralTheme.h" compile="0" resource="0" file="Source/GUI/CoralTheme.h"/>
+        </GROUP>
+        <GROUP id="{6176A208-68CA-125B-0CAB-EC7A954CEDD0}" name="Windows">
+          <FILE id="vTeFCF" name="CoralMessage.cpp" compile="1" resource="0" file="Source/GUI/CoralMessage.cpp"/>
+          <FILE id="wEEYkv" name="CoralMessage.h" compile="0" resource="0" file="Source/GUI/CoralMessage.h"
+                xcodeResource="0"/>
+          <FILE id="v1pKfo" name="CoralMainWindow.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralMainWindow.cpp"/>
+          <FILE id="GvUaRT" name="CoralMainWindow.h" compile="0" resource="0" file="Source/GUI/CoralMainWindow.h"/>
+          <FILE id="ogc2Zl" name="CoralWindow.cpp" compile="1" resource="0" file="Source/GUI/CoralWindow.cpp"
+                xcodeResource="1"/>
+          <FILE id="GBwoGe" name="CoralWindow.h" compile="0" resource="0" file="Source/GUI/CoralWindow.h"/>
+        </GROUP>
+        <GROUP id="{FBD61171-43D0-1152-4B75-F146482E62D3}" name="Controller">
+          <FILE id="GhxcDp" name="CoralController.cpp" compile="1" resource="0"
+                file="Source/GUI/CoralController.cpp"/>
+          <FILE id="DY0Igh" name="CoralController.h" compile="0" resource="0" file="Source/GUI/CoralController.h"/>
+        </GROUP>
+        <GROUP id="{145D6EE7-51A3-672A-B9B3-8D8F8412EC51}" name="Model">
+          <FILE id="aS1K8b" name="CoralModel.cpp" compile="1" resource="0" file="Source/GUI/CoralModel.cpp"/>
+          <FILE id="lyDydn" name="CoralModel.h" compile="0" resource="0" file="Source/GUI/CoralModel.h"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{615B55CB-A753-F6FD-0F8B-7C616B5635F1}" name="Utils">
+        <GROUP id="{8EA48EC8-4BE2-4FD4-7D9B-DCAF21ABB54A}" name="SysInfo">
+          <FILE id="Odu3b6" name="SysInfo.cpp" compile="1" resource="0" file="Source/Utils/SysInfo/SysInfo.cpp"/>
+          <FILE id="mmvC93" name="SysInfo.h" compile="0" resource="0" file="Source/Utils/SysInfo/SysInfo.h"/>
+        </GROUP>
+        <GROUP id="{4B583B65-EB6A-26FA-E8D9-48551CBAB902}" name="Settings">
+          <FILE id="JST0ln" name="DeviceConfig.cpp" compile="1" resource="0"
+                file="Source/Utils/Settings/DeviceConfig.cpp"/>
+          <FILE id="tXS54C" name="DeviceConfig.h" compile="0" resource="0" file="Source/Utils/Settings/DeviceConfig.h"/>
+          <FILE id="Wqw8lj" name="Settings.cpp" compile="1" resource="0" file="Source/Utils/Settings/Settings.cpp"/>
+          <FILE id="je5afJ" name="Settings.h" compile="0" resource="0" file="Source/Utils/Settings/Settings.h"/>
+        </GROUP>
+      </GROUP>
+      <FILE id="giU5B1" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+    <GROUP id="{AAFAFD7C-41A7-0774-9216-95AEBD0117C0}" name="Strings">
+      <FILE id="XbT61V" name="Coral.ar.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ar.txt"/>
+      <FILE id="cAIn3x" name="Coral.ba.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ba.txt"/>
+      <FILE id="sRsSww" name="Coral.cs.txt" compile="0" resource="1" file="../Resources/Strings/Coral.cs.txt"/>
+      <FILE id="gVyPZi" name="Coral.de.txt" compile="0" resource="1" file="../Resources/Strings/Coral.de.txt"/>
+      <FILE id="CQH7Jy" name="Coral.es.txt" compile="0" resource="1" file="../Resources/Strings/Coral.es.txt"/>
+      <FILE id="dw8pYo" name="Coral.fa.txt" compile="0" resource="1" file="../Resources/Strings/Coral.fa.txt"/>
+      <FILE id="P4JZ3A" name="Coral.fi.txt" compile="0" resource="1" file="../Resources/Strings/Coral.fi.txt"/>
+      <FILE id="f64DAO" name="Coral.fr.txt" compile="0" resource="1" file="../Resources/Strings/Coral.fr.txt"/>
+      <FILE id="f1D4BE" name="Coral.hr.txt" compile="0" resource="1" file="../Resources/Strings/Coral.hr.txt"/>
+      <FILE id="Wj87Eh" name="coral.hu.txt" compile="0" resource="1" file="../Resources/Strings/coral.hu.txt"/>
+      <FILE id="KRZtVd" name="Coral.id.txt" compile="0" resource="1" file="../Resources/Strings/Coral.id.txt"/>
+      <FILE id="zxfPfh" name="Coral.it.txt" compile="0" resource="1" file="../Resources/Strings/Coral.it.txt"/>
+      <FILE id="JRQzN4" name="Coral.ja.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ja.txt"/>
+      <FILE id="JZUDxv" name="Coral.ko.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ko.txt"/>
+      <FILE id="Af5L3s" name="Coral.nl.txt" compile="0" resource="1" file="../Resources/Strings/Coral.nl.txt"/>
+      <FILE id="qW7XBZ" name="Coral.no.txt" compile="0" resource="1" file="../Resources/Strings/Coral.no.txt"/>
+      <FILE id="X7Zl3x" name="Coral.pl.txt" compile="0" resource="1" file="../Resources/Strings/Coral.pl.txt"/>
+      <FILE id="EvdnQc" name="Coral.pt-br.txt" compile="0" resource="1"
+            file="../Resources/Strings/Coral.pt-br.txt"/>
+      <FILE id="mFwFGF" name="Coral.pt.txt" compile="0" resource="1" file="../Resources/Strings/Coral.pt.txt"/>
+      <FILE id="DEcfBf" name="Coral.ro.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ro.txt"/>
+      <FILE id="QhLN1z" name="Coral.ru.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ru.txt"/>
+      <FILE id="qjhZpN" name="Coral.sl.txt" compile="0" resource="1" file="../Resources/Strings/Coral.sl.txt"/>
+      <FILE id="yBNcjS" name="Coral.sv.txt" compile="0" resource="1" file="../Resources/Strings/Coral.sv.txt"/>
+      <FILE id="trnXRh" name="Coral.th.txt" compile="0" resource="1" file="../Resources/Strings/Coral.th.txt"/>
+      <FILE id="vwLV6S" name="Coral.tr.txt" compile="0" resource="1" file="../Resources/Strings/Coral.tr.txt"/>
+      <FILE id="kUCjr0" name="Coral.txt" compile="0" resource="1" file="../Resources/Strings/Coral.txt"/>
+      <FILE id="CLrdfy" name="Coral.ua.txt" compile="0" resource="1" file="../Resources/Strings/Coral.ua.txt"/>
+      <FILE id="SL6DV6" name="Coral.vi.txt" compile="0" resource="1" file="../Resources/Strings/Coral.vi.txt"/>
+      <FILE id="iy9krx" name="Coral.zh-CN.txt" compile="0" resource="1"
+            file="../Resources/Strings/Coral.zh-CN.txt"/>
+      <FILE id="RZlI7v" name="Coral.zh-TW.txt" compile="0" resource="1"
+            file="../Resources/Strings/Coral.zh-TW.txt"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="ProjectARM" extraDefs="JUCE_MODAL_LOOPS_PERMITTED"
+            extraCompilerFlags="/bigobj /Qpar" externalLibraries="crypt32.lib;Wtsapi32.lib"
+            bigIcon="EFMcqw" windowsTargetPlatformVersion="Latest">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="$(SolutionDir)..\..\audiopassthru\include;$(SolutionDir)..\..\dsp\include;$(SolutionDir)..\Source\GUI"
+                       useRuntimeLibDLL="0" winArchitecture="ARM64"/>
+        <CONFIGURATION isDebug="0" name="Release" headerPath="$(SolutionDir)..\..\audiopassthru\include;$(SolutionDir)..\..\dsp\include;$(SolutionDir)..\Source\GUI"
+                       useRuntimeLibDLL="0" alwaysGenerateDebugSymbols="1" postbuildCommand="copy $(TargetPath) ..\..\bin\$(PlatformTarget)\ /y&#10;copy $(TargetDir)$(TargetName).pdb ..\..\bin\$(PlatformTarget)\ /y"
+                       optimisation="4" debugInformationFormat="ProgramDatabase" winArchitecture="ARM64"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_cryptography" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_events" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_graphics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_opengl" path="C:\JUCE\modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+</JUCERPROJECT>

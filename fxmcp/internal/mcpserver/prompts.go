@@ -9,7 +9,7 @@ import (
 func (a *App) registerPrompts(s *mcp.Server) {
 	s.AddPrompt(&mcp.Prompt{
 		Name:        "diagnose-audio-issue",
-		Description: "Diagnose an audio problem (e.g. low call volume, no sound, muffled output) by cross-referencing Windows device/session state with FxSound's own settings.",
+		Description: "Diagnose an audio problem (e.g. low call volume, no sound, muffled output) by cross-referencing Windows device/session state with Coral's own settings.",
 		Arguments: []*mcp.PromptArgument{
 			{
 				Name:        "symptom",
@@ -21,7 +21,7 @@ func (a *App) registerPrompts(s *mcp.Server) {
 
 	s.AddPrompt(&mcp.Prompt{
 		Name:        "tune-for-scenario",
-		Description: "Tune FxSound's equalizer and effects for a listening scenario or instrument focus (e.g. piano and flute clarity, bass-heavy for a party).",
+		Description: "Tune Coral's equalizer and effects for a listening scenario or instrument focus (e.g. piano and flute clarity, bass-heavy for a party).",
 		Arguments: []*mcp.PromptArgument{
 			{
 				Name:        "scenario",
@@ -45,7 +45,7 @@ func (a *App) registerPrompts(s *mcp.Server) {
 
 	s.AddPrompt(&mcp.Prompt{
 		Name:        "create-preset-from-current",
-		Description: "Save the current modified FxSound settings as a new named preset, checking preconditions first so the save doesn't silently no-op.",
+		Description: "Save the current modified Coral settings as a new named preset, checking preconditions first so the save doesn't silently no-op.",
 		Arguments: []*mcp.PromptArgument{
 			{
 				Name:        "name",
@@ -67,18 +67,18 @@ func (a *App) promptDiagnoseAudioIssue(_ context.Context, req *mcp.GetPromptRequ
 	symptom := req.Params.Arguments["symptom"]
 	text := "I'm having an audio problem: " + symptom + "\n\n" +
 		"Please diagnose this:\n" +
-		"1. Read fxsound://diagnostics for Windows-level device and session state -- is the relevant " +
+		"1. Read coral://diagnostics for Windows-level device and session state -- is the relevant " +
 		"app's session (e.g. zoom.exe, ms-teams.exe) muted or at a low volumeLevel? Is the currently " +
 		"selected output device's state Active, or is it Not Present/Disabled/Unplugged?\n" +
-		"2. Read fxsound://status for FxSound's own state -- is power on? Is the selected output device " +
+		"2. Read coral://status for Coral's own state -- is power on? Is the selected output device " +
 		"the one you'd expect? Could master_gain or volume_leveling be suppressing " +
 		"loudness?\n" +
 		"3. Cross-reference both to identify the most likely cause.\n" +
-		"4. Explain the cause, and if it's something a tool can fix (fxsound_set_power, " +
-		"fxsound_set_output_device, fxsound_apply_settings), propose the specific fix and ask before " +
+		"4. Explain the cause, and if it's something a tool can fix (coral_set_power, " +
+		"coral_set_output_device, coral_apply_settings), propose the specific fix and ask before " +
 		"applying it.\n\n" +
 		"Note: there's currently no tool to change a Windows app's own per-app mixer volume/mute " +
-		"directly (only FxSound's own settings) -- if that turns out to be the cause, tell me so I can " +
+		"directly (only Coral's own settings) -- if that turns out to be the cause, tell me so I can " +
 		"fix it in the Windows Volume Mixer myself."
 	return &mcp.GetPromptResult{
 		Description: "Diagnose an audio problem",
@@ -88,15 +88,15 @@ func (a *App) promptDiagnoseAudioIssue(_ context.Context, req *mcp.GetPromptRequ
 
 func (a *App) promptTuneForScenario(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
 	scenario := req.Params.Arguments["scenario"]
-	text := "I want to tune FxSound for this listening scenario: " + scenario + "\n\n" +
+	text := "I want to tune Coral for this listening scenario: " + scenario + "\n\n" +
 		"Please:\n" +
-		"1. Read fxsound://equalizer to see the current band layout (num_bands, and each band's current " +
-		"frequency and gain) and fxsound://effects for current effect levels.\n" +
+		"1. Read coral://equalizer to see the current band layout (num_bands, and each band's current " +
+		"frequency and gain) and coral://effects for current effect levels.\n" +
 		"2. Using your own audio-engineering knowledge of the frequency ranges and effect balance " +
 		"involved in \"" + scenario + "\", work out which bands to boost or cut and/or which effect " +
 		"levels to change.\n" +
-		"3. Apply the changes with fxsound_set_eq_band_gains and/or fxsound_set_effects (or " +
-		"fxsound_apply_settings if you also want to change the preset, output device, or other settings " +
+		"3. Apply the changes with coral_set_eq_band_gains and/or coral_set_effects (or " +
+		"coral_apply_settings if you also want to change the preset, output device, or other settings " +
 		"at the same time).\n" +
 		"4. Briefly explain what you changed and why, referencing the actual band frequencies/effect " +
 		"names you touched."
@@ -108,15 +108,15 @@ func (a *App) promptTuneForScenario(_ context.Context, req *mcp.GetPromptRequest
 
 func (a *App) promptSwitchListeningProfile(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
 	profile := req.Params.Arguments["profile"]
-	text := "Switch FxSound to my \"" + profile + "\" listening profile.\n\n" +
+	text := "Switch Coral to my \"" + profile + "\" listening profile.\n\n" +
 		"Please:\n" +
-		"1. Read fxsound://presets to see the available preset names and fxsound://status (or " +
-		"fxsound://diagnostics) to see the available output devices.\n" +
+		"1. Read coral://presets to see the available preset names and coral://status (or " +
+		"coral://diagnostics) to see the available output devices.\n" +
 		"2. Pick the preset, output device, and view (\"lite\" or \"full\") that best match \"" + profile + "\". " +
 		"Ask me if it's ambiguous which preset or device I mean.\n" +
-		"3. Apply them together in a single fxsound_apply_settings call rather than several separate " +
+		"3. Apply them together in a single coral_apply_settings call rather than several separate " +
 		"tool calls, since they're one logical change.\n" +
-		"4. Confirm the change by reading fxsound://status afterward and reporting what's now selected."
+		"4. Confirm the change by reading coral://status afterward and reporting what's now selected."
 	return &mcp.GetPromptResult{
 		Description: "Switch preset/output/view together to match a named profile",
 		Messages:    []*mcp.PromptMessage{textMessage(text)},
@@ -125,17 +125,17 @@ func (a *App) promptSwitchListeningProfile(_ context.Context, req *mcp.GetPrompt
 
 func (a *App) promptCreatePresetFromCurrent(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
 	name := req.Params.Arguments["name"]
-	text := "Save my current FxSound settings as a new preset named \"" + name + "\".\n\n" +
+	text := "Save my current Coral settings as a new preset named \"" + name + "\".\n\n" +
 		"Please:\n" +
-		"1. Read fxsound://presets and check whether the currently selected preset actually has " +
-		"unsaved changes (the modified flag) -- fxsound_save_preset is a no-op if there's nothing to " +
+		"1. Read coral://presets and check whether the currently selected preset actually has " +
+		"unsaved changes (the modified flag) -- coral_save_preset is a no-op if there's nothing to " +
 		"save, or if power is off.\n" +
 		"2. Note the name will be sanitized (characters < > : \" / \\ | ? * stripped, then truncated to " +
 		"64 characters) and rejected if it collides (case-insensitively) with an existing preset name " +
 		"after sanitizing -- if \"" + name + "\" looks like it would collide or become empty, tell me " +
 		"before proceeding rather than guessing.\n" +
-		"3. Call fxsound_save_preset with the name.\n" +
-		"4. Confirm success by reading fxsound://presets afterward and reporting the final saved name " +
+		"3. Call coral_save_preset with the name.\n" +
+		"4. Confirm success by reading coral://presets afterward and reporting the final saved name " +
 		"and whether it's now selected."
 	return &mcp.GetPromptResult{
 		Description: "Save current settings as a new preset",

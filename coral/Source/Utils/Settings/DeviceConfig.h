@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2026  FxSound LLC
+Coral
+Copyright (C) 2026  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "AudioPassthru.h"
 #include "Settings.h"
 
-namespace FxSound
+namespace Coral
 {
     struct DeviceConfig
     {

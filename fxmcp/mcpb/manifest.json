@@ -1,26 +1,26 @@
 {
   "manifest_version": "0.3",
-  "name": "fxsound",
+  "name": "coral",
   "version": "1.0.0",
-  "display_name": "FxSound",
-  "description": "Control and diagnose FxSound audio enhancement from an AI assistant.",
-  "long_description": "Exposes FxSound's diagnostics (fxdiag) and control surface (FxSound.exe's command-line options) as MCP resources, tools, and prompts, so Claude can inspect the current audio environment and drive presets, equalizer, effects, and output device selection.\n\nRequires FxSound (https://fxsound.com) to already be installed -- this extension connects to your existing installation at its default install location; it does not include or install FxSound itself.\n\nEverything runs locally: this extension makes no network calls of its own and sends no data anywhere. It only launches the already-installed FxSound.exe/fxdiag.exe and reads their local output.",
+  "display_name": "Coral",
+  "description": "Control and diagnose Coral audio enhancement from an AI assistant.",
+  "long_description": "Exposes Coral's diagnostics (fxdiag) and control surface (Coral.exe's command-line options) as MCP resources, tools, and prompts, so Claude can inspect the current audio environment and drive presets, equalizer, effects, and output device selection.\n\nRequires Coral (https://coral.com) to already be installed -- this extension connects to your existing installation at its default install location; it does not include or install Coral itself.\n\nEverything runs locally: this extension makes no network calls of its own and sends no data anywhere. It only launches the already-installed Coral.exe/fxdiag.exe and reads their local output.",
   "author": {
-    "name": "FxSound LLC",
-    "url": "https://fxsound.com"
+    "name": "Coral",
+    "url": "https://coral.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fxsound2/fxsound-app"
+    "url": "https://github.com/coral2/coral-app"
   },
-  "homepage": "https://fxsound.com",
+  "homepage": "https://coral.com",
   "license": "AGPL-3.0",
   "icon": "icon.png",
   "server": {
     "type": "binary",
-    "entry_point": "C:\\Program Files\\FxSound LLC\\FxSound\\fxmcp.exe",
+    "entry_point": "C:\\Program Files\\Coral\\Coral\\fxmcp.exe",
     "mcp_config": {
-      "command": "C:\\Program Files\\FxSound LLC\\FxSound\\fxmcp.exe",
+      "command": "C:\\Program Files\\Coral\\Coral\\fxmcp.exe",
       "args": []
     }
   },

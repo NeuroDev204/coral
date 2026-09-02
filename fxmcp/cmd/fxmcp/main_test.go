@@ -12,29 +12,29 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 )
 
 // TestServerInitializes builds the fxmcp binary and connects a real MCP
 // client to it over stdio, verifying the initialize handshake succeeds.
 // This is the harness later iterations extend to exercise tools/resources
-// end-to-end without needing a real FxSound install for the parts that
+// end-to-end without needing a real Coral install for the parts that
 // don't touch it.
 func TestServerInitializes(t *testing.T) {
 	_, _, cleanup := connectTestSession(t, 10*time.Second)
 	defer cleanup()
 }
 
-// TestDiagnosticsResource reads fxsound://diagnostics against the real,
+// TestDiagnosticsResource reads coral://diagnostics against the real,
 // installed fxdiag.exe on this machine and sanity-checks the shape of the
 // result matches the documented schema.
 func TestDiagnosticsResource(t *testing.T) {
 	session, ctx, cleanup := connectTestSession(t, 15*time.Second)
 	defer cleanup()
 
-	res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "fxsound://diagnostics"})
+	res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "coral://diagnostics"})
 	if err != nil {
-		t.Fatalf("ReadResource(fxsound://diagnostics): %v", err)
+		t.Fatalf("ReadResource(coral://diagnostics): %v", err)
 	}
 	if len(res.Contents) != 1 {
 		t.Fatalf("expected 1 content item, got %d", len(res.Contents))
@@ -68,23 +68,23 @@ func TestDiagnosticsResource(t *testing.T) {
 	t.Logf("got %d devices, %d sessions", len(diag.Devices), len(diag.Sessions))
 }
 
-// TestIsRunningTool calls fxsound_is_running and checks it agrees with a
-// direct process-list check for FxSound.exe.
+// TestIsRunningTool calls coral_is_running and checks it agrees with a
+// direct process-list check for Coral.exe.
 func TestIsRunningTool(t *testing.T) {
 	session, ctx, cleanup := connectTestSession(t, 10*time.Second)
 	defer cleanup()
 
-	want, err := fxsound.IsFxSoundRunning()
+	want, err := coral.IsCoralRunning()
 	if err != nil {
-		t.Fatalf("IsFxSoundRunning: %v", err)
+		t.Fatalf("IsCoralRunning: %v", err)
 	}
 
-	res, err := session.CallTool(ctx, &mcp.CallToolParams{Name: "fxsound_is_running"})
+	res, err := session.CallTool(ctx, &mcp.CallToolParams{Name: "coral_is_running"})
 	if err != nil {
-		t.Fatalf("CallTool(fxsound_is_running): %v", err)
+		t.Fatalf("CallTool(coral_is_running): %v", err)
 	}
 	if res.IsError {
-		t.Fatalf("fxsound_is_running returned an error result: %+v", res.Content)
+		t.Fatalf("coral_is_running returned an error result: %+v", res.Content)
 	}
 
 	var out struct {
@@ -94,22 +94,22 @@ func TestIsRunningTool(t *testing.T) {
 		t.Fatalf("unmarshal result: %v", err)
 	}
 	if out.Running != want {
-		t.Errorf("fxsound_is_running = %v, want %v (from direct process check)", out.Running, want)
+		t.Errorf("coral_is_running = %v, want %v (from direct process check)", out.Running, want)
 	}
-	t.Logf("FxSound.exe running: %v", out.Running)
+	t.Logf("Coral.exe running: %v", out.Running)
 }
 
-// TestGetStatus exercises both fxsound://status and fxsound_get_status
-// against a real running FxSound instance and sanity-checks the schema.
-// It skips if FxSound isn't running, since --status silently no-ops on a
+// TestGetStatus exercises both coral://status and coral_get_status
+// against a real running Coral instance and sanity-checks the schema.
+// It skips if Coral isn't running, since --status silently no-ops on a
 // cold start.
 func TestGetStatus(t *testing.T) {
-	running, err := fxsound.IsFxSoundRunning()
+	running, err := coral.IsCoralRunning()
 	if err != nil {
-		t.Fatalf("IsFxSoundRunning: %v", err)
+		t.Fatalf("IsCoralRunning: %v", err)
 	}
 	if !running {
-		t.Skip("FxSound.exe is not running; --status requires a running instance")
+		t.Skip("Coral.exe is not running; --status requires a running instance")
 	}
 
 	session, ctx, cleanup := connectTestSession(t, 15*time.Second)
@@ -148,9 +148,9 @@ func TestGetStatus(t *testing.T) {
 	}
 
 	t.Run("resource", func(t *testing.T) {
-		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "fxsound://status"})
+		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "coral://status"})
 		if err != nil {
-			t.Fatalf("ReadResource(fxsound://status): %v", err)
+			t.Fatalf("ReadResource(coral://status): %v", err)
 		}
 		if len(res.Contents) != 1 {
 			t.Fatalf("expected 1 content item, got %d", len(res.Contents))
@@ -159,36 +159,36 @@ func TestGetStatus(t *testing.T) {
 	})
 
 	t.Run("tool", func(t *testing.T) {
-		res, err := session.CallTool(ctx, &mcp.CallToolParams{Name: "fxsound_get_status"})
+		res, err := session.CallTool(ctx, &mcp.CallToolParams{Name: "coral_get_status"})
 		if err != nil {
-			t.Fatalf("CallTool(fxsound_get_status): %v", err)
+			t.Fatalf("CallTool(coral_get_status): %v", err)
 		}
 		if res.IsError {
-			t.Fatalf("fxsound_get_status returned an error result: %+v", res.Content)
+			t.Fatalf("coral_get_status returned an error result: %+v", res.Content)
 		}
 		checkStatus(t, textContent(t, res))
 	})
 }
 
 // TestDerivedResources exercises the presets/equalizer/effects resources,
-// which are narrower views over the same --status read as fxsound://status.
-// It skips if FxSound isn't running, for the same reason as TestGetStatus.
+// which are narrower views over the same --status read as coral://status.
+// It skips if Coral isn't running, for the same reason as TestGetStatus.
 func TestDerivedResources(t *testing.T) {
-	running, err := fxsound.IsFxSoundRunning()
+	running, err := coral.IsCoralRunning()
 	if err != nil {
-		t.Fatalf("IsFxSoundRunning: %v", err)
+		t.Fatalf("IsCoralRunning: %v", err)
 	}
 	if !running {
-		t.Skip("FxSound.exe is not running; --status requires a running instance")
+		t.Skip("Coral.exe is not running; --status requires a running instance")
 	}
 
 	session, ctx, cleanup := connectTestSession(t, 15*time.Second)
 	defer cleanup()
 
 	t.Run("presets", func(t *testing.T) {
-		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "fxsound://presets"})
+		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "coral://presets"})
 		if err != nil {
-			t.Fatalf("ReadResource(fxsound://presets): %v", err)
+			t.Fatalf("ReadResource(coral://presets): %v", err)
 		}
 		var presets struct {
 			SelectedPreset string                  `json:"selected_preset"`
@@ -208,9 +208,9 @@ func TestDerivedResources(t *testing.T) {
 	})
 
 	t.Run("equalizer", func(t *testing.T) {
-		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "fxsound://equalizer"})
+		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "coral://equalizer"})
 		if err != nil {
-			t.Fatalf("ReadResource(fxsound://equalizer): %v", err)
+			t.Fatalf("ReadResource(coral://equalizer): %v", err)
 		}
 		var eq struct {
 			NumBands int      `json:"num_bands"`
@@ -226,9 +226,9 @@ func TestDerivedResources(t *testing.T) {
 	})
 
 	t.Run("effects", func(t *testing.T) {
-		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "fxsound://effects"})
+		res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "coral://effects"})
 		if err != nil {
-			t.Fatalf("ReadResource(fxsound://effects): %v", err)
+			t.Fatalf("ReadResource(coral://effects): %v", err)
 		}
 		var effects struct {
 			Clarity      float64 `json:"clarity"`
@@ -245,16 +245,16 @@ func TestDerivedResources(t *testing.T) {
 	})
 }
 
-// TestDocsResource reads fxsound://docs/command-line-options, which is
-// served from an embedded copy and needs no running FxSound instance, and
+// TestDocsResource reads coral://docs/command-line-options, which is
+// served from an embedded copy and needs no running Coral instance, and
 // checks it looks like the real reference doc.
 func TestDocsResource(t *testing.T) {
 	session, ctx, cleanup := connectTestSession(t, 10*time.Second)
 	defer cleanup()
 
-	res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "fxsound://docs/command-line-options"})
+	res, err := session.ReadResource(ctx, &mcp.ReadResourceParams{URI: "coral://docs/command-line-options"})
 	if err != nil {
-		t.Fatalf("ReadResource(fxsound://docs/command-line-options): %v", err)
+		t.Fatalf("ReadResource(coral://docs/command-line-options): %v", err)
 	}
 	if len(res.Contents) != 1 {
 		t.Fatalf("expected 1 content item, got %d", len(res.Contents))
@@ -270,7 +270,7 @@ func TestDocsResource(t *testing.T) {
 	}
 }
 
-// EqBand mirrors fxsound.EqBand's wire shape, for test-local decoding.
+// EqBand mirrors coral.EqBand's wire shape, for test-local decoding.
 type EqBand struct {
 	Index     int     `json:"index"`
 	Frequency float64 `json:"frequency"`

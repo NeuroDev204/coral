@@ -1,0 +1,211 @@
+/*
+Coral
+Copyright (C) 2025  Coral
+
+Contributors:
+	www.theremino.com (2025)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef FXMODEL_H
+#define FXMODEL_H
+
+#include <JuceHeader.h>
+#include "AudioPassthru.h"
+
+class CoralModel final
+{
+public:
+	enum Event { Notification=1, Subscription, PresetSelected, PresetListUpdated, PresetModified, OutputSelected, OutputListUpdated, OutputError, Other };
+	enum PresetType { AppPreset=1, UserPreset=2 };
+
+	struct Preset final
+	{
+		String name;
+		String path;
+		PresetType type;
+		bool modified = false;
+	};
+
+	class Listener
+	{
+	public:
+		Listener() = default;
+		virtual ~Listener() = default;
+
+		virtual void modelChanged(Event) {}
+	};
+
+	static CoralModel& getModel()
+	{
+		static CoralModel model;
+		return model;
+	}
+
+	CoralModel(const CoralModel&) = delete;
+	void operator=(const CoralModel&) = delete;
+
+	void initOutputs(const std::vector<SoundDevice>& output_devices);
+
+	void initPresets(const Array<Preset>& presets);
+	int  addPreset(const Preset& preset);
+	void removePreset(int preset);
+	void selectPreset(int selected_preset, bool notify=true);
+	int getSelectedPreset() const;
+	int getPresetCount() const;
+	int getUserPresetCount() const;
+	Preset getPreset(int preset) const;
+	bool isPresetModified(int preset_index = -1) const;
+	void setPresetModified(int preset_index, bool preset_modified);
+    bool isPresetNameValid(const String& preset_name);
+
+	bool getPowerState()
+	{
+		return power_state_;
+	}
+
+	void setPowerState(bool power_state)
+	{
+		power_state_ = power_state;
+		notifyListeners();
+	}
+
+	const StringArray& getOutputNames() const
+	{
+		return output_names_;
+	}
+
+	std::vector<SoundDevice> getOutputDevices() const
+	{
+		return output_devices_;
+	}
+
+	SoundDevice getSelectedOutput()
+	{
+		return selected_output_device_;
+	}
+
+	int getSelectedOutputIndex()
+	{
+		int selected_output_id = 0;
+		for (auto& output_device : output_devices_)
+		{
+			if (output_device.pwszID == selected_output_device_.pwszID)
+			{
+				return selected_output_id;
+			}
+
+			selected_output_id++;
+		}
+
+		return -1;
+	}
+
+	void setSelectedOutput(const SoundDevice& sound_device, bool notify=true)
+	{
+		selected_output_device_ = sound_device;
+		if (notify)
+		{
+			notifyListeners(Event::OutputSelected);
+		}
+	}
+
+    void notifyOutputError()
+    {
+        notifyListeners(Event::OutputError);
+    }
+
+	bool getHotkeySupport()
+	{
+		return hotkey_support_;
+	}
+
+	void setHotkeySupport(bool hotkey_support)
+	{
+		hotkey_support_ = hotkey_support;
+	}
+
+	bool isMenuClicked()
+	{
+		return menu_clicked_;
+	}
+
+	void setMenuClicked(bool clicked)
+	{
+		menu_clicked_ = clicked;
+	}
+
+	int getLanguage()
+	{
+		return language_;
+	}
+
+	void setLanguage(int language)
+	{
+		language_ = language;
+	}
+
+	bool getDebugLogging()
+	{
+		return debug_logging_;
+	}
+
+	void setDebugLogging(bool debug_logging)
+	{
+		debug_logging_ = debug_logging;
+	}
+	
+	void pushMessage(String message, std::pair<String, String> link = {})
+	{
+		message_ = message;
+		message_link_ = link;
+		notifyListeners(Event::Notification);
+	}
+
+	void popMessage(String& message, std::pair<String, String>& link)
+	{
+		message = message_;
+		link = message_link_;
+		message_.clear();
+		message_link_ = { "", "" };
+	}
+
+	void addListener(Listener* l) { listeners_.add(l); }
+	void removeListener(Listener* l) { listeners_.remove(l); }
+	void notifyListeners(Event model_event = Event::Other);
+
+private:
+	CoralModel();
+
+	bool power_state_;
+	Array<Preset> presets_;
+	StringArray output_names_;
+	int selected_preset_;
+    bool output_disconnected_;
+
+	bool hotkey_support_;
+	bool menu_clicked_;
+	int language_;
+	bool debug_logging_;
+	std::vector<SoundDevice> output_devices_;
+	SoundDevice selected_output_device_;
+
+	String message_;
+	std::pair<String, String> message_link_;
+
+	ListenerList<Listener> listeners_;
+};
+
+#endif

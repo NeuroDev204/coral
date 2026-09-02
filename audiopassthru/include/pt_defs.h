@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 Contributors:
 	www.theremino.com (2025)

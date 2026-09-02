@@ -275,7 +275,7 @@ std::string getDefaultSinkName() {
     return resolveBestHardwareSink("");
 }
 
-static void unloadFxSoundModules()
+static void unloadCoralModules()
 {
 	FILE* pipe = popen("pactl list modules short 2>/dev/null | grep -iE 'fxsound|coralsink' | awk '{print $1}'", "r");
 	if (pipe) {
@@ -321,7 +321,7 @@ AudioPassthruPrivate::~AudioPassthruPrivate()
 
 int AudioPassthruPrivate::init()
 {
-	unloadFxSoundModules();
+	unloadCoralModules();
 
 	hw_sink_name_ = getDefaultSinkName();
 	saved_default_sink_ = hw_sink_name_;
@@ -582,7 +582,7 @@ void AudioPassthruPrivate::restoreDefaultPlaybackDevice()
 		system(cmd.c_str());
 	}
 
-	unloadFxSoundModules();
+	unloadCoralModules();
 }
 
 void AudioPassthruPrivate::onDeviceChange()

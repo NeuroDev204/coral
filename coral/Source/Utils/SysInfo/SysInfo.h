@@ -1,7 +1,7 @@
 #pragma once
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

@@ -6,17 +6,17 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 	"fxmcp/internal/mcpserver/docsdata"
 )
 
 const (
-	uriDiagnostics            = "fxsound://diagnostics"
-	uriStatus                 = "fxsound://status"
-	uriPresets                = "fxsound://presets"
-	uriEqualizer              = "fxsound://equalizer"
-	uriEffects                = "fxsound://effects"
-	uriDocsCommandLineOptions = "fxsound://docs/command-line-options"
+	uriDiagnostics            = "coral://diagnostics"
+	uriStatus                 = "coral://status"
+	uriPresets                = "coral://presets"
+	uriEqualizer              = "coral://equalizer"
+	uriEffects                = "coral://effects"
+	uriDocsCommandLineOptions = "coral://docs/command-line-options"
 )
 
 func (a *App) registerResources(s *mcp.Server) {
@@ -33,42 +33,42 @@ func (a *App) registerResources(s *mcp.Server) {
 	s.AddResource(&mcp.Resource{
 		URI:  uriStatus,
 		Name: "status",
-		Description: "The running FxSound instance's current state: power, presets, selected preset, " +
-			"output devices, selected output, equalizer, and effect levels (0-10 scale). Requires FxSound " +
-			"to be running -- read fxsound://diagnostics or call fxsound_is_running to check first.",
+		Description: "The running Coral instance's current state: power, presets, selected preset, " +
+			"output devices, selected output, equalizer, and effect levels (0-10 scale). Requires Coral " +
+			"to be running -- read coral://diagnostics or call coral_is_running to check first.",
 		MIMEType: "application/json",
 	}, a.readStatus)
 
 	s.AddResource(&mcp.Resource{
 		URI:  uriPresets,
 		Name: "presets",
-		Description: "The running FxSound instance's presets: selected preset name and the built-in and " +
-			"user-defined preset lists, each entry with a modified flag. A narrower view of fxsound://status " +
-			"for lower token cost. Requires FxSound to be running.",
+		Description: "The running Coral instance's presets: selected preset name and the built-in and " +
+			"user-defined preset lists, each entry with a modified flag. A narrower view of coral://status " +
+			"for lower token cost. Requires Coral to be running.",
 		MIMEType: "application/json",
 	}, a.readPresets)
 
 	s.AddResource(&mcp.Resource{
 		URI:  uriEqualizer,
 		Name: "equalizer",
-		Description: "The running FxSound instance's equalizer state: band count, per-band frequency/gain, " +
+		Description: "The running Coral instance's equalizer state: band count, per-band frequency/gain, " +
 			"master gain, volume leveling, filter Q, and balance. A narrower view of " +
-			"fxsound://status. Requires FxSound to be running.",
+			"coral://status. Requires Coral to be running.",
 		MIMEType: "application/json",
 	}, a.readEqualizer)
 
 	s.AddResource(&mcp.Resource{
 		URI:  uriEffects,
 		Name: "effects",
-		Description: "The running FxSound instance's effect levels on a 0-10 scale: clarity, ambience, " +
-			"surround, dynamicboost, bass. A narrower view of fxsound://status. Requires FxSound to be running.",
+		Description: "The running Coral instance's effect levels on a 0-10 scale: clarity, ambience, " +
+			"surround, dynamicboost, bass. A narrower view of coral://status. Requires Coral to be running.",
 		MIMEType: "application/json",
 	}, a.readEffects)
 
 	s.AddResource(&mcp.Resource{
 		URI:  uriDocsCommandLineOptions,
 		Name: "command-line-options",
-		Description: "The authoritative FxSound.exe command-line option reference: value ranges and rounding " +
+		Description: "The authoritative Coral.exe command-line option reference: value ranges and rounding " +
 			"rules, preset-command mutual exclusivity, preset name sanitizing rules, and worked examples. " +
 			"Consult this to resolve edge cases (e.g. why a save_preset or set_effect call had no visible " +
 			"effect) rather than guessing from tool descriptions alone.",
@@ -77,7 +77,7 @@ func (a *App) registerResources(s *mcp.Server) {
 }
 
 func (a *App) readDiagnostics(ctx context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
-	diag, err := fxsound.RunDiagnostics(ctx, a.Paths)
+	diag, err := coral.RunDiagnostics(ctx, a.Paths)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (a *App) readDiagnostics(ctx context.Context, req *mcp.ReadResourceRequest)
 }
 
 func (a *App) readStatus(ctx context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
-	status, err := fxsound.ReadStatus(ctx, a.Paths)
+	status, err := coral.ReadStatus(ctx, a.Paths)
 	if err != nil {
 		return nil, err
 	}
@@ -93,14 +93,14 @@ func (a *App) readStatus(ctx context.Context, req *mcp.ReadResourceRequest) (*mc
 }
 
 func (a *App) readPresets(ctx context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
-	status, err := fxsound.ReadStatus(ctx, a.Paths)
+	status, err := coral.ReadStatus(ctx, a.Paths)
 	if err != nil {
 		return nil, err
 	}
 	payload := struct {
 		SelectedPreset string               `json:"selected_preset"`
-		BuiltIn        []fxsound.PresetInfo `json:"built_in"`
-		UserDefined    []fxsound.PresetInfo `json:"user_defined"`
+		BuiltIn        []coral.PresetInfo `json:"built_in"`
+		UserDefined    []coral.PresetInfo `json:"user_defined"`
 	}{
 		SelectedPreset: status.SelectedPreset,
 		BuiltIn:        status.Presets.BuiltIn,
@@ -110,7 +110,7 @@ func (a *App) readPresets(ctx context.Context, req *mcp.ReadResourceRequest) (*m
 }
 
 func (a *App) readEqualizer(ctx context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
-	status, err := fxsound.ReadStatus(ctx, a.Paths)
+	status, err := coral.ReadStatus(ctx, a.Paths)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (a *App) readEqualizer(ctx context.Context, req *mcp.ReadResourceRequest) (
 }
 
 func (a *App) readEffects(ctx context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
-	status, err := fxsound.ReadStatus(ctx, a.Paths)
+	status, err := coral.ReadStatus(ctx, a.Paths)
 	if err != nil {
 		return nil, err
 	}

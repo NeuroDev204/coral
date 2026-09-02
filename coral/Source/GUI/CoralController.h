@@ -1,0 +1,308 @@
+/*
+Coral
+Copyright (C) 2025  Coral
+
+Contributors:
+	www.theremino.com (2025)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#pragma once
+
+#include <JuceHeader.h>
+#include "CoralModel.h"
+#include "CoralTheme.h"
+#include "CoralAudioControls.h"
+#include "../Source/Utils/Settings/Settings.h"
+#include "../Source/Utils/Settings/DeviceConfig.h"
+#include "AudioPassthru.h"
+#include "DfxDsp.h"
+#if defined(_WIN32)
+#include <wtsapi32.h>
+#endif
+
+using namespace Coral;
+
+class CoralMainWindow;
+class CoralWindow;
+class CoralSystemTrayView;
+
+enum ViewType { Lite = 1, Pro = 2 };
+
+class CoralController : public Timer, public DeletedAtShutdown, private AudioPassthruCallback
+{
+public:
+    static constexpr int NUM_SPECTRUM_BANDS = 10;
+	static constexpr int DEFAULT_NUM_EQ_BANDS = 10;
+	static constexpr float DEFAULT_NORMALIZATION = 0.0f;
+	static constexpr float DEFAULT_VOLUME_LEVELING = 0.0f;
+	static constexpr float DEFAULT_BALANCE = 0.0f;
+	static constexpr float DEFAULT_FILTER_Q = 1.0f;
+	static constexpr float DEFAULT_MASTER_GAIN = 0.0f;
+	static constexpr float MIN_GAIN = -12.0f;
+	static constexpr float MAX_GAIN = 12.0f;
+	static constexpr char HK_CMD_ON_OFF[] = "cmd_on_off";
+	static constexpr char HK_CMD_OPEN_CLOSE[] = "cmd_open_close";
+	static constexpr char HK_CMD_NEXT_PRESET[] = "cmd_next_preset";
+	static constexpr char HK_CMD_PREVIOUS_PRESET[] = "cmd_previous_preset";
+	static constexpr char HK_CMD_NEXT_OUTPUT[] = "cmd_change_output";
+	
+	static CoralController& getInstance()
+	{
+		static CoralController* controller = new CoralController();
+		return *controller;
+	}
+	~CoralController();
+
+	CoralController(const CoralController&) = delete;
+	void operator=(CoralController&) = delete;
+
+    void initConfig(const String& commandline);
+	void applyConfig(const String& commandline);
+	void init(CoralMainWindow* main_window, CoralSystemTrayView* system_tray_view, AudioPassthru* audio_passthru);
+	void initPresets();
+	void printStatus();
+	static File getStatusFile();
+
+	void showView();
+	void switchView();
+	ViewType getCurrentView();
+	void hideMainWindow();
+	void showMainWindow();
+    bool isMainWindowVisible();
+	void setMenuClicked(bool clicked);
+	CoralWindow* getMainWindow();
+	Point<int> getSystemTrayWindowPosition(int width, int height);
+	bool exit();
+
+	void setPowerState(bool power_state);
+    bool setPreset(const String& preset_name, bool notify = true);
+	bool setPreset(int preset_index, bool notify=true);
+	void setOutput(const String output_device_id, bool notify=true);
+	void setOutput(int output, bool notify=true);
+    
+    bool isPlaybackDeviceAvailable();
+	void checkDeviceChanges();
+
+	void autoSaveModifiedPreset();
+	void savePreset(const String& preset_name=L"");
+	void renamePreset(const String& new_name);
+	void deletePreset();
+	void undoPreset();
+	void resetPresets();
+    bool exportPresets(const Array< CoralModel::Preset>& presets);
+    bool importPresets(const Array<File>& preset_files, StringArray& imported_presets, StringArray& skipped_presets);
+
+	float getEffectValue(CoralEffects::EffectType effect);
+	void setEffectValue(CoralEffects::EffectType effect, float value);
+
+	int getNumEqBands();
+	void setNumEqBands(int num_bands);
+	float getVolumeLeveling();
+	void setVolumeLeveling(float gain_db);
+	void setBalance(float gain_db);
+	float getBalance();
+	void setMasterGain(float gain_db);
+	float getMasterGain();
+	void setFilterQ(float q_multiplier);
+	float getFilterQ();
+
+    bool isAudioProcessing();
+	float getEqBandFrequency(int band_num);
+    void setEqBandFrequency(int band_num, float freq);
+    void getEqBandFrequencyRange(int band_num, float* min_freq, float* max_freq);
+	float getEqBandBoostCut(int band_num);
+	void setEqBandBoostCut(int band_num, float boost);
+    void getSpectrumBandValues(Array<float>& band_values);
+
+	void enableHotkeys(bool enable);
+	bool getHotkey(String cmdKey, int& mod, int& vk);
+	bool setHotkey(const String& command, int new_mod, int new_vk);
+	bool isValidHotkey(int mod, int new_vk);
+
+	juce::Array<DeviceConfig> getDeviceConfigs();
+    void saveDeviceConfigs(const juce::Array<DeviceConfig>& device_configs);
+	void removeDeviceConfigs();
+	bool isOutputDeviceConnected(const String& output_device_name);
+	SoundDevice getPreferredOutput();
+	int compareOutputDevicePriority(const String& output_device_name1, const String& output_device_name2, const juce::Array<DeviceConfig>& device_configs);
+	void refreshOutputList();
+	const String& getOutputName();
+    void setOutputName(const String& output_device_name);
+    bool isNewOutputPrioritized();
+    void setNewOutputPrioritized(bool prioritize_new_devices);
+
+	CoralThemeMode getThemeMode();
+	void setThemeMode(CoralThemeMode mode);
+
+	bool isAlwaysOnTop();
+	void setAlwaysOnTop(bool always_on_top);
+
+	bool isLaunchOnStartup();
+	void setLaunchOnStartup(bool launch_on_startup);
+
+    bool isHelpTooltipsHidden();
+    void setHelpTooltipsHidden(bool status);
+
+	bool isNotificationsHidden();
+	void setNotificationsHidden(bool status);
+
+    String getLanguage() const;
+    void setLanguage(String language_code);
+    String getLanguageName(String language_code) const;
+	int getMaxUserPresets() const;
+
+	bool getAutoUpdates();
+	void setAutoUpdates(bool enable);
+	void checkUpdates();
+
+	void saveWindowPosition(int x, int y);
+	void getWindowPosition(int& x, int& y);
+
+	void logMessage(const String& message)
+	{
+		file_logger_->logMessage(message);
+	}
+
+	Coral::Settings& getSettings() { return settings_; }
+
+private:
+#if defined(_WIN32)
+	class MessageWindow
+	{
+	public:
+		MessageWindow(const WCHAR* const wnd_name, WNDPROC wnd_proc)
+		{
+			String class_name("CORAL_");
+			class_name << String::toHexString(Time::getHighResolutionTicks());
+
+			HMODULE h_module = (HMODULE)Process::getCurrentModuleInstanceHandle();
+
+			WNDCLASSEXW wc = { 0 };
+			wc.cbSize = sizeof(wc);
+			wc.lpfnWndProc = wnd_proc;
+			wc.hInstance = h_module;
+			wc.lpszClassName = class_name.toWideCharPointer();
+
+			atom_ = ::RegisterClassExW(&wc);
+			jassert(atom_ != 0);
+
+			hwnd_ = ::CreateWindowW(getClassNameFromAtom(), wnd_name,
+				0, 0, 0, 0, 0, 0, 0, h_module, 0);
+			jassert(hwnd_ != 0);
+		}
+
+		~MessageWindow()
+		{
+			DestroyWindow(hwnd_);
+			UnregisterClassW(getClassNameFromAtom(), 0);
+		}
+
+		inline HWND getHandle() const noexcept { return hwnd_; }
+
+	private:
+		ATOM atom_;
+		HWND hwnd_;
+
+		LPCWSTR getClassNameFromAtom() noexcept { return (LPCWSTR)(pointer_sized_uint)atom_; }
+	};
+#endif
+
+	static constexpr uint32_t CMD_ON_OFF = 1001;
+	static constexpr uint32_t CMD_OPEN_CLOSE = 1002;
+	static constexpr uint32_t CMD_NEXT_PRESET = 1003;
+	static constexpr uint32_t CMD_PREVIOUS_PRESET = 1004;
+	static constexpr uint32_t CMD_NEXT_OUTPUT = 1005;
+
+	CoralController();
+
+#if defined(_WIN32)
+	static LRESULT CALLBACK eventCallback(HWND hwnd, const UINT message, const WPARAM w_param, const LPARAM l_param);
+#endif
+	void timerCallback() override;
+	void onSoundDeviceChange(bool processing) override;
+	void onSystemSuspend();
+	void onSystemResume();
+	
+    void initOutputs(std::vector<SoundDevice>& sound_devices);
+	void updateOutputs(std::vector<SoundDevice>& sound_devices);
+    void selectProcessingOutput(std::vector<SoundDevice>& sound_devices);
+    void syncOutputWithSystemDefault(std::vector<SoundDevice>& sound_devices);
+
+	void sortByDeviceConfigPriority(std::vector<SoundDevice>& devices);
+
+	void powerOn(bool on);
+
+	String getAutoSavePath() const;
+    String getAutoSavePresetPath(const String& preset_name) const;
+	void autoSavePreset(int preset_index);
+	void deleteAutoSavedPreset(const String& preset_name);
+
+	void registerHotkeys();
+	void unregisterHotkeys();
+
+    String FormatString(const String& format, const String& arg);
+
+#if defined(_WIN32)
+	typedef HPOWERNOTIFY(WINAPI* RegisterSuspendResumeNotificationFunc)(HANDLE, DWORD);
+	typedef BOOL(WINAPI* UnregisterSuspendResumeNotificationFunc)(HPOWERNOTIFY);
+
+	MessageWindow message_window_;
+	HPOWERNOTIFY powerNotify_;
+	UnregisterSuspendResumeNotificationFunc unregister_suspend_resume_notification_;
+#endif
+	bool hotkeys_registered_;
+
+	CoralMainWindow* main_window_;
+	CoralSystemTrayView* system_tray_view_;
+	AudioPassthru* audio_passthru_;
+	DfxDsp dfx_dsp_;
+	Coral::Settings settings_;
+	uint32_t device_count_;
+	std::unique_ptr<FileLogger> file_logger_;
+	ViewType view_;
+    String language_;
+	bool dfx_enabled_;
+	bool authenticated_;
+	bool output_changed_;
+    bool playback_device_available_;
+	String output_device_name_;
+	std::vector<SoundDevice> active_output_devices_;
+	bool always_on_top_;
+    bool hide_help_tooltips_;
+	bool hide_notifications_;
+	bool auto_updates_;
+
+	unsigned long audio_process_time_;
+	int audio_process_on_counter_;
+	int audio_process_off_counter_;
+	bool audio_process_on_;
+	std::time_t audio_process_start_time_;
+
+	bool preset_dirty_;
+	int auto_save_counter_;
+	bool remove_device_configs_pending_;
+
+	bool minimize_tip_;
+	bool survey_tip_;
+	int max_user_presets_;
+
+#if defined(_WIN32)
+	DWORD session_id_;
+#endif
+
+	CriticalSection lock_;
+	CriticalSection save_lock_;
+};

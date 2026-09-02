@@ -32,8 +32,8 @@ JUCE_ARCH_LABEL := $(shell uname -m)
 ifndef JUCE_PATH
   ifneq ($(wildcard $(CURDIR)/../../../JUCE/modules),)
     JUCE_PATH := $(CURDIR)/../../../JUCE
-  else ifneq ($(wildcard /home/neuro/Documents/Tools/fxsound-linux/linux/JUCE/modules),)
-    JUCE_PATH := /home/neuro/Documents/Tools/fxsound-linux/linux/JUCE
+  else ifneq ($(wildcard $(CURDIR)/../../../../JUCE/modules),)
+    JUCE_PATH := $(CURDIR)/../../../../JUCE
   else
     JUCE_PATH := $(HOME)/JUCE
   endif
@@ -82,32 +82,32 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS_APP := \
-  $(JUCE_OBJDIR)/FxAudioControls_7fbaff67.o \
-  $(JUCE_OBJDIR)/FxOutputPreference_327991ab.o \
-  $(JUCE_OBJDIR)/FxAudioSlider_b4a53312.o \
-  $(JUCE_OBJDIR)/FxBalanceSlider_c8fdad18.o \
-  $(JUCE_OBJDIR)/FxPresetNameEditor_60d86f86.o \
-  $(JUCE_OBJDIR)/FxHotkeyLabel_1645985d.o \
-  $(JUCE_OBJDIR)/FxLanguage_903b2c47.o \
-  $(JUCE_OBJDIR)/FxVisualizer_ce46384d.o \
-  $(JUCE_OBJDIR)/FxEqualizer_be959d8d.o \
-  $(JUCE_OBJDIR)/FxNotification_f4cc735a.o \
-  $(JUCE_OBJDIR)/FxHyperlink_ed474d21.o \
-  $(JUCE_OBJDIR)/FxComboBox_cd68cfcc.o \
-  $(JUCE_OBJDIR)/FxPowerButton_d45ecf52.o \
-  $(JUCE_OBJDIR)/FxSystemTrayView_87f78ab9.o \
-  $(JUCE_OBJDIR)/FxView_e73b9214.o \
-  $(JUCE_OBJDIR)/FxLiteView_d911ebe2.o \
-  $(JUCE_OBJDIR)/FxProView_81ea1b2d.o \
-  $(JUCE_OBJDIR)/FxPresetImportDialog_cfe86c3b.o \
-  $(JUCE_OBJDIR)/FxPresetExportDialog_260e858a.o \
-  $(JUCE_OBJDIR)/FxSettingsDialog_ee48133a.o \
-  $(JUCE_OBJDIR)/FxTheme_61aaf404.o \
-  $(JUCE_OBJDIR)/FxMessage_cc4f45c2.o \
-  $(JUCE_OBJDIR)/FxMainWindow_4f7890f8.o \
-  $(JUCE_OBJDIR)/FxWindow_24a3af5f.o \
-  $(JUCE_OBJDIR)/FxController_2f3f940b.o \
-  $(JUCE_OBJDIR)/FxModel_e8c9c964.o \
+  $(JUCE_OBJDIR)/CoralAudioControls_7fbaff67.o \
+  $(JUCE_OBJDIR)/CoralOutputPreference_327991ab.o \
+  $(JUCE_OBJDIR)/CoralAudioSlider_b4a53312.o \
+  $(JUCE_OBJDIR)/CoralBalanceSlider_c8fdad18.o \
+  $(JUCE_OBJDIR)/CoralPresetNameEditor_60d86f86.o \
+  $(JUCE_OBJDIR)/CoralHotkeyLabel_1645985d.o \
+  $(JUCE_OBJDIR)/CoralLanguage_903b2c47.o \
+  $(JUCE_OBJDIR)/CoralVisualizer_ce46384d.o \
+  $(JUCE_OBJDIR)/CoralEqualizer_be959d8d.o \
+  $(JUCE_OBJDIR)/CoralNotification_f4cc735a.o \
+  $(JUCE_OBJDIR)/CoralHyperlink_ed474d21.o \
+  $(JUCE_OBJDIR)/CoralComboBox_cd68cfcc.o \
+  $(JUCE_OBJDIR)/CoralPowerButton_d45ecf52.o \
+  $(JUCE_OBJDIR)/CoralSystemTrayView_87f78ab9.o \
+  $(JUCE_OBJDIR)/CoralView_e73b9214.o \
+  $(JUCE_OBJDIR)/CoralLiteView_d911ebe2.o \
+  $(JUCE_OBJDIR)/CoralProView_81ea1b2d.o \
+  $(JUCE_OBJDIR)/CoralPresetImportDialog_cfe86c3b.o \
+  $(JUCE_OBJDIR)/CoralPresetExportDialog_260e858a.o \
+  $(JUCE_OBJDIR)/CoralSettingsDialog_ee48133a.o \
+  $(JUCE_OBJDIR)/CoralTheme_61aaf404.o \
+  $(JUCE_OBJDIR)/CoralMessage_cc4f45c2.o \
+  $(JUCE_OBJDIR)/CoralMainWindow_4f7890f8.o \
+  $(JUCE_OBJDIR)/CoralWindow_24a3af5f.o \
+  $(JUCE_OBJDIR)/CoralController_2f3f940b.o \
+  $(JUCE_OBJDIR)/CoralModel_e8c9c964.o \
   $(JUCE_OBJDIR)/SysInfo_5dbfe56a.o \
   $(JUCE_OBJDIR)/DeviceConfig_aa995827.o \
   $(JUCE_OBJDIR)/Settings_6396de92.o \
@@ -135,134 +135,134 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) : $(OBJECTS_APP) $(RESOURCES)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
 	$(V_AT)$(CXX) -o $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) $(OBJECTS_APP) $(JUCE_LDFLAGS) $(JUCE_LDFLAGS_APP) $(RESOURCES) $(TARGET_ARCH)
 
-$(JUCE_OBJDIR)/FxAudioControls_7fbaff67.o: ../../Source/GUI/FxAudioControls.cpp
+$(JUCE_OBJDIR)/CoralAudioControls_7fbaff67.o: ../../Source/GUI/CoralAudioControls.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxAudioControls.cpp"
+	@echo "Compiling CoralAudioControls.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxOutputPreference_327991ab.o: ../../Source/GUI/FxOutputPreference.cpp
+$(JUCE_OBJDIR)/CoralOutputPreference_327991ab.o: ../../Source/GUI/CoralOutputPreference.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxOutputPreference.cpp"
+	@echo "Compiling CoralOutputPreference.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxAudioSlider_b4a53312.o: ../../Source/GUI/FxAudioSlider.cpp
+$(JUCE_OBJDIR)/CoralAudioSlider_b4a53312.o: ../../Source/GUI/CoralAudioSlider.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxAudioSlider.cpp"
+	@echo "Compiling CoralAudioSlider.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxBalanceSlider_c8fdad18.o: ../../Source/GUI/FxBalanceSlider.cpp
+$(JUCE_OBJDIR)/CoralBalanceSlider_c8fdad18.o: ../../Source/GUI/CoralBalanceSlider.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxBalanceSlider.cpp"
+	@echo "Compiling CoralBalanceSlider.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxPresetNameEditor_60d86f86.o: ../../Source/GUI/FxPresetNameEditor.cpp
+$(JUCE_OBJDIR)/CoralPresetNameEditor_60d86f86.o: ../../Source/GUI/CoralPresetNameEditor.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxPresetNameEditor.cpp"
+	@echo "Compiling CoralPresetNameEditor.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxHotkeyLabel_1645985d.o: ../../Source/GUI/FxHotkeyLabel.cpp
+$(JUCE_OBJDIR)/CoralHotkeyLabel_1645985d.o: ../../Source/GUI/CoralHotkeyLabel.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxHotkeyLabel.cpp"
+	@echo "Compiling CoralHotkeyLabel.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxLanguage_903b2c47.o: ../../Source/GUI/FxLanguage.cpp
+$(JUCE_OBJDIR)/CoralLanguage_903b2c47.o: ../../Source/GUI/CoralLanguage.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxLanguage.cpp"
+	@echo "Compiling CoralLanguage.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxVisualizer_ce46384d.o: ../../Source/GUI/FxVisualizer.cpp
+$(JUCE_OBJDIR)/CoralVisualizer_ce46384d.o: ../../Source/GUI/CoralVisualizer.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxVisualizer.cpp"
+	@echo "Compiling CoralVisualizer.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxEqualizer_be959d8d.o: ../../Source/GUI/FxEqualizer.cpp
+$(JUCE_OBJDIR)/CoralEqualizer_be959d8d.o: ../../Source/GUI/CoralEqualizer.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxEqualizer.cpp"
+	@echo "Compiling CoralEqualizer.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxNotification_f4cc735a.o: ../../Source/GUI/FxNotification.cpp
+$(JUCE_OBJDIR)/CoralNotification_f4cc735a.o: ../../Source/GUI/CoralNotification.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxNotification.cpp"
+	@echo "Compiling CoralNotification.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxHyperlink_ed474d21.o: ../../Source/GUI/FxHyperlink.cpp
+$(JUCE_OBJDIR)/CoralHyperlink_ed474d21.o: ../../Source/GUI/CoralHyperlink.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxHyperlink.cpp"
+	@echo "Compiling CoralHyperlink.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxComboBox_cd68cfcc.o: ../../Source/GUI/FxComboBox.cpp
+$(JUCE_OBJDIR)/CoralComboBox_cd68cfcc.o: ../../Source/GUI/CoralComboBox.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxComboBox.cpp"
+	@echo "Compiling CoralComboBox.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxPowerButton_d45ecf52.o: ../../Source/GUI/FxPowerButton.cpp
+$(JUCE_OBJDIR)/CoralPowerButton_d45ecf52.o: ../../Source/GUI/CoralPowerButton.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxPowerButton.cpp"
+	@echo "Compiling CoralPowerButton.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxSystemTrayView_87f78ab9.o: ../../Source/GUI/FxSystemTrayView.cpp
+$(JUCE_OBJDIR)/CoralSystemTrayView_87f78ab9.o: ../../Source/GUI/CoralSystemTrayView.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxSystemTrayView.cpp"
+	@echo "Compiling CoralSystemTrayView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxView_e73b9214.o: ../../Source/GUI/FxView.cpp
+$(JUCE_OBJDIR)/CoralView_e73b9214.o: ../../Source/GUI/CoralView.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxView.cpp"
+	@echo "Compiling CoralView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxLiteView_d911ebe2.o: ../../Source/GUI/FxLiteView.cpp
+$(JUCE_OBJDIR)/CoralLiteView_d911ebe2.o: ../../Source/GUI/CoralLiteView.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxLiteView.cpp"
+	@echo "Compiling CoralLiteView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxProView_81ea1b2d.o: ../../Source/GUI/FxProView.cpp
+$(JUCE_OBJDIR)/CoralProView_81ea1b2d.o: ../../Source/GUI/CoralProView.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxProView.cpp"
+	@echo "Compiling CoralProView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxPresetImportDialog_cfe86c3b.o: ../../Source/GUI/FxPresetImportDialog.cpp
+$(JUCE_OBJDIR)/CoralPresetImportDialog_cfe86c3b.o: ../../Source/GUI/CoralPresetImportDialog.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxPresetImportDialog.cpp"
+	@echo "Compiling CoralPresetImportDialog.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxPresetExportDialog_260e858a.o: ../../Source/GUI/FxPresetExportDialog.cpp
+$(JUCE_OBJDIR)/CoralPresetExportDialog_260e858a.o: ../../Source/GUI/CoralPresetExportDialog.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxPresetExportDialog.cpp"
+	@echo "Compiling CoralPresetExportDialog.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxSettingsDialog_ee48133a.o: ../../Source/GUI/FxSettingsDialog.cpp
+$(JUCE_OBJDIR)/CoralSettingsDialog_ee48133a.o: ../../Source/GUI/CoralSettingsDialog.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxSettingsDialog.cpp"
+	@echo "Compiling CoralSettingsDialog.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxTheme_61aaf404.o: ../../Source/GUI/FxTheme.cpp
+$(JUCE_OBJDIR)/CoralTheme_61aaf404.o: ../../Source/GUI/CoralTheme.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxTheme.cpp"
+	@echo "Compiling CoralTheme.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxMessage_cc4f45c2.o: ../../Source/GUI/FxMessage.cpp
+$(JUCE_OBJDIR)/CoralMessage_cc4f45c2.o: ../../Source/GUI/CoralMessage.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxMessage.cpp"
+	@echo "Compiling CoralMessage.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxMainWindow_4f7890f8.o: ../../Source/GUI/FxMainWindow.cpp
+$(JUCE_OBJDIR)/CoralMainWindow_4f7890f8.o: ../../Source/GUI/CoralMainWindow.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxMainWindow.cpp"
+	@echo "Compiling CoralMainWindow.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxWindow_24a3af5f.o: ../../Source/GUI/FxWindow.cpp
+$(JUCE_OBJDIR)/CoralWindow_24a3af5f.o: ../../Source/GUI/CoralWindow.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxWindow.cpp"
+	@echo "Compiling CoralWindow.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxController_2f3f940b.o: ../../Source/GUI/FxController.cpp
+$(JUCE_OBJDIR)/CoralController_2f3f940b.o: ../../Source/GUI/CoralController.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxController.cpp"
+	@echo "Compiling CoralController.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/FxModel_e8c9c964.o: ../../Source/GUI/FxModel.cpp
+$(JUCE_OBJDIR)/CoralModel_e8c9c964.o: ../../Source/GUI/CoralModel.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling FxModel.cpp"
+	@echo "Compiling CoralModel.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/SysInfo_5dbfe56a.o: ../../Source/Utils/SysInfo/SysInfo.cpp

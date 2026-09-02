@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 Contributors:
 	www.theremino.com (2025)
@@ -232,7 +232,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DFXP_CONTROL_WINDOW_APP_EXE_WIDE      L"dfxgApp.exe"
 #define DFXP_LAST_BUFFER_TIMESTAMP_FILENAME	 L"dfxBufferTimestamp.txt"
 #define DFXP_EQ_SKIN_DIR_WIDE						 L"EqSkin"  
-#define DFXP_FXSOUND_SKIN_DIR_WIDE				 L"FxsoundSkin"  
+#define DFXP_CORAL_SKIN_DIR_WIDE				 L"CoralSkin"  
 
 /*********************************
  * Third Party Defines           *

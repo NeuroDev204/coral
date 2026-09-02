@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 Contributors:
 	www.theremino.com (2025)
@@ -19,12 +19,12 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef FXSOUND_SETTINGS_H
-#define FXSOUND_SETTINGS_H
+#ifndef CORAL_SETTINGS_H
+#define CORAL_SETTINGS_H
 
 #include <JuceHeader.h>
 
-namespace FxSound
+namespace Coral
 {
 	constexpr wchar_t APPLICATION_NAME[] = L"Coral";
 	constexpr wchar_t SETTINGS_FOLDER[] = L"Coral";

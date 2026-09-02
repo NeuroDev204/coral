@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -80,7 +80,7 @@ private:
 	DfxDsp *p_dfx_dsp_;
 	static AudioPassthruCallback *s_callback_;
 	std::string hw_sink_name_; /* Hardware sink name for DSP output */
-	std::string saved_default_sink_; /* Original default sink before FxSound took over */
+	std::string saved_default_sink_; /* Original default sink before Coral took over */
 	std::string targeted_playback_device_guid_; /* User-selected target sink */
 	std::string last_device_signature_; /* Fingerprint of available analog sinks for hotplug */
 };

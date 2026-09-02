@@ -1,23 +1,23 @@
-// Package mcpserver adapts FxSound's process/file-based interfaces
-// (internal/fxsound) into MCP resources, tools, and prompts.
+// Package mcpserver adapts Coral's process/file-based interfaces
+// (internal/coral) into MCP resources, tools, and prompts.
 package mcpserver
 
 import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 )
 
-// App wires FxSound's process/file-based interfaces into MCP
+// App wires Coral's process/file-based interfaces into MCP
 // resources/tools/prompts registered on an *mcp.Server. It holds no
 // per-connection state, so a single App can back any number of server
 // sessions.
 type App struct {
-	Paths *fxsound.Paths
+	Paths *coral.Paths
 }
 
 // New creates an App bound to the given resolved executable paths.
-func New(paths *fxsound.Paths) *App {
+func New(paths *coral.Paths) *App {
 	return &App{Paths: paths}
 }
 

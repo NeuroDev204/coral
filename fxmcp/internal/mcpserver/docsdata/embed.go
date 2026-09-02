@@ -1,9 +1,9 @@
 // Package docsdata embeds a mirrored copy of docs authored elsewhere in the
-// fxsound-app repo, so the fxmcp binary ships self-contained.
+// coral-app repo, so the fxmcp binary ships self-contained.
 //
 // go:embed cannot reach outside this module tree, so command_line_options.md
 // here is a copy of ../../../../docs/COMMAND_LINE_OPTIONS.md (the canonical
-// source, maintained alongside FxController.cpp). After editing the
+// source, maintained alongside CoralController.cpp). After editing the
 // canonical file, run `go generate ./...` from the fxmcp module root to
 // refresh this copy.
 package docsdata

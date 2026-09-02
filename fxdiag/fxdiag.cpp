@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2026  FxSound LLC
+Coral
+Copyright (C) 2026  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -129,7 +129,7 @@ std::wstring SaveJsonReport(const std::wstring& json)
 		return L"";
 	}
 
-	std::wstring folderPath = std::wstring(appDataPath) + L"\\FxSound";
+	std::wstring folderPath = std::wstring(appDataPath) + L"\\Coral";
 	if (!CreateDirectoryW(folderPath.c_str(), NULL) && GetLastError() != ERROR_ALREADY_EXISTS)
 	{
 		return L"";

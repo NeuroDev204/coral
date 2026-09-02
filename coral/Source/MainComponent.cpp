@@ -15,11 +15,11 @@ MainComponent::MainComponent(const String& name) : Component(name)
 	fx_view_ = MinView;
 	resize_view_ = true;
 
-	min_view_ = std::make_unique<FxMinView>(this);
+	min_view_ = std::make_unique<CoralMinView>(this);
 	addAndMakeVisible(min_view_.get());
 	min_view_->setResizeViewListener(this);
 
-	expanded_view_ = std::make_unique<FxExpandedView>(this);
+	expanded_view_ = std::make_unique<CoralExpandedView>(this);
 	addChildComponent(expanded_view_.get());
 	expanded_view_->setResizeViewListener(this);
 

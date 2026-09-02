@@ -4,18 +4,18 @@
 
 .DESCRIPTION
     This is a "thin connector" bundle: fxmcp.exe itself is installed by the
-    main FxSound installer at a fixed location
-    (%ProgramFiles%\FxSound LLC\FxSound\fxmcp.exe), so this .mcpb does NOT
+    main Coral installer at a fixed location
+    (%ProgramFiles%\Coral\Coral\fxmcp.exe), so this .mcpb does NOT
     carry its own copy of the binary -- it just tells Claude Desktop how to
     launch the one already installed there. This also sidesteps needing a
-    separate .mcpb per architecture (x64/x86/arm64): the FxSound installer
+    separate .mcpb per architecture (x64/x86/arm64): the Coral installer
     already resolved that at install time and always places the binary at
     this same path, so one manifest covers all three.
 
     Caveat: because the path is a fixed literal (MCPB has no built-in
     variable for Program Files -- see mcpb/manifest.json), this only works
-    for a default-location FxSound install. A custom install directory
-    chosen during FxSound setup isn't accounted for here.
+    for a default-location Coral install. A custom install directory
+    chosen during Coral setup isn't accounted for here.
 
     Requires the mcpb CLI: npm install -g @anthropic-ai/mcpb
 
@@ -23,7 +23,7 @@
     Where to write the packed .mcpb file. Defaults to dist\fxmcp.mcpb.
 
 .PARAMETER SkipBinCopy
-    Skip copying the built .mcpb to fxsound-app\bin\ (see below).
+    Skip copying the built .mcpb to coral-app\bin\ (see below).
 
 .EXAMPLE
     .\build-mcpb.ps1
@@ -36,7 +36,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $mcpbDir = Join-Path $PSScriptRoot "mcpb"
-$repoRoot = Split-Path $PSScriptRoot -Parent  # fxsound-app\
+$repoRoot = Split-Path $PSScriptRoot -Parent  # coral-app\
 
 function Resolve-MCPBExe {
     $cmd = Get-Command mcpb -ErrorAction SilentlyContinue
@@ -49,7 +49,7 @@ Write-Host "Using mcpb: $mcpbExe ($(& $mcpbExe --version))"
 
 # Refresh the bundled icon/license from their canonical source locations
 # each build, rather than letting a checked-in copy drift out of sync.
-$iconSrc = Join-Path $repoRoot "fxsound\Images\fxsound_large.png"
+$iconSrc = Join-Path $repoRoot "coral\Images\coral_app_large.png"
 $licenseSrc = Join-Path $repoRoot "LICENSE"
 
 if (-not (Test-Path $iconSrc)) { throw "icon source not found: $iconSrc" }

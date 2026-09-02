@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -62,11 +62,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SND_DEVICES_MAX_NUM_DEVICES 64
 
 /* Device "friendly name" string, used to identify DFX device. */
-#define SND_DEVICES_DFX_DEVICE_STRING L"FxSound Audio Enhancer"
+#define SND_DEVICES_DFX_DEVICE_STRING L"Coral Audio Enhancer"
 #define SND_DEVICES_DFX_PREVIOUS_DEVICE_STRING L"DFX Audio Enhancer"
 
 /* Device "description name" (default is "Speakers") */
-#define SND_DEVICES_DFX_DEVICE_DESCRIPTION_STRING L"FxSound Speakers"
+#define SND_DEVICES_DFX_DEVICE_DESCRIPTION_STRING L"Coral Speakers"
 
 
 /* Initialization and control type specifiers */

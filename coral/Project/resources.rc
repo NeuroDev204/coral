@@ -15,11 +15,11 @@ BEGIN
   BEGIN
     BLOCK "040904E4"
     BEGIN
-      VALUE "CompanyName",  "FxSound LLC\0"
-      VALUE "LegalCopyright",  "Copyright (C) 2026 FxSound LLC\0"
-      VALUE "FileDescription",  "FxSound\0"
+      VALUE "CompanyName",  "Coral\0"
+      VALUE "LegalCopyright",  "Copyright (C) 2026 Coral\0"
+      VALUE "FileDescription",  "Coral\0"
       VALUE "FileVersion",  "1.2.12.0\0"
-      VALUE "ProductName",  "FxSound\0"
+      VALUE "ProductName",  "Coral\0"
       VALUE "ProductVersion",  "1.2.12.0\0"
     END
   END

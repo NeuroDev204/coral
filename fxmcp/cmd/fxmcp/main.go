@@ -1,5 +1,5 @@
-// Command fxmcp is an MCP server that exposes FxSound's diagnostics
-// (fxdiag.exe) and control surface (FxSound.exe command-line options) as
+// Command fxmcp is an MCP server that exposes Coral's diagnostics
+// (fxdiag.exe) and control surface (Coral.exe command-line options) as
 // MCP resources, tools, and prompts.
 //
 // resource_windows_{386,amd64,arm64}.syso in this directory embed the
@@ -19,7 +19,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 	"fxmcp/internal/mcpserver"
 )
 
@@ -28,14 +28,14 @@ func main() {
 	// diagnostic logging must go to stderr.
 	logger := log.New(os.Stderr, "fxmcp: ", log.LstdFlags)
 
-	paths, err := fxsound.Locate()
+	paths, err := coral.Locate()
 	if err != nil {
-		logger.Printf("warning: %v (tools/resources requiring FxSound will fail until this is resolved)", err)
+		logger.Printf("warning: %v (tools/resources requiring Coral will fail until this is resolved)", err)
 	} else {
-		logger.Printf("resolved FxSound.exe=%s fxdiag.exe=%s", paths.FxSoundExe, paths.FxDiagExe)
+		logger.Printf("resolved Coral.exe=%s fxdiag.exe=%s", paths.CoralExe, paths.CoralDiagExe)
 	}
 
-	server := mcp.NewServer(&mcp.Implementation{Name: "fxsound", Version: "0.1.0"}, nil)
+	server := mcp.NewServer(&mcp.Implementation{Name: "coral", Version: "0.1.0"}, nil)
 	mcpserver.New(paths).Register(server)
 
 	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {

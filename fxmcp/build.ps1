@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
     Builds fxmcp.exe for x64, x86, and arm64, copying each into
-    fxsound-app\bin\<arch>\ alongside FxSound.exe/fxdiag.exe's own build
+    coral-app\bin\<arch>\ alongside Coral.exe/fxdiag.exe's own build
     output (matching fxdiag.vcxproj's post-build "copy $(TargetPath)
     ..\bin\$(PlatformTarget)\" convention).
 

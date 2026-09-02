@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -20,10 +20,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #if defined(_WIN32)
 #include <comdef.h>
 #endif
-#include "GUI/FxSystemTrayView.h"
-#include "GUI/FxController.h"
-#include "GUI/FxTheme.h"
-#include "GUI/FxMainWindow.h"
+#include "GUI/CoralSystemTrayView.h"
+#include "GUI/CoralController.h"
+#include "GUI/CoralTheme.h"
+#include "GUI/CoralMainWindow.h"
 #include "AudioPassthru.h"
 #if defined(_WIN32)
 #include <dbghelp.h>
@@ -70,17 +70,17 @@ public:
 
             setWorkingDirectory();
 
-            FxController::getInstance().initConfig(commandline);
+            CoralController::getInstance().initConfig(commandline);
 
             audio_passthru_ = std::make_unique<AudioPassthru>();
-            main_window_ = std::make_unique<FxMainWindow>();
-            system_tray_view_.reset(new FxSystemTrayView());
+            main_window_ = std::make_unique<CoralMainWindow>();
+            system_tray_view_.reset(new CoralSystemTrayView());
 
-            FxController::getInstance().init(main_window_.get(), system_tray_view_.get(), audio_passthru_.get());
+            CoralController::getInstance().init(main_window_.get(), system_tray_view_.get(), audio_passthru_.get());
         }
         catch (const std::exception& e)
         {
-            auto& controller = FxController::getInstance();
+            auto& controller = CoralController::getInstance();
             controller.logMessage(String::formatted("std::exception: %s\n", e.what()));
 
 #if defined(_WIN32)
@@ -91,7 +91,7 @@ public:
         }
         catch (...)
         {
-            auto& controller = FxController::getInstance();
+            auto& controller = CoralController::getInstance();
             controller.logMessage("Unknown exception\n");
 
 #if defined(_WIN32)
@@ -106,8 +106,8 @@ public:
     {
         if (main_window_.get() != nullptr)
         {
-            FxController::getInstance().autoSaveModifiedPreset();
-            FxController::getInstance().stopTimer();
+            CoralController::getInstance().autoSaveModifiedPreset();
+            CoralController::getInstance().stopTimer();
 
             audio_passthru_.reset();
 
@@ -149,17 +149,17 @@ public:
 
     void anotherInstanceStarted (const String& commandline) override
     {
-        FxController::getInstance().applyConfig(commandline);
+        CoralController::getInstance().applyConfig(commandline);
     }
 
 private:
-    FxTheme theme_;
+    CoralTheme theme_;
     static constexpr int MAX_FRAMES = 64;
 
 #if defined(_WIN32)
     static LONG WINAPI unhandledExceptionFilter(EXCEPTION_POINTERS* exception_info)
     {
-        auto& controller = FxController::getInstance();
+        auto& controller = CoralController::getInstance();
      
         auto logPath = File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("Coral");
         if (!logPath.exists()) {
@@ -204,7 +204,7 @@ private:
 
     static void CaptureAndLogCallStack(CONTEXT* context = nullptr)
     {
-        auto& controller = FxController::getInstance();
+        auto& controller = CoralController::getInstance();
         String stacktrace_info;
 
         HANDLE process = GetCurrentProcess();
@@ -340,9 +340,9 @@ private:
 #endif
     };
 
-    std::unique_ptr<FxMainWindow> main_window_;
+    std::unique_ptr<CoralMainWindow> main_window_;
     
-    std::unique_ptr<FxSystemTrayView> system_tray_view_;
+    std::unique_ptr<CoralSystemTrayView> system_tray_view_;
     std::unique_ptr<AudioPassthru> audio_passthru_;
 };
 

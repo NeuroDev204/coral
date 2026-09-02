@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 Contributors:
 	www.theremino.com (2025)
@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <wincrypt.h>
 #endif
 
-FxSound::Settings::Settings()
+Coral::Settings::Settings()
 {
 	PropertiesFile::Options options;
 	const String properties_xml = R"(
@@ -44,7 +44,7 @@ FxSound::Settings::Settings()
 #if !defined(_WIN32)
 	auto migrateFolder = [](const File& parent)
 	{
-		File old_dir = parent.getChildFile("FxSound");
+		File old_dir = parent.getChildFile("Coral");
 		File new_dir = parent.getChildFile("Coral");
 		if (old_dir.isDirectory() && !new_dir.exists())
 			old_dir.copyDirectoryTo(new_dir);
@@ -53,13 +53,13 @@ FxSound::Settings::Settings()
 	migrateFolder(File::getSpecialLocation(File::userHomeDirectory));
 #endif
 
-	options.applicationName = FxSound::APPLICATION_NAME;
-	options.folderName = FxSound::SETTINGS_FOLDER;
-	options.filenameSuffix = FxSound::SECURE_EXTN;
+	options.applicationName = Coral::APPLICATION_NAME;
+	options.folderName = Coral::SETTINGS_FOLDER;
+	options.filenameSuffix = Coral::SECURE_EXTN;
 	options.doNotSave = false;
 	app_secure_properties_.setStorageParameters(options);
 
-	options.filenameSuffix = FxSound::SETTINGS_EXTN;
+	options.filenameSuffix = Coral::SETTINGS_EXTN;
 	app_user_properties_.setStorageParameters(options);
 	user_settings_ = app_user_properties_.getUserSettings();
 
@@ -79,31 +79,31 @@ FxSound::Settings::Settings()
 	}
 }
 
-FxSound::Settings::~Settings()
+Coral::Settings::~Settings()
 {
 }
 
-String FxSound::Settings::getString(StringRef key) noexcept
+String Coral::Settings::getString(StringRef key) noexcept
 {
 	return user_settings_->getValue(key);
 }
 
-int FxSound::Settings::getInt(StringRef key, int default_value) noexcept
+int Coral::Settings::getInt(StringRef key, int default_value) noexcept
 {
 	return user_settings_->getIntValue(key, default_value);
 }
 
-double FxSound::Settings::getDouble(StringRef key) noexcept
+double Coral::Settings::getDouble(StringRef key) noexcept
 {
 	return user_settings_->getDoubleValue(key);
 }
 
-bool FxSound::Settings::getBool(StringRef key, bool default_value) noexcept
+bool Coral::Settings::getBool(StringRef key, bool default_value) noexcept
 {
 	return user_settings_->getBoolValue(key, default_value);
 }
 
-juce::var FxSound::Settings::getJson(juce::StringRef key) noexcept
+juce::var Coral::Settings::getJson(juce::StringRef key) noexcept
 {
 	if (user_settings_ == nullptr)
 		return {};
@@ -113,7 +113,7 @@ juce::var FxSound::Settings::getJson(juce::StringRef key) noexcept
 	return json.isNotEmpty() ? juce::JSON::parse(json) : juce::var{};
 }
 
-void FxSound::Settings::setString(StringRef key, String value, bool default_value) noexcept
+void Coral::Settings::setString(StringRef key, String value, bool default_value) noexcept
 {
     if (default_value)
     {
@@ -125,7 +125,7 @@ void FxSound::Settings::setString(StringRef key, String value, bool default_valu
     }	
 }
 
-void FxSound::Settings::setInt(StringRef key, int value, bool default_value) noexcept
+void Coral::Settings::setInt(StringRef key, int value, bool default_value) noexcept
 {
     if (default_value)
     {
@@ -137,7 +137,7 @@ void FxSound::Settings::setInt(StringRef key, int value, bool default_value) noe
     }
 }
 
-void FxSound::Settings::setDouble(StringRef key, double value, bool default_value) noexcept
+void Coral::Settings::setDouble(StringRef key, double value, bool default_value) noexcept
 {
     if (default_value)
     {
@@ -149,7 +149,7 @@ void FxSound::Settings::setDouble(StringRef key, double value, bool default_valu
     }
 }
 
-void FxSound::Settings::setBool(StringRef key, bool value, bool default_value) noexcept
+void Coral::Settings::setBool(StringRef key, bool value, bool default_value) noexcept
 {
     if (default_value)
     {
@@ -161,7 +161,7 @@ void FxSound::Settings::setBool(StringRef key, bool value, bool default_value) n
     }
 }
 
-void FxSound::Settings::setJson(juce::StringRef key, const juce::var& json) noexcept
+void Coral::Settings::setJson(juce::StringRef key, const juce::var& json) noexcept
 {
 	user_settings_->setValue(key, juce::JSON::toString(json));
 }

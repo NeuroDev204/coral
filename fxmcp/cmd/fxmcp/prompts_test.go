@@ -24,22 +24,22 @@ func TestPrompts(t *testing.T) {
 		{
 			prompt:      "diagnose-audio-issue",
 			args:        map[string]string{"symptom": "Zoom call volume is very quiet"},
-			mustMention: []string{"Zoom call volume is very quiet", "fxsound://diagnostics", "fxsound://status"},
+			mustMention: []string{"Zoom call volume is very quiet", "coral://diagnostics", "coral://status"},
 		},
 		{
 			prompt:      "tune-for-scenario",
 			args:        map[string]string{"scenario": "piano and flute clarity"},
-			mustMention: []string{"piano and flute clarity", "fxsound://equalizer", "fxsound_set_eq_band_gains"},
+			mustMention: []string{"piano and flute clarity", "coral://equalizer", "coral_set_eq_band_gains"},
 		},
 		{
 			prompt:      "switch-listening-profile",
 			args:        map[string]string{"profile": "gaming setup"},
-			mustMention: []string{"gaming setup", "fxsound://presets", "fxsound_apply_settings"},
+			mustMention: []string{"gaming setup", "coral://presets", "coral_apply_settings"},
 		},
 		{
 			prompt:      "create-preset-from-current",
 			args:        map[string]string{"name": "My Test Preset"},
-			mustMention: []string{"My Test Preset", "fxsound://presets", "fxsound_save_preset"},
+			mustMention: []string{"My Test Preset", "coral://presets", "coral_save_preset"},
 		},
 	}
 

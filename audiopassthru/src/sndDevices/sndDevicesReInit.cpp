@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -172,7 +172,7 @@ int PT_DECLSPEC sndDevicesReInit(PT_HANDLE *hp_sndDevices, int i_initType, int *
 
 			// Capture each device's mute state up front, before anything below (in particular the
 			// volume-level sync) gets a chance to touch it. Some virtual-device drivers (including
-			// the DFX "FxSound Audio Enhancer" device) clear their own mute flag as a side effect of
+			// the DFX "Coral Audio Enhancer" device) clear their own mute flag as a side effect of
 			// a volume-level write, so reading mute AFTER SetMasterVolumeLevelScalar() below would
 			// see FALSE even if the user had genuinely muted it (e.g. via Windows sound settings)
 			// moments before reinit ran.
@@ -215,7 +215,7 @@ int PT_DECLSPEC sndDevicesReInit(PT_HANDLE *hp_sndDevices, int i_initType, int *
 
 			// Re-assert each device's mute state to what it was before the volume-level sync above,
 			// regardless of whether that sync actually disturbed it. This preserves a user-set mute
-			// (e.g. via Windows sound settings on the "FxSound Audio Enhancer" device) across reinit
+			// (e.g. via Windows sound settings on the "Coral Audio Enhancer" device) across reinit
 			// instead of only conditionally restoring it based on a possibly-already-clobbered read.
 			hr = cast_handle->pEndptVolCapture->SetMute(captureMuteState || playbackMuteState, &(cast_handle->guidThisApplication));
 			if ((hr != S_OK) && (hr != S_FALSE))	// Note, will return S_FALSE if the mute was already at that value, check for other errors.

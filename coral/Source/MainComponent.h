@@ -12,8 +12,8 @@
 #include "GUI/AnnouncementComponent.h"
 #include "GUI/AnimationDemoComponent.h"
 #include "GUI/UITheme.h"
-#include "GUI/FxMinView.h"
-#include "GUI/FxExpandedView.h"
+#include "GUI/CoralMinView.h"
+#include "GUI/CoralExpandedView.h"
 #include "Utils/Settings/Settings.h"
 //==============================================================================
 /*
@@ -25,7 +25,7 @@ constexpr char ATTRIB_URL[] = "url";
 constexpr char ATTRIB_WIDTH[] = "width";
 constexpr char ATTRIB_HEIGHT[] = "height";
 
-class MainComponent : public Component, public FxView::ResizeViewListener
+class MainComponent : public Component, public CoralView::ResizeViewListener
 {
 public:
     //==============================================================================
@@ -52,12 +52,12 @@ private:
     // Your private member variables go here...
 	std::unique_ptr<UITheme> look_and_feel_;
 	std::unique_ptr<AnnouncementComponent> announcement_;
-	std::unique_ptr<FxMinView> min_view_;
-	std::unique_ptr<FxExpandedView> expanded_view_;
+	std::unique_ptr<CoralMinView> min_view_;
+	std::unique_ptr<CoralExpandedView> expanded_view_;
 	ComponentDragger dragger_;
 	ComponentAnimator animator_;
 
-	FxSound::Settings settings_;
+	Coral::Settings settings_;
 	
 	bool show_caption_;
 	String caption_;
@@ -66,7 +66,7 @@ private:
 
 	int colour_scheme_;
 
-	enum FxViewType {MinView, ExpandedView} fx_view_;
+	enum CoralViewType {MinView, ExpandedView} fx_view_;
 	bool resize_view_;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

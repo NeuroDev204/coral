@@ -9,30 +9,30 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 )
 
 // TestWriteToolsLifecycle exercises every write tool from Iterations 5-7
-// against the real, running FxSound instance, verifying status.json
+// against the real, running Coral instance, verifying status.json
 // reflects each change. It restores the app's original power, preset,
 // output device, equalizer, and effect settings afterward, best-effort.
-// It skips entirely if FxSound isn't running.
+// It skips entirely if Coral isn't running.
 func TestWriteToolsLifecycle(t *testing.T) {
-	running, err := fxsound.IsFxSoundRunning()
+	running, err := coral.IsCoralRunning()
 	if err != nil {
-		t.Fatalf("IsFxSoundRunning: %v", err)
+		t.Fatalf("IsCoralRunning: %v", err)
 	}
 	if !running {
-		t.Skip("FxSound.exe is not running; write-tool tests need a live instance to verify against")
+		t.Skip("Coral.exe is not running; write-tool tests need a live instance to verify against")
 	}
 
-	paths, err := fxsound.Locate()
+	paths, err := coral.Locate()
 	if err != nil {
 		t.Fatalf("Locate: %v", err)
 	}
 
 	baselineCtx, baselineCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	baseline, err := fxsound.ReadStatus(baselineCtx, paths)
+	baseline, err := coral.ReadStatus(baselineCtx, paths)
 	baselineCancel()
 	if err != nil {
 		t.Fatalf("read baseline status: %v", err)
@@ -93,29 +93,29 @@ func callToolExpectError(t *testing.T, session *mcp.ClientSession, ctx context.C
 	t.Logf("CallTool(%s) correctly returned error: %s", name, textContent(t, res))
 }
 
-func freshStatus(t *testing.T, ctx context.Context, paths *fxsound.Paths) *fxsound.Status {
+func freshStatus(t *testing.T, ctx context.Context, paths *coral.Paths) *coral.Status {
 	t.Helper()
-	status, err := fxsound.ReadStatus(ctx, paths)
+	status, err := coral.ReadStatus(ctx, paths)
 	if err != nil {
 		t.Fatalf("ReadStatus: %v", err)
 	}
 	return status
 }
 
-func testSetPower(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testSetPower(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	toggled := !baseline.Power
-	callToolOK(t, session, ctx, "fxsound_set_power", map[string]any{"on": toggled})
+	callToolOK(t, session, ctx, "coral_set_power", map[string]any{"on": toggled})
 	if got := freshStatus(t, ctx, paths).Power; got != toggled {
 		t.Errorf("after set_power(%v): status.power = %v, want %v", toggled, got, toggled)
 	}
 
-	callToolOK(t, session, ctx, "fxsound_set_power", map[string]any{"on": baseline.Power})
+	callToolOK(t, session, ctx, "coral_set_power", map[string]any{"on": baseline.Power})
 	if got := freshStatus(t, ctx, paths).Power; got != baseline.Power {
 		t.Errorf("after restoring power: status.power = %v, want %v", got, baseline.Power)
 	}
 }
 
-func testSelectPreset(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testSelectPreset(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	// Pick any built-in preset different from the current one.
 	var target string
 	for _, p := range baseline.Presets.BuiltIn {
@@ -128,31 +128,31 @@ func testSelectPreset(t *testing.T, session *mcp.ClientSession, ctx context.Cont
 		t.Skip("no alternate built-in preset available to select")
 	}
 
-	callToolOK(t, session, ctx, "fxsound_select_preset", map[string]any{"name": target})
+	callToolOK(t, session, ctx, "coral_select_preset", map[string]any{"name": target})
 	if got := freshStatus(t, ctx, paths).SelectedPreset; got != target {
 		t.Errorf("after select_preset(%q): status.selected_preset = %q", target, got)
 	}
 
-	callToolOK(t, session, ctx, "fxsound_select_preset", map[string]any{"name": baseline.SelectedPreset})
+	callToolOK(t, session, ctx, "coral_select_preset", map[string]any{"name": baseline.SelectedPreset})
 	if got := freshStatus(t, ctx, paths).SelectedPreset; got != baseline.SelectedPreset {
 		t.Errorf("after restoring preset: status.selected_preset = %q, want %q", got, baseline.SelectedPreset)
 	}
 }
 
-func testSetOutputDevice(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testSetOutputDevice(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	if baseline.SelectedOutput == "" {
 		t.Skip("no output device currently selected")
 	}
 	// Only one device is available on this machine in practice, so this
 	// round-trips to the same device -- it still exercises the full tool
 	// call path (build args, spawn, forward, status reflects the value).
-	callToolOK(t, session, ctx, "fxsound_set_output_device", map[string]any{"device_name": baseline.SelectedOutput})
+	callToolOK(t, session, ctx, "coral_set_output_device", map[string]any{"device_name": baseline.SelectedOutput})
 	if got := freshStatus(t, ctx, paths).SelectedOutput; got != baseline.SelectedOutput {
 		t.Errorf("after set_output_device(%q): status.selected_output = %q", baseline.SelectedOutput, got)
 	}
 }
 
-func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	// Find a modified built-in preset to save from; if none, select one and
 	// nudge an effect value to mark it modified (setEffectValue marks the
 	// preset modified as a side effect, same as the EQ setters).
@@ -165,10 +165,10 @@ func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.C
 	}
 	if dirtyPreset == "" {
 		dirtyPreset = baseline.Presets.BuiltIn[0].Name
-		callToolOK(t, session, ctx, "fxsound_select_preset", map[string]any{"name": dirtyPreset})
-		callToolOK(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"bass": 5.0}})
+		callToolOK(t, session, ctx, "coral_select_preset", map[string]any{"name": dirtyPreset})
+		callToolOK(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"bass": 5.0}})
 	} else {
-		callToolOK(t, session, ctx, "fxsound_select_preset", map[string]any{"name": dirtyPreset})
+		callToolOK(t, session, ctx, "coral_select_preset", map[string]any{"name": dirtyPreset})
 	}
 	if s := freshStatus(t, ctx, paths); s.SelectedPreset != dirtyPreset {
 		t.Fatalf("expected selected preset %q, got %q", dirtyPreset, s.SelectedPreset)
@@ -176,7 +176,7 @@ func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.C
 
 	testName := fmt.Sprintf("fxmcp_test_%d", time.Now().UnixNano()%1_000_000)
 
-	callToolOK(t, session, ctx, "fxsound_save_preset", map[string]any{"name": testName})
+	callToolOK(t, session, ctx, "coral_save_preset", map[string]any{"name": testName})
 	status := freshStatus(t, ctx, paths)
 	if status.SelectedPreset != testName {
 		t.Fatalf("after save_preset(%q): selected_preset = %q", testName, status.SelectedPreset)
@@ -187,7 +187,7 @@ func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.C
 	t.Logf("saved test preset %q", testName)
 
 	renamedName := testName + "_renamed"
-	callToolOK(t, session, ctx, "fxsound_rename_preset", map[string]any{"name": renamedName})
+	callToolOK(t, session, ctx, "coral_rename_preset", map[string]any{"name": renamedName})
 	status = freshStatus(t, ctx, paths)
 	if status.SelectedPreset != renamedName {
 		t.Fatalf("after rename_preset(%q): selected_preset = %q", renamedName, status.SelectedPreset)
@@ -195,25 +195,25 @@ func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.C
 	t.Logf("renamed test preset to %q", renamedName)
 
 	// Modify, then undo.
-	callToolOK(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"ambience": 8.0}})
+	callToolOK(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"ambience": 8.0}})
 	if s := freshStatus(t, ctx, paths); !presetModified(s, renamedName, false) {
 		t.Fatalf("expected preset %q to be modified after set_effects", renamedName)
 	}
-	callToolOK(t, session, ctx, "fxsound_undo_preset", nil)
+	callToolOK(t, session, ctx, "coral_undo_preset", nil)
 	status = freshStatus(t, ctx, paths)
 	if presetModified(status, renamedName, false) {
 		t.Errorf("expected preset %q to be unmodified after undo_preset", renamedName)
 	}
 
 	// Modify, then overwrite.
-	callToolOK(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"ambience": 8.0}})
-	callToolOK(t, session, ctx, "fxsound_overwrite_preset", nil)
+	callToolOK(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"ambience": 8.0}})
+	callToolOK(t, session, ctx, "coral_overwrite_preset", nil)
 	status = freshStatus(t, ctx, paths)
 	if presetModified(status, renamedName, false) {
 		t.Errorf("expected preset %q to be unmodified after overwrite_preset", renamedName)
 	}
 
-	callToolOK(t, session, ctx, "fxsound_delete_preset", nil)
+	callToolOK(t, session, ctx, "coral_delete_preset", nil)
 	status = freshStatus(t, ctx, paths)
 	if presetExists(status.Presets.UserDefined, renamedName) {
 		t.Errorf("delete_preset: %q still present in user_defined presets", renamedName)
@@ -221,7 +221,7 @@ func testPresetLifecycle(t *testing.T, session *mcp.ClientSession, ctx context.C
 	t.Logf("deleted test preset %q", renamedName)
 }
 
-func presetExists(presets []fxsound.PresetInfo, name string) bool {
+func presetExists(presets []coral.PresetInfo, name string) bool {
 	for _, p := range presets {
 		if p.Name == name {
 			return true
@@ -230,8 +230,8 @@ func presetExists(presets []fxsound.PresetInfo, name string) bool {
 	return false
 }
 
-func presetModified(status *fxsound.Status, name string, defaultVal bool) bool {
-	all := append(append([]fxsound.PresetInfo{}, status.Presets.BuiltIn...), status.Presets.UserDefined...)
+func presetModified(status *coral.Status, name string, defaultVal bool) bool {
+	all := append(append([]coral.PresetInfo{}, status.Presets.BuiltIn...), status.Presets.UserDefined...)
 	for _, p := range all {
 		if p.Name == name {
 			return p.Modified
@@ -240,7 +240,7 @@ func presetModified(status *fxsound.Status, name string, defaultVal bool) bool {
 	return defaultVal
 }
 
-func testEqBandsAndGains(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testEqBandsAndGains(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	numBands := baseline.Equalizer.NumBands
 	if numBands == 0 {
 		t.Skip("no equalizer bands reported")
@@ -249,59 +249,59 @@ func testEqBandsAndGains(t *testing.T, session *mcp.ClientSession, ctx context.C
 	// Valid call: nudge band 0's gain, verify it landed, then restore.
 	origGain := baseline.Equalizer.Bands[0].Gain
 	newGain := origGain + 1
-	if newGain > fxsound.MaxBandGainDb {
+	if newGain > coral.MaxBandGainDb {
 		newGain = origGain - 1
 	}
-	callToolOK(t, session, ctx, "fxsound_set_eq_band_gains", map[string]any{
+	callToolOK(t, session, ctx, "coral_set_eq_band_gains", map[string]any{
 		"bands": []map[string]any{{"index": 0, "gain_db": newGain}},
 	})
 	status := freshStatus(t, ctx, paths)
 	if got := status.Equalizer.Bands[0].Gain; got != newGain {
 		t.Errorf("after set_eq_band_gains(0, %v): band 0 gain = %v", newGain, got)
 	}
-	callToolOK(t, session, ctx, "fxsound_set_eq_band_gains", map[string]any{
+	callToolOK(t, session, ctx, "coral_set_eq_band_gains", map[string]any{
 		"bands": []map[string]any{{"index": 0, "gain_db": origGain}},
 	})
 
 	// Invalid calls: rejected before ever reaching the app.
-	callToolExpectError(t, session, ctx, "fxsound_set_eq_band_gains", map[string]any{
+	callToolExpectError(t, session, ctx, "coral_set_eq_band_gains", map[string]any{
 		"bands": []map[string]any{{"index": numBands, "gain_db": 1.0}},
 	})
-	callToolExpectError(t, session, ctx, "fxsound_set_eq_band_gains", map[string]any{
-		"bands": []map[string]any{{"index": 0, "gain_db": fxsound.MaxBandGainDb + 1}},
+	callToolExpectError(t, session, ctx, "coral_set_eq_band_gains", map[string]any{
+		"bands": []map[string]any{{"index": 0, "gain_db": coral.MaxBandGainDb + 1}},
 	})
-	callToolExpectError(t, session, ctx, "fxsound_set_eq_bands", map[string]any{
+	callToolExpectError(t, session, ctx, "coral_set_eq_bands", map[string]any{
 		"bands": []map[string]any{{"index": numBands, "frequency_hz": 100.0}},
 	})
 
 	// Valid frequency nudge, restored afterward.
 	origFreq := baseline.Equalizer.Bands[0].Frequency
-	callToolOK(t, session, ctx, "fxsound_set_eq_bands", map[string]any{
+	callToolOK(t, session, ctx, "coral_set_eq_bands", map[string]any{
 		"bands": []map[string]any{{"index": 0, "frequency_hz": origFreq}},
 	})
 }
 
-func testEffects(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testEffects(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	orig := baseline.Effects.Bass
 	newVal := 6.0
 	if newVal == orig {
 		newVal = 7.0
 	}
-	callToolOK(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"bass": newVal}})
+	callToolOK(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"bass": newVal}})
 	status := freshStatus(t, ctx, paths)
 	if got := status.Effects.Bass; !floatNear(got, newVal, 0.01) {
 		t.Errorf("after set_effects(bass=%v): effects.bass = %v", newVal, got)
 	}
 
 	// Alias + restore original value in one call.
-	callToolOK(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"bassboost": orig}})
+	callToolOK(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"bassboost": orig}})
 	status = freshStatus(t, ctx, paths)
 	if got := status.Effects.Bass; !floatNear(got, orig, 0.01) {
 		t.Errorf("after restoring bass via alias: effects.bass = %v, want %v", got, orig)
 	}
 
-	callToolExpectError(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"reverb": 5.0}})
-	callToolExpectError(t, session, ctx, "fxsound_set_effects", map[string]any{"effects": map[string]float64{"bass": 11.0}})
+	callToolExpectError(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"reverb": 5.0}})
+	callToolExpectError(t, session, ctx, "coral_set_effects", map[string]any{"effects": map[string]float64{"bass": 11.0}})
 }
 
 func floatNear(a, b, tolerance float64) bool {
@@ -312,7 +312,7 @@ func floatNear(a, b, tolerance float64) bool {
 	return d <= tolerance
 }
 
-func testCompositeMultiField(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testCompositeMultiField(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	var altPreset string
 	for _, p := range baseline.Presets.BuiltIn {
 		if p.Name != baseline.SelectedPreset {
@@ -324,7 +324,7 @@ func testCompositeMultiField(t *testing.T, session *mcp.ClientSession, ctx conte
 		t.Skip("need an alternate preset and a selected output device")
 	}
 
-	callToolOK(t, session, ctx, "fxsound_apply_settings", map[string]any{
+	callToolOK(t, session, ctx, "coral_apply_settings", map[string]any{
 		"preset":        altPreset,
 		"output_device": baseline.SelectedOutput,
 		"view":          "full",
@@ -338,30 +338,30 @@ func testCompositeMultiField(t *testing.T, session *mcp.ClientSession, ctx conte
 	}
 
 	// Restore preset.
-	callToolOK(t, session, ctx, "fxsound_apply_settings", map[string]any{"preset": baseline.SelectedPreset})
+	callToolOK(t, session, ctx, "coral_apply_settings", map[string]any{"preset": baseline.SelectedPreset})
 }
 
 func testCompositeMutualExclusivity(t *testing.T, session *mcp.ClientSession, ctx context.Context) {
-	callToolExpectError(t, session, ctx, "fxsound_apply_settings", map[string]any{
+	callToolExpectError(t, session, ctx, "coral_apply_settings", map[string]any{
 		"undo_preset":   true,
 		"delete_preset": true,
 	})
 }
 
-func testCompositeNumBandsCycle(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *fxsound.Paths, baseline *fxsound.Status) {
+func testCompositeNumBandsCycle(t *testing.T, session *mcp.ClientSession, ctx context.Context, paths *coral.Paths, baseline *coral.Status) {
 	for _, n := range []int{5, 10, 15, 20, 31} {
-		callToolOK(t, session, ctx, "fxsound_apply_settings", map[string]any{"num_eq_bands": n})
+		callToolOK(t, session, ctx, "coral_apply_settings", map[string]any{"num_eq_bands": n})
 		if got := freshStatus(t, ctx, paths).Equalizer.NumBands; got != n {
 			t.Errorf("after apply_settings(num_eq_bands=%d): status num_bands = %d", n, got)
 		}
 	}
-	callToolOK(t, session, ctx, "fxsound_apply_settings", map[string]any{"num_eq_bands": baseline.Equalizer.NumBands})
+	callToolOK(t, session, ctx, "coral_apply_settings", map[string]any{"num_eq_bands": baseline.Equalizer.NumBands})
 }
 
 // restoreBaseline puts power, selected preset, and output device back to
 // their pre-test values, best-effort (logs rather than fails on error,
 // since this runs during cleanup after the real assertions already ran).
-func restoreBaseline(t *testing.T, paths *fxsound.Paths, baseline *fxsound.Status) {
+func restoreBaseline(t *testing.T, paths *coral.Paths, baseline *coral.Status) {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
@@ -373,7 +373,7 @@ func restoreBaseline(t *testing.T, paths *fxsound.Paths, baseline *fxsound.Statu
 	if baseline.SelectedOutput != "" {
 		flags["output"] = baseline.SelectedOutput
 	}
-	if err := fxsound.Apply(ctx, paths, flags, false); err != nil {
+	if err := coral.Apply(ctx, paths, flags, false); err != nil {
 		t.Logf("restoreBaseline: %v", err)
 	}
 }

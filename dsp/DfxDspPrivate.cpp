@@ -1,6 +1,6 @@
 /*
-FxSound
-Copyright (C) 2025  FxSound LLC
+Coral
+Copyright (C) 2025  Coral
 
 Contributors:
 	www.theremino.com (2025)
@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "SurroundSyn.h"
 
 #define DFXG_REGISTRY_DFX_PRODUCT_NAME_WIDE		L"DFX"
-#define DFXG_DISPLAYED_DFX_PRODUCT_NAME_WIDE    L"FxSound"
+#define DFXG_DISPLAYED_DFX_PRODUCT_NAME_WIDE    L"Coral"
 #define DFXP_VENDOR_CODE_UNIVERSAL			  23
 
 #define DFXG_MIN_USER_PRESET_INDEX				 99 /* 0 based number of min user preset (preset number 100) */

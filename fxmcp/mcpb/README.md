@@ -5,22 +5,22 @@ bundle -- the one-click-installable connector Claude Desktop uses instead of
 manually editing `claude_desktop_config.json`.
 
 `icon.png` and `LICENSE` are **not** checked in here; `..\build-mcpb.ps1`
-copies them fresh from their canonical locations (`fxsound\Images\fxsound_large.png`
+copies them fresh from their canonical locations (`coral\Images\coral_app_large.png`
 and the repo's top-level `LICENSE`) on every build, so they can't drift out
 of sync.
 
 ## Why this bundle carries no binary
 
-`fxmcp.exe` is installed by the main FxSound installer at a fixed location
-(`%ProgramFiles%\FxSound LLC\FxSound\fxmcp.exe`), so `manifest.json`'s
+`fxmcp.exe` is installed by the main Coral installer at a fixed location
+(`%ProgramFiles%\Coral\Coral\fxmcp.exe`), so `manifest.json`'s
 `server.mcp_config.command` points directly at that path rather than
 bundling a copy under `${__dirname}`. This also means one `.mcpb` covers
-all three architectures (x64/x86/arm64) fxmcp ships for -- the FxSound
+all three architectures (x64/x86/arm64) fxmcp ships for -- the Coral
 installer already resolved which binary to install at build/install time,
 and always places it at this same path.
 
-The tradeoff: this only works for a default-location FxSound install. If
-FxSound was installed somewhere else, this bundle's command path won't
+The tradeoff: this only works for a default-location Coral install. If
+Coral was installed somewhere else, this bundle's command path won't
 find it (MCPB has no built-in variable for "Program Files" to make this
 robust to a custom install directory).
 

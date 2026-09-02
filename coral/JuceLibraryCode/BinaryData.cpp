@@ -3377,13 +3377,13 @@ static const unsigned char temp_binary_data_32[] =
 
 const char* arrow_prev_blue_svg = (const char*) temp_binary_data_32;
 
-//================== FxSound Black Bars.svg ==================
+//================== Coral Black Bars.svg ==================
 static const unsigned char temp_binary_data_33[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 299.83 219.26\"><defs><style>.cls-1{fill:#000;}</style></defs><g id=\"Layer_2\" data-name=\"Layer 2\"><g id=\"Layer_1-2\" data-name=\"Layer 1\"><rect class=\"cls-1\" x=\"256.61\" y=\"131.52\" wi"
 "dth=\"43.22\" height=\"87.75\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"192.46\" y=\"60.97\" width=\"43.22\" height=\"158.29\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"128.31\" width=\"43.22\" height=\"219.26\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"64.1"
 "6\" y=\"60.96\" width=\"43.22\" height=\"158.3\" rx=\"2.83\"/><rect class=\"cls-1\" y=\"131.51\" width=\"43.22\" height=\"87.75\" rx=\"2.83\"/></g></g></svg>";
 
-const char* FxSound_Black_Bars_svg = (const char*) temp_binary_data_33;
+const char* Coral_Black_Bars_svg = (const char*) temp_binary_data_33;
 
 //================== minimize_black.svg ==================
 static const unsigned char temp_binary_data_34[] =
@@ -3836,7 +3836,7 @@ static const unsigned char temp_binary_data_52[] =
 
 const char* dropdown_arrow_hover_svg = (const char*) temp_binary_data_52;
 
-//================== FxSound Logo.svg ==================
+//================== Coral Logo.svg ==================
 static const unsigned char temp_binary_data_53[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 526.19 75.15\"><defs><style>.cls-1{fill:#fff;}</style></defs><g id=\"Layer_2\" data-name=\"Layer 2\"><g id=\"Layer_1-2\" data-name=\"Layer 1\"><rect class=\"cls-1\" x=\"80\" y=\"46.8\" width=\"1"
 "3.48\" height=\"27.36\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"60\" y=\"24.8\" width=\"13.48\" height=\"49.35\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"40\" y=\"5.79\" width=\"13.48\" height=\"68.36\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"20\" y=\"24"
@@ -3869,17 +3869,17 @@ static const unsigned char temp_binary_data_53[] =
 "6.64,1.4,16.55,16.55,0,0,0,6.71-1.38,17.45,17.45,0,0,0,5.49-3.73,18.21,18.21,0,0,0,3.71-5.49A17.67,17.67,0,0,0,514,46v-.32a17.55,17.55,0,0,0-1.35-6.8A18.48,18.48,0,0,0,509,33.14a17.92,17.92,0,0,0-5.51-3.91,16,16,0,0,0-6.82-1.46A15.05,15.05,0,0,0,490,"
 "29.23a17.29,17.29,0,0,0-5.28,3.91,18,18,0,0,0-3.51,5.69A18.65,18.65,0,0,0,480,45.63Z\"/></g></g></svg>";
 
-const char* FxSound_Logo_svg = (const char*) temp_binary_data_53;
+const char* Coral_Logo_svg = (const char*) temp_binary_data_53;
 
-//================== FxSound White Bars.svg ==================
+//================== Coral White Bars.svg ==================
 static const unsigned char temp_binary_data_54[] =
 "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 299.83 219.26\"><defs><style>.cls-1{fill:#fff;}</style></defs><g id=\"Layer_2\" data-name=\"Layer 2\"><g id=\"Layer_1-2\" data-name=\"Layer 1\"><rect class=\"cls-1\" x=\"256.61\" y=\"131.52\" wi"
 "dth=\"43.22\" height=\"87.75\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"192.46\" y=\"60.97\" width=\"43.22\" height=\"158.29\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"128.31\" width=\"43.22\" height=\"219.26\" rx=\"2.83\"/><rect class=\"cls-1\" x=\"64.1"
 "6\" y=\"60.96\" width=\"43.22\" height=\"158.3\" rx=\"2.83\"/><rect class=\"cls-1\" y=\"131.51\" width=\"43.22\" height=\"87.75\" rx=\"2.83\"/></g></g></svg>";
 
-const char* FxSound_White_Bars_svg = (const char*) temp_binary_data_54;
+const char* Coral_White_Bars_svg = (const char*) temp_binary_data_54;
 
-//================== fxsound.png ==================
+//================== coral.png ==================
 static const unsigned char temp_binary_data_55[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,32,0,0,0,32,8,6,0,0,0,115,122,122,244,0,0,0,9,112,72,89,115,0,0,11,18,0,0,11,18,1,210,221,126,252,0,0,1,54,73,68,65,84,88,133,237,87,219,141,131,48,16,156,228,82,128,75,128,191,251,52,29,80,130,75,112,
 9,148,224,14,40,193,37,152,14,104,129,18,232,0,58,240,105,173,24,57,22,247,8,38,56,39,49,210,42,246,176,222,25,161,213,18,35,64,13,192,0,176,47,14,115,215,122,128,60,64,56,14,233,13,212,25,196,125,212,31,0,90,0,159,241,43,57,8,236,114,119,146,13,215,
@@ -3888,9 +3888,9 @@ static const unsigned char temp_binary_data_55[] =
 218,30,241,104,20,66,184,209,218,52,205,194,113,206,221,55,159,70,45,99,204,113,244,171,181,118,17,114,148,67,185,116,198,159,151,82,186,154,84,59,214,59,255,19,158,6,200,192,62,3,127,27,156,118,214,171,153,183,157,245,114,234,113,252,245,28,192,23,38,
 203,148,221,53,152,2,5,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* fxsound_png = (const char*) temp_binary_data_55;
+const char* coral_app_png = (const char*) temp_binary_data_55;
 
-//================== fxsound_large.png ==================
+//================== coral_app_large.png ==================
 static const unsigned char temp_binary_data_56[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,0,0,0,1,0,8,6,0,0,0,92,114,168,102,0,0,0,9,112,72,89,115,0,0,11,18,0,0,11,18,1,210,221,126,252,0,0,12,184,73,68,65,84,120,156,237,221,63,114,219,72,22,199,241,39,143,115,195,39,16,148,109,38,204,9,200,
 57,129,184,225,70,226,132,27,137,115,2,107,79,192,73,55,162,125,2,81,39,32,149,109,70,234,4,164,194,137,200,116,35,110,61,108,195,69,211,164,248,7,221,64,3,239,251,169,234,82,149,45,129,141,70,247,15,221,0,72,94,73,92,18,17,201,68,164,43,34,215,34,146,
@@ -3939,7 +3939,7 @@ static const unsigned char temp_binary_data_56[] =
 224,206,253,228,105,66,88,86,124,20,255,115,29,31,201,95,87,0,108,211,16,232,184,107,5,60,80,4,11,230,238,138,254,75,221,223,195,17,67,0,108,75,92,8,104,24,92,187,165,66,202,146,1,13,165,83,250,162,188,185,65,175,131,63,142,59,100,34,242,63,172,144,216,
 108,214,152,214,2,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* fxsound_large_png = (const char*) temp_binary_data_56;
+const char* coral_app_large_png = (const char*) temp_binary_data_56;
 
 //================== maximize.svg ==================
 static const unsigned char temp_binary_data_57[] =
@@ -4249,185 +4249,185 @@ static const unsigned char temp_binary_data_68[] =
 
 const char* Slider_Thumb_bw_svg = (const char*) temp_binary_data_68;
 
-//================== FxSound.ar.txt ==================
+//================== Coral.ar.txt ==================
 static const unsigned char temp_binary_data_69[] =
 "";
 
-const char* FxSound_ar_txt = (const char*) temp_binary_data_69;
+const char* Coral_ar_txt = (const char*) temp_binary_data_69;
 
-//================== FxSound.ba.txt ==================
+//================== Coral.ba.txt ==================
 static const unsigned char temp_binary_data_70[] =
 "";
 
-const char* FxSound_ba_txt = (const char*) temp_binary_data_70;
+const char* Coral_ba_txt = (const char*) temp_binary_data_70;
 
-//================== FxSound.cs.txt ==================
+//================== Coral.cs.txt ==================
 static const unsigned char temp_binary_data_71[] =
 "";
 
-const char* FxSound_cs_txt = (const char*) temp_binary_data_71;
+const char* Coral_cs_txt = (const char*) temp_binary_data_71;
 
-//================== FxSound.de.txt ==================
+//================== Coral.de.txt ==================
 static const unsigned char temp_binary_data_72[] =
 "";
 
-const char* FxSound_de_txt = (const char*) temp_binary_data_72;
+const char* Coral_de_txt = (const char*) temp_binary_data_72;
 
-//================== FxSound.es.txt ==================
+//================== Coral.es.txt ==================
 static const unsigned char temp_binary_data_73[] =
 "";
 
-const char* FxSound_es_txt = (const char*) temp_binary_data_73;
+const char* Coral_es_txt = (const char*) temp_binary_data_73;
 
-//================== FxSound.fa.txt ==================
+//================== Coral.fa.txt ==================
 static const unsigned char temp_binary_data_74[] =
 "";
 
-const char* FxSound_fa_txt = (const char*) temp_binary_data_74;
+const char* Coral_fa_txt = (const char*) temp_binary_data_74;
 
-//================== FxSound.fi.txt ==================
+//================== Coral.fi.txt ==================
 static const unsigned char temp_binary_data_75[] =
 "";
 
-const char* FxSound_fi_txt = (const char*) temp_binary_data_75;
+const char* Coral_fi_txt = (const char*) temp_binary_data_75;
 
-//================== FxSound.fr.txt ==================
+//================== Coral.fr.txt ==================
 static const unsigned char temp_binary_data_76[] =
 "";
 
-const char* FxSound_fr_txt = (const char*) temp_binary_data_76;
+const char* Coral_fr_txt = (const char*) temp_binary_data_76;
 
-//================== FxSound.hr.txt ==================
+//================== Coral.hr.txt ==================
 static const unsigned char temp_binary_data_77[] =
 "";
 
-const char* FxSound_hr_txt = (const char*) temp_binary_data_77;
+const char* Coral_hr_txt = (const char*) temp_binary_data_77;
 
-//================== fxsound.hu.txt ==================
+//================== coral.hu.txt ==================
 static const unsigned char temp_binary_data_78[] =
 "";
 
-const char* fxsound_hu_txt = (const char*) temp_binary_data_78;
+const char* coral_hu_txt = (const char*) temp_binary_data_78;
 
-//================== FxSound.id.txt ==================
+//================== Coral.id.txt ==================
 static const unsigned char temp_binary_data_79[] =
 "";
 
-const char* FxSound_id_txt = (const char*) temp_binary_data_79;
+const char* Coral_id_txt = (const char*) temp_binary_data_79;
 
-//================== FxSound.it.txt ==================
+//================== Coral.it.txt ==================
 static const unsigned char temp_binary_data_80[] =
 "";
 
-const char* FxSound_it_txt = (const char*) temp_binary_data_80;
+const char* Coral_it_txt = (const char*) temp_binary_data_80;
 
-//================== FxSound.ja.txt ==================
+//================== Coral.ja.txt ==================
 static const unsigned char temp_binary_data_81[] =
 "";
 
-const char* FxSound_ja_txt = (const char*) temp_binary_data_81;
+const char* Coral_ja_txt = (const char*) temp_binary_data_81;
 
-//================== FxSound.ko.txt ==================
+//================== Coral.ko.txt ==================
 static const unsigned char temp_binary_data_82[] =
 "";
 
-const char* FxSound_ko_txt = (const char*) temp_binary_data_82;
+const char* Coral_ko_txt = (const char*) temp_binary_data_82;
 
-//================== FxSound.nl.txt ==================
+//================== Coral.nl.txt ==================
 static const unsigned char temp_binary_data_83[] =
 "";
 
-const char* FxSound_nl_txt = (const char*) temp_binary_data_83;
+const char* Coral_nl_txt = (const char*) temp_binary_data_83;
 
-//================== FxSound.no.txt ==================
+//================== Coral.no.txt ==================
 static const unsigned char temp_binary_data_84[] =
 "";
 
-const char* FxSound_no_txt = (const char*) temp_binary_data_84;
+const char* Coral_no_txt = (const char*) temp_binary_data_84;
 
-//================== FxSound.pl.txt ==================
+//================== Coral.pl.txt ==================
 static const unsigned char temp_binary_data_85[] =
 "";
 
-const char* FxSound_pl_txt = (const char*) temp_binary_data_85;
+const char* Coral_pl_txt = (const char*) temp_binary_data_85;
 
-//================== FxSound.pt-br.txt ==================
+//================== Coral.pt-br.txt ==================
 static const unsigned char temp_binary_data_86[] =
 "";
 
-const char* FxSound_ptbr_txt = (const char*) temp_binary_data_86;
+const char* Coral_ptbr_txt = (const char*) temp_binary_data_86;
 
-//================== FxSound.pt.txt ==================
+//================== Coral.pt.txt ==================
 static const unsigned char temp_binary_data_87[] =
 "";
 
-const char* FxSound_pt_txt = (const char*) temp_binary_data_87;
+const char* Coral_pt_txt = (const char*) temp_binary_data_87;
 
-//================== FxSound.ro.txt ==================
+//================== Coral.ro.txt ==================
 static const unsigned char temp_binary_data_88[] =
 "";
 
-const char* FxSound_ro_txt = (const char*) temp_binary_data_88;
+const char* Coral_ro_txt = (const char*) temp_binary_data_88;
 
-//================== FxSound.ru.txt ==================
+//================== Coral.ru.txt ==================
 static const unsigned char temp_binary_data_89[] =
 "";
 
-const char* FxSound_ru_txt = (const char*) temp_binary_data_89;
+const char* Coral_ru_txt = (const char*) temp_binary_data_89;
 
-//================== FxSound.sl.txt ==================
+//================== Coral.sl.txt ==================
 static const unsigned char temp_binary_data_90[] =
 "";
 
-const char* FxSound_sl_txt = (const char*) temp_binary_data_90;
+const char* Coral_sl_txt = (const char*) temp_binary_data_90;
 
-//================== FxSound.sv.txt ==================
+//================== Coral.sv.txt ==================
 static const unsigned char temp_binary_data_91[] =
 "";
 
-const char* FxSound_sv_txt = (const char*) temp_binary_data_91;
+const char* Coral_sv_txt = (const char*) temp_binary_data_91;
 
-//================== FxSound.th.txt ==================
+//================== Coral.th.txt ==================
 static const unsigned char temp_binary_data_92[] =
 "";
 
-const char* FxSound_th_txt = (const char*) temp_binary_data_92;
+const char* Coral_th_txt = (const char*) temp_binary_data_92;
 
-//================== FxSound.tr.txt ==================
+//================== Coral.tr.txt ==================
 static const unsigned char temp_binary_data_93[] =
 "";
 
-const char* FxSound_tr_txt = (const char*) temp_binary_data_93;
+const char* Coral_tr_txt = (const char*) temp_binary_data_93;
 
-//================== FxSound.txt ==================
+//================== Coral.txt ==================
 static const unsigned char temp_binary_data_94[] =
 "";
 
-const char* FxSound_txt = (const char*) temp_binary_data_94;
+const char* Coral_txt = (const char*) temp_binary_data_94;
 
-//================== FxSound.ua.txt ==================
+//================== Coral.ua.txt ==================
 static const unsigned char temp_binary_data_95[] =
 "";
 
-const char* FxSound_ua_txt = (const char*) temp_binary_data_95;
+const char* Coral_ua_txt = (const char*) temp_binary_data_95;
 
-//================== FxSound.vi.txt ==================
+//================== Coral.vi.txt ==================
 static const unsigned char temp_binary_data_96[] =
 "";
 
-const char* FxSound_vi_txt = (const char*) temp_binary_data_96;
+const char* Coral_vi_txt = (const char*) temp_binary_data_96;
 
-//================== FxSound.zh-CN.txt ==================
+//================== Coral.zh-CN.txt ==================
 static const unsigned char temp_binary_data_97[] =
 "";
 
-const char* FxSound_zhCN_txt = (const char*) temp_binary_data_97;
+const char* Coral_zhCN_txt = (const char*) temp_binary_data_97;
 
-//================== FxSound.zh-TW.txt ==================
+//================== Coral.zh-TW.txt ==================
 static const unsigned char temp_binary_data_98[] =
 "";
 
-const char* FxSound_zhTW_txt = (const char*) temp_binary_data_98;
+const char* Coral_zhTW_txt = (const char*) temp_binary_data_98;
 
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes);
@@ -4474,7 +4474,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0x20396f06:  numBytes = 675; return dropdown_arrow_hover_blue_svg;
         case 0xb0b0ab15:  numBytes = 500; return arrow_next_blue_svg;
         case 0xcd55bbd5:  numBytes = 499; return arrow_prev_blue_svg;
-        case 0x014eca27:  numBytes = 589; return FxSound_Black_Bars_svg;
+        case 0x014eca27:  numBytes = 589; return Coral_Black_Bars_svg;
         case 0xee3479c3:  numBytes = 940; return minimize_black_svg;
         case 0x5037c463:  numBytes = 952; return minimize_hover_blue_svg;
         case 0x4db7fd9a:  numBytes = 2199; return power_off_black_svg;
@@ -4494,10 +4494,10 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0x4404d991:  numBytes = 3207; return Button_ON_svg;
         case 0xc7a16dde:  numBytes = 738; return dropdown_arrow_bw_svg;
         case 0x1dd2c7fd:  numBytes = 675; return dropdown_arrow_hover_svg;
-        case 0xdfb8b8b2:  numBytes = 7254; return FxSound_Logo_svg;
-        case 0x35789d3d:  numBytes = 589; return FxSound_White_Bars_svg;
-        case 0x6988ca67:  numBytes = 388; return fxsound_png;
-        case 0x7acdf8e3:  numBytes = 3334; return fxsound_large_png;
+        case 0xdfb8b8b2:  numBytes = 7254; return Coral_Logo_svg;
+        case 0x35789d3d:  numBytes = 589; return Coral_White_Bars_svg;
+        case 0x6988ca67:  numBytes = 388; return coral_app_png;
+        case 0x7acdf8e3:  numBytes = 3334; return coral_app_large_png;
         case 0xc7038a71:  numBytes = 816; return maximize_svg;
         case 0x4485872e:  numBytes = 828; return maximize_hover_svg;
         case 0xdc083b84:  numBytes = 542; return menu_svg;
@@ -4510,36 +4510,36 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0x1fdee048:  numBytes = 1391; return settings_svg;
         case 0x9eeab69d:  numBytes = 4839; return Slider_Thumb_svg;
         case 0x36e2b8a1:  numBytes = 4061; return Slider_Thumb_bw_svg;
-        case 0xda29b4a4:  numBytes = 0; return FxSound_ar_txt;
-        case 0xdaeefdb2:  numBytes = 0; return FxSound_ba_txt;
-        case 0xdda17d63:  numBytes = 0; return FxSound_cs_txt;
-        case 0xde910cf4:  numBytes = 0; return FxSound_de_txt;
-        case 0xe10b2ea1:  numBytes = 0; return FxSound_es_txt;
-        case 0xe1c2602e:  numBytes = 0; return FxSound_fa_txt;
-        case 0xe2331c36:  numBytes = 0; return FxSound_fi_txt;
-        case 0xe2b1efbf:  numBytes = 0; return FxSound_fr_txt;
-        case 0xe61ba0fd:  numBytes = 0; return FxSound_hr_txt;
-        case 0x1833c740:  numBytes = 0; return fxsound_hu_txt;
-        case 0xe70b308e:  numBytes = 0; return FxSound_id_txt;
-        case 0xe7eca89e:  numBytes = 0; return FxSound_it_txt;
-        case 0xe895c2aa:  numBytes = 0; return FxSound_ja_txt;
-        case 0xeb0fe457:  numBytes = 0; return FxSound_ko_txt;
-        case 0xf00427b1:  numBytes = 0; return FxSound_nl_txt;
-        case 0xf02e6e34:  numBytes = 0; return FxSound_no_txt;
-        case 0xf36dd8ef:  numBytes = 0; return FxSound_pl_txt;
-        case 0x7b843fc7:  numBytes = 0; return FxSound_ptbr_txt;
-        case 0xf3de94f7:  numBytes = 0; return FxSound_pt_txt;
-        case 0xf701d0b0:  numBytes = 0; return FxSound_ro_txt;
-        case 0xf7565db6:  numBytes = 0; return FxSound_ru_txt;
-        case 0xf88c62cc:  numBytes = 0; return FxSound_sl_txt;
-        case 0xf9194dd6:  numBytes = 0; return FxSound_sv_txt;
-        case 0xfa08dd67:  numBytes = 0; return FxSound_th_txt;
-        case 0xfa95c871:  numBytes = 0; return FxSound_tr_txt;
-        case 0x4464a26e:  numBytes = 0; return FxSound_txt;
-        case 0xfb5b117f:  numBytes = 0; return FxSound_ua_txt;
-        case 0xfd80a626:  numBytes = 0; return FxSound_vi_txt;
-        case 0xd8a3b00c:  numBytes = 0; return FxSound_zhCN_txt;
-        case 0xf624e624:  numBytes = 0; return FxSound_zhTW_txt;
+        case 0xda29b4a4:  numBytes = 0; return Coral_ar_txt;
+        case 0xdaeefdb2:  numBytes = 0; return Coral_ba_txt;
+        case 0xdda17d63:  numBytes = 0; return Coral_cs_txt;
+        case 0xde910cf4:  numBytes = 0; return Coral_de_txt;
+        case 0xe10b2ea1:  numBytes = 0; return Coral_es_txt;
+        case 0xe1c2602e:  numBytes = 0; return Coral_fa_txt;
+        case 0xe2331c36:  numBytes = 0; return Coral_fi_txt;
+        case 0xe2b1efbf:  numBytes = 0; return Coral_fr_txt;
+        case 0xe61ba0fd:  numBytes = 0; return Coral_hr_txt;
+        case 0x1833c740:  numBytes = 0; return coral_hu_txt;
+        case 0xe70b308e:  numBytes = 0; return Coral_id_txt;
+        case 0xe7eca89e:  numBytes = 0; return Coral_it_txt;
+        case 0xe895c2aa:  numBytes = 0; return Coral_ja_txt;
+        case 0xeb0fe457:  numBytes = 0; return Coral_ko_txt;
+        case 0xf00427b1:  numBytes = 0; return Coral_nl_txt;
+        case 0xf02e6e34:  numBytes = 0; return Coral_no_txt;
+        case 0xf36dd8ef:  numBytes = 0; return Coral_pl_txt;
+        case 0x7b843fc7:  numBytes = 0; return Coral_ptbr_txt;
+        case 0xf3de94f7:  numBytes = 0; return Coral_pt_txt;
+        case 0xf701d0b0:  numBytes = 0; return Coral_ro_txt;
+        case 0xf7565db6:  numBytes = 0; return Coral_ru_txt;
+        case 0xf88c62cc:  numBytes = 0; return Coral_sl_txt;
+        case 0xf9194dd6:  numBytes = 0; return Coral_sv_txt;
+        case 0xfa08dd67:  numBytes = 0; return Coral_th_txt;
+        case 0xfa95c871:  numBytes = 0; return Coral_tr_txt;
+        case 0x4464a26e:  numBytes = 0; return Coral_txt;
+        case 0xfb5b117f:  numBytes = 0; return Coral_ua_txt;
+        case 0xfd80a626:  numBytes = 0; return Coral_vi_txt;
+        case 0xd8a3b00c:  numBytes = 0; return Coral_zhCN_txt;
+        case 0xf624e624:  numBytes = 0; return Coral_zhTW_txt;
         default: break;
     }
 
@@ -4582,7 +4582,7 @@ const char* namedResourceList[] =
     "dropdown_arrow_hover_blue_svg",
     "arrow_next_blue_svg",
     "arrow_prev_blue_svg",
-    "FxSound_Black_Bars_svg",
+    "Coral_Black_Bars_svg",
     "minimize_black_svg",
     "minimize_hover_blue_svg",
     "power_off_black_svg",
@@ -4602,10 +4602,10 @@ const char* namedResourceList[] =
     "Button_ON_svg",
     "dropdown_arrow_bw_svg",
     "dropdown_arrow_hover_svg",
-    "FxSound_Logo_svg",
-    "FxSound_White_Bars_svg",
-    "fxsound_png",
-    "fxsound_large_png",
+    "Coral_Logo_svg",
+    "Coral_White_Bars_svg",
+    "coral_app_png",
+    "coral_app_large_png",
     "maximize_svg",
     "maximize_hover_svg",
     "menu_svg",
@@ -4618,36 +4618,36 @@ const char* namedResourceList[] =
     "settings_svg",
     "Slider_Thumb_svg",
     "Slider_Thumb_bw_svg",
-    "FxSound_ar_txt",
-    "FxSound_ba_txt",
-    "FxSound_cs_txt",
-    "FxSound_de_txt",
-    "FxSound_es_txt",
-    "FxSound_fa_txt",
-    "FxSound_fi_txt",
-    "FxSound_fr_txt",
-    "FxSound_hr_txt",
-    "fxsound_hu_txt",
-    "FxSound_id_txt",
-    "FxSound_it_txt",
-    "FxSound_ja_txt",
-    "FxSound_ko_txt",
-    "FxSound_nl_txt",
-    "FxSound_no_txt",
-    "FxSound_pl_txt",
-    "FxSound_ptbr_txt",
-    "FxSound_pt_txt",
-    "FxSound_ro_txt",
-    "FxSound_ru_txt",
-    "FxSound_sl_txt",
-    "FxSound_sv_txt",
-    "FxSound_th_txt",
-    "FxSound_tr_txt",
-    "FxSound_txt",
-    "FxSound_ua_txt",
-    "FxSound_vi_txt",
-    "FxSound_zhCN_txt",
-    "FxSound_zhTW_txt"
+    "Coral_ar_txt",
+    "Coral_ba_txt",
+    "Coral_cs_txt",
+    "Coral_de_txt",
+    "Coral_es_txt",
+    "Coral_fa_txt",
+    "Coral_fi_txt",
+    "Coral_fr_txt",
+    "Coral_hr_txt",
+    "coral_hu_txt",
+    "Coral_id_txt",
+    "Coral_it_txt",
+    "Coral_ja_txt",
+    "Coral_ko_txt",
+    "Coral_nl_txt",
+    "Coral_no_txt",
+    "Coral_pl_txt",
+    "Coral_ptbr_txt",
+    "Coral_pt_txt",
+    "Coral_ro_txt",
+    "Coral_ru_txt",
+    "Coral_sl_txt",
+    "Coral_sv_txt",
+    "Coral_th_txt",
+    "Coral_tr_txt",
+    "Coral_txt",
+    "Coral_ua_txt",
+    "Coral_vi_txt",
+    "Coral_zhCN_txt",
+    "Coral_zhTW_txt"
 };
 
 const char* originalFilenames[] =
@@ -4685,7 +4685,7 @@ const char* originalFilenames[] =
     "dropdown_arrow_hover_blue.svg",
     "arrow_next_blue.svg",
     "arrow_prev_blue.svg",
-    "FxSound Black Bars.svg",
+    "Coral Black Bars.svg",
     "minimize_black.svg",
     "minimize_hover_blue.svg",
     "power_off_black.svg",
@@ -4705,10 +4705,10 @@ const char* originalFilenames[] =
     "Button_ON.svg",
     "dropdown_arrow_bw.svg",
     "dropdown_arrow_hover.svg",
-    "FxSound Logo.svg",
-    "FxSound White Bars.svg",
-    "fxsound.png",
-    "fxsound_large.png",
+    "Coral Logo.svg",
+    "Coral White Bars.svg",
+    "coral.png",
+    "coral_app_large.png",
     "maximize.svg",
     "maximize_hover.svg",
     "menu.svg",
@@ -4721,36 +4721,36 @@ const char* originalFilenames[] =
     "settings.svg",
     "Slider_Thumb.svg",
     "Slider_Thumb_bw.svg",
-    "FxSound.ar.txt",
-    "FxSound.ba.txt",
-    "FxSound.cs.txt",
-    "FxSound.de.txt",
-    "FxSound.es.txt",
-    "FxSound.fa.txt",
-    "FxSound.fi.txt",
-    "FxSound.fr.txt",
-    "FxSound.hr.txt",
-    "fxsound.hu.txt",
-    "FxSound.id.txt",
-    "FxSound.it.txt",
-    "FxSound.ja.txt",
-    "FxSound.ko.txt",
-    "FxSound.nl.txt",
-    "FxSound.no.txt",
-    "FxSound.pl.txt",
-    "FxSound.pt-br.txt",
-    "FxSound.pt.txt",
-    "FxSound.ro.txt",
-    "FxSound.ru.txt",
-    "FxSound.sl.txt",
-    "FxSound.sv.txt",
-    "FxSound.th.txt",
-    "FxSound.tr.txt",
-    "FxSound.txt",
-    "FxSound.ua.txt",
-    "FxSound.vi.txt",
-    "FxSound.zh-CN.txt",
-    "FxSound.zh-TW.txt"
+    "Coral.ar.txt",
+    "Coral.ba.txt",
+    "Coral.cs.txt",
+    "Coral.de.txt",
+    "Coral.es.txt",
+    "Coral.fa.txt",
+    "Coral.fi.txt",
+    "Coral.fr.txt",
+    "Coral.hr.txt",
+    "coral.hu.txt",
+    "Coral.id.txt",
+    "Coral.it.txt",
+    "Coral.ja.txt",
+    "Coral.ko.txt",
+    "Coral.nl.txt",
+    "Coral.no.txt",
+    "Coral.pl.txt",
+    "Coral.pt-br.txt",
+    "Coral.pt.txt",
+    "Coral.ro.txt",
+    "Coral.ru.txt",
+    "Coral.sl.txt",
+    "Coral.sv.txt",
+    "Coral.th.txt",
+    "Coral.tr.txt",
+    "Coral.txt",
+    "Coral.ua.txt",
+    "Coral.vi.txt",
+    "Coral.zh-CN.txt",
+    "Coral.zh-TW.txt"
 };
 
 const char* getNamedResourceOriginalFilename (const char* resourceNameUTF8);

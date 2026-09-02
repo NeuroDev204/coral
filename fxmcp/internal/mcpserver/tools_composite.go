@@ -9,21 +9,21 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"fxmcp/internal/fxsound"
+	"fxmcp/internal/coral"
 )
 
 func (a *App) registerCompositeTool(s *mcp.Server) {
 	mcp.AddTool(s, &mcp.Tool{
-		Name: "fxsound_apply_settings",
-		Description: "Applies any combination of FxSound settings in a single call: power, preset " +
+		Name: "coral_apply_settings",
+		Description: "Applies any combination of Coral settings in a single call: power, preset " +
 			"selection or preset management (save_preset/overwrite_preset/undo_preset/rename_preset/" +
 			"delete_preset -- exactly one of these preset actions may be set per call), output device, view " +
 			"(\"lite\" or \"full\"), language, num_eq_bands (5/10/15/20/31), balance, filter_q, master_gain, " +
 			"volume_leveling, eq_bands (per-band frequency), eq_band_gains (per-band boost/" +
 			"cut), effects (fidelity/clarity, ambience, surround, dynamicboost, bass), and run_minimized. " +
-			"Multiple fields are sent as one atomic command line (a single FxSound.exe invocation), which is " +
+			"Multiple fields are sent as one atomic command line (a single Coral.exe invocation), which is " +
 			"more efficient than several separate tool calls and avoids intermediate UI states. Prefer the " +
-			"focused single-purpose tools (fxsound_set_power, fxsound_select_preset, etc.) for a single " +
+			"focused single-purpose tools (coral_set_power, coral_select_preset, etc.) for a single " +
 			"change; use this one when several settings should change together.",
 		// Conditionally destructive: overwrite_preset/delete_preset can be
 		// set through this tool, so it's annotated as potentially
@@ -100,7 +100,7 @@ func (a *App) toolApplySettings(ctx context.Context, _ *mcp.CallToolRequest, in 
 	needsStatus := needsPresetValidation || needsBandValidation
 	requireRunning := needsStatus || len(in.Effects) > 0
 
-	var status *fxsound.Status
+	var status *coral.Status
 	if needsStatus {
 		s, err := readyStatus(ctx, a.Paths)
 		if err != nil {
@@ -118,39 +118,39 @@ func (a *App) toolApplySettings(ctx context.Context, _ *mcp.CallToolRequest, in 
 		flags["preset"] = in.Preset
 	}
 	if in.SavePreset != "" {
-		if err := fxsound.ValidateSavePreset(status); err != nil {
+		if err := coral.ValidateSavePreset(status); err != nil {
 			return nil, applyResult{}, err
 		}
-		sanitized, err := fxsound.ValidatePresetName(in.SavePreset, status)
+		sanitized, err := coral.ValidatePresetName(in.SavePreset, status)
 		if err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["save_preset"] = sanitized
 	}
 	if in.OverwritePreset {
-		if err := fxsound.ValidateOverwritePreset(status); err != nil {
+		if err := coral.ValidateOverwritePreset(status); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["overwrite_preset"] = ""
 	}
 	if in.UndoPreset {
-		if err := fxsound.ValidateUndoPreset(status); err != nil {
+		if err := coral.ValidateUndoPreset(status); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["undo_preset"] = ""
 	}
 	if in.RenamePreset != "" {
-		if err := fxsound.ValidateRenamePreset(status); err != nil {
+		if err := coral.ValidateRenamePreset(status); err != nil {
 			return nil, applyResult{}, err
 		}
-		sanitized, err := fxsound.ValidatePresetName(in.RenamePreset, status)
+		sanitized, err := coral.ValidatePresetName(in.RenamePreset, status)
 		if err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["rename_preset"] = sanitized
 	}
 	if in.DeletePreset {
-		if err := fxsound.ValidateDeletePreset(status); err != nil {
+		if err := coral.ValidateDeletePreset(status); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["delete_preset"] = ""
@@ -166,85 +166,85 @@ func (a *App) toolApplySettings(ctx context.Context, _ *mcp.CallToolRequest, in 
 		flags["view"] = v
 	}
 	if in.Language != "" {
-		if err := fxsound.ValidateLanguageCode(in.Language); err != nil {
+		if err := coral.ValidateLanguageCode(in.Language); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["language"] = in.Language
 	}
 	if in.NumEqBands != 0 {
-		if err := fxsound.ValidateNumEqBands(in.NumEqBands); err != nil {
+		if err := coral.ValidateNumEqBands(in.NumEqBands); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["num_bands"] = strconv.Itoa(in.NumEqBands)
 	}
 	if in.Balance != nil {
-		if err := fxsound.ValidateRange("balance", *in.Balance, -20, 20); err != nil {
+		if err := coral.ValidateRange("balance", *in.Balance, -20, 20); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["balance"] = formatFloat(*in.Balance)
 	}
 	if in.FilterQ != nil {
-		if err := fxsound.ValidateRange("filter_q", *in.FilterQ, 1, 3); err != nil {
+		if err := coral.ValidateRange("filter_q", *in.FilterQ, 1, 3); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["filter_q"] = formatFloat(*in.FilterQ)
 	}
 	if in.MasterGain != nil {
-		if err := fxsound.ValidateRange("master_gain", *in.MasterGain, -20, 20); err != nil {
+		if err := coral.ValidateRange("master_gain", *in.MasterGain, -20, 20); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["master_gain"] = formatFloat(*in.MasterGain)
 	}
 	if in.VolumeLeveling != nil {
-		if err := fxsound.ValidateRange("volume_leveling", *in.VolumeLeveling, 0, 4); err != nil {
+		if err := coral.ValidateRange("volume_leveling", *in.VolumeLeveling, 0, 4); err != nil {
 			return nil, applyResult{}, err
 		}
 		flags["volume_leveling"] = formatFloat(*in.VolumeLeveling)
 	}
 	if len(in.EqBands) > 0 {
 		numBands := status.Equalizer.NumBands
-		if err := fxsound.ValidateBandBatch(len(in.EqBands), numBands); err != nil {
+		if err := coral.ValidateBandBatch(len(in.EqBands), numBands); err != nil {
 			return nil, applyResult{}, err
 		}
-		pairs := make([]fxsound.KV, 0, len(in.EqBands))
+		pairs := make([]coral.KV, 0, len(in.EqBands))
 		for _, b := range in.EqBands {
-			if err := fxsound.ValidateBandIndex(b.Index, numBands); err != nil {
+			if err := coral.ValidateBandIndex(b.Index, numBands); err != nil {
 				return nil, applyResult{}, err
 			}
-			pairs = append(pairs, fxsound.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.FrequencyHz)})
+			pairs = append(pairs, coral.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.FrequencyHz)})
 		}
-		flags["set_band_freq"] = fxsound.FormatPairs(pairs)
+		flags["set_band_freq"] = coral.FormatPairs(pairs)
 	}
 	if len(in.EqBandGains) > 0 {
 		numBands := status.Equalizer.NumBands
-		if err := fxsound.ValidateBandBatch(len(in.EqBandGains), numBands); err != nil {
+		if err := coral.ValidateBandBatch(len(in.EqBandGains), numBands); err != nil {
 			return nil, applyResult{}, err
 		}
-		pairs := make([]fxsound.KV, 0, len(in.EqBandGains))
+		pairs := make([]coral.KV, 0, len(in.EqBandGains))
 		for _, b := range in.EqBandGains {
-			if err := fxsound.ValidateBandIndex(b.Index, numBands); err != nil {
+			if err := coral.ValidateBandIndex(b.Index, numBands); err != nil {
 				return nil, applyResult{}, err
 			}
-			if err := fxsound.ValidateBandGain(b.GainDb); err != nil {
+			if err := coral.ValidateBandGain(b.GainDb); err != nil {
 				return nil, applyResult{}, err
 			}
-			pairs = append(pairs, fxsound.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.GainDb)})
+			pairs = append(pairs, coral.KV{Key: strconv.Itoa(b.Index), Value: formatFloat(b.GainDb)})
 		}
-		flags["set_band_gain"] = fxsound.FormatPairs(pairs)
+		flags["set_band_gain"] = coral.FormatPairs(pairs)
 	}
 	if len(in.Effects) > 0 {
-		pairs := make([]fxsound.KV, 0, len(in.Effects))
+		pairs := make([]coral.KV, 0, len(in.Effects))
 		for name, value := range in.Effects {
-			canonical, err := fxsound.NormalizeEffectName(name)
+			canonical, err := coral.NormalizeEffectName(name)
 			if err != nil {
 				return nil, applyResult{}, err
 			}
-			if err := fxsound.ValidateEffectValue(value); err != nil {
+			if err := coral.ValidateEffectValue(value); err != nil {
 				return nil, applyResult{}, err
 			}
-			pairs = append(pairs, fxsound.KV{Key: canonical, Value: formatFloat(value)})
+			pairs = append(pairs, coral.KV{Key: canonical, Value: formatFloat(value)})
 		}
-		flags["set_effect"] = fxsound.FormatPairs(pairs)
+		flags["set_effect"] = coral.FormatPairs(pairs)
 	}
 	if in.RunMinimized != nil && *in.RunMinimized {
 		flags["run_minimized"] = ""
@@ -254,7 +254,7 @@ func (a *App) toolApplySettings(ctx context.Context, _ *mcp.CallToolRequest, in 
 		return nil, applyResult{}, errors.New("no settings provided")
 	}
 
-	if err := fxsound.Apply(ctx, a.Paths, flags, requireRunning); err != nil {
+	if err := coral.Apply(ctx, a.Paths, flags, requireRunning); err != nil {
 		return nil, applyResult{}, err
 	}
 	return nil, applyResult{Applied: true, Detail: fmt.Sprintf("applied %d setting(s) in one call", len(flags))}, nil
