@@ -364,6 +364,14 @@ int PT_DECLSPEC mthConvertRealtypeBufTo16BitIntBufWithClipping(int i_length, rea
 	return(OKAY);
 }
 
+static inline short int clamp16(float in_val)
+{
+	float f = in_val * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR;
+	if (f > 32767.0f) return 32767;
+	if (f < -32768.0f) return -32768;
+	return (short int)f;
+}
+
 /*
  * FUNCTION: mthConvertRealtypeBufToIntBuf()
  * DESCRIPTION:
@@ -387,7 +395,7 @@ int PT_DECLSPEC mthConvertRealtypeBufToIntBuf(int i_length, int i_bit_width, int
 	case 16:
 		for(i=0; i<i_length; i++)
 		{
-			sp_buf[i] = (short int)(rp_buf[i] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
+			sp_buf[i] = clamp16(rp_buf[i]);
 		}
 		break;
 
@@ -522,18 +530,18 @@ int PT_DECLSPEC mthConvertRealtypeBufToIntBufSurroundPostProcess(int i_length, i
 			k = i * 6;
 
 			// Front channels
-			sp_buf[k]   = (short int)(rp_buf[j] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
-			sp_buf[k+1] = (short int)(rp_buf[j+1] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
+			sp_buf[k]   = clamp16(rp_buf[j]);
+			sp_buf[k+1] = clamp16(rp_buf[j+1]);
 
 			// Rear channels
-			sp_buf[k+2] = (short int)(rp_buf[array_length * 2 + j] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
-			sp_buf[k+3] = (short int)(rp_buf[array_length * 2 + j + 1] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
+			sp_buf[k+2] = clamp16(rp_buf[array_length * 2 + j]);
+			sp_buf[k+3] = clamp16(rp_buf[array_length * 2 + j + 1]);
 
 			// Center channel
-			sp_buf[k+4] = (short int)(rp_buf[array_length * 4 + i] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
+			sp_buf[k+4] = clamp16(rp_buf[array_length * 4 + i]);
 
 			// Subwoofer channel
-			sp_buf[k+5] = (short int)(rp_buf[array_length * 5 + i] * (float)MTH_16_BIT_REAL_CONVERSION_FACTOR);
+			sp_buf[k+5] = clamp16(rp_buf[array_length * 5 + i]);
 		}
 		break;
 

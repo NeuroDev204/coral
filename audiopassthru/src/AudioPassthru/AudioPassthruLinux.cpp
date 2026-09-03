@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <mutex>
 #include <cctype>
+#include <cmath>
 
 AudioPassthruCallback* AudioPassthruPrivate::s_callback_ = nullptr;
 
@@ -509,7 +510,7 @@ void AudioPassthruPrivate::setDspProcessingModule(DfxDsp* p_dfx_dsp)
 	p_dfx_dsp_ = p_dfx_dsp;
 	if (p_dfx_dsp_)
 	{
-		p_dfx_dsp_->setSignalFormat(16, 2, 48000, 16);
+		p_dfx_dsp_->setSignalFormat(32, 2, 48000, 32);
 	}
 }
 
@@ -520,9 +521,9 @@ DWORD WINAPI AudioPassthruPrivate::processingThread(LPVOID lpParam)
 
 DWORD AudioPassthruPrivate::threadWorker(void)
 {
-    // Use 16-bit 48kHz stereo format (matching PipeWire native sample rate)
+    // Use 32-bit float 48kHz stereo format (matching PipeWire native sample format)
     static const pa_sample_spec ss = {
-        .format = PA_SAMPLE_S16LE,
+        .format = PA_SAMPLE_FLOAT32LE,
         .rate = 48000,
         .channels = 2
     };
@@ -539,8 +540,6 @@ DWORD AudioPassthruPrivate::threadWorker(void)
     int error = 0;
 
     usleep(300000);
-    applyPreferredCardProfile();
-    unmuteAnalogMixers();
 
     std::string monitor = std::string(kCoralSink) + ".monitor";
     pa_simple *s_read = pa_simple_new(NULL, "Coral", PA_STREAM_RECORD, monitor.c_str(), "Capture", &ss, NULL, &buffer_attr, &error);
@@ -550,9 +549,9 @@ DWORD AudioPassthruPrivate::threadWorker(void)
     }
 
     const int num_samples = 1024; // ~21ms at 48kHz
-    const int buf_size = num_samples * 2 * sizeof(short);
-    short *input_buffer = (short*)malloc(buf_size);
-    short *output_buffer = (short*)malloc(buf_size);
+    const int buf_size = num_samples * 2 * sizeof(float);
+    float *input_buffer = (float*)malloc(buf_size);
+    float *output_buffer = (float*)malloc(buf_size);
 
     memset(input_buffer, 0, buf_size);
     memset(output_buffer, 0, buf_size);
@@ -571,52 +570,85 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         return w;
     };
 
-    std::mutex route_mu;
-    std::string desired_hw_sink = resolveBestHardwareSink(targeted_playback_device_guid_);
-    std::atomic<bool> stop_watch{false};
-
-    if (!desired_hw_sink.empty()) {
-        s_write = open_write_stream(desired_hw_sink);
+    std::string initial_hw_sink = resolveBestHardwareSink(targeted_playback_device_guid_);
+    if (!initial_hw_sink.empty()) {
+        s_write = open_write_stream(initial_hw_sink);
         if (s_write) {
-            current_hw_sink = desired_hw_sink;
-            hw_sink_name_ = desired_hw_sink;
-            setSinkUnityGain(desired_hw_sink);
+            current_hw_sink = initial_hw_sink;
+            hw_sink_name_ = initial_hw_sink;
             std::cerr << "DSP: Output automatically routed to -> " << current_hw_sink << std::endl;
         }
     }
 
-    // pactl/amixer must not run on the audio thread: popen stalls the
+    char pending_sink_slots[2][256] = {};
+    std::atomic<int> pending_slot{-1};
+    std::atomic<int> active_read_slot{-1};
+    std::atomic<bool> need_reconnect{false};
+    std::atomic<bool> stop_watch{false};
+
+    // pactl/amixer/system() must not run on the audio thread: popen stalls the
     // callback and amixer unmute clicks the analog path ("rẹt rẹt").
+    // All card profile changes, unmute operations, and volume adjustments run
+    // exclusively on this background watch thread.
     std::thread watch([&]() {
-        while (!stop_watch.load() && !i_kill_processing_thread_) {
-            for (int i = 0; i < 10 && !stop_watch.load() && !i_kill_processing_thread_; ++i)
+        applyPreferredCardProfile();
+        unmuteAnalogMixers();
+        if (!initial_hw_sink.empty()) {
+            setSinkUnityGain(initial_hw_sink);
+        }
+
+        int slot_idx = 0;
+        std::string last_routed = initial_hw_sink;
+
+        while (!stop_watch.load(std::memory_order_relaxed) && !i_kill_processing_thread_) {
+            for (int i = 0; i < 10 && !stop_watch.load(std::memory_order_relaxed) && !i_kill_processing_thread_; ++i) {
+                if (need_reconnect.load(std::memory_order_acquire))
+                    break;
                 usleep(100000);
-            if (stop_watch.load() || i_kill_processing_thread_)
+            }
+            if (stop_watch.load(std::memory_order_relaxed) || i_kill_processing_thread_)
                 break;
+
             applyPreferredCardProfile();
             const std::string best = resolveBestHardwareSink(targeted_playback_device_guid_);
-            std::lock_guard<std::mutex> lock(route_mu);
-            desired_hw_sink = best;
+            bool reconnect = need_reconnect.exchange(false, std::memory_order_acq_rel);
+
+            if ((best != last_routed || reconnect) && !best.empty()) {
+                setSinkUnityGain(best);
+                int next_slot = 1 - slot_idx;
+                while (active_read_slot.load(std::memory_order_acquire) == next_slot) {
+                    std::this_thread::yield();
+                }
+                slot_idx = next_slot;
+                strncpy(pending_sink_slots[slot_idx], best.c_str(), sizeof(pending_sink_slots[slot_idx]) - 1);
+                pending_sink_slots[slot_idx][sizeof(pending_sink_slots[slot_idx]) - 1] = '\0';
+                pending_slot.store(slot_idx, std::memory_order_release);
+                last_routed = best;
+            }
         }
     });
 
     while (!i_kill_processing_thread_) {
-        std::string want;
-        {
-            std::lock_guard<std::mutex> lock(route_mu);
-            want = desired_hw_sink;
-        }
-        if ((want != current_hw_sink || !s_write) && !want.empty()) {
-            if (s_write) {
-                pa_simple_free(s_write);
-                s_write = nullptr;
-            }
-            s_write = open_write_stream(want);
-            if (s_write) {
-                current_hw_sink = want;
-                hw_sink_name_ = want;
-                setSinkUnityGain(want);
-                std::cerr << "DSP: Output automatically routed to -> " << current_hw_sink << std::endl;
+        // Lock-free route update from background watch thread
+        int slot = pending_slot.exchange(-1, std::memory_order_acq_rel);
+        if (slot >= 0 && slot < 2) {
+            active_read_slot.store(slot, std::memory_order_release);
+            char want[256] = {};
+            strncpy(want, pending_sink_slots[slot], sizeof(want) - 1);
+            want[sizeof(want) - 1] = '\0';
+            active_read_slot.store(-1, std::memory_order_release);
+
+            if ((want != current_hw_sink || !s_write) && want[0] != '\0') {
+                if (s_write) {
+                    pa_simple_free(s_write);
+                    s_write = nullptr;
+                }
+                s_write = open_write_stream(want);
+                if (s_write) {
+                    current_hw_sink = want;
+                    hw_sink_name_ = want;
+                    std::cerr << "DSP: Output automatically routed to -> " << current_hw_sink << std::endl;
+                }
             }
         }
 
@@ -630,10 +662,10 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         int dsp_res = -1;
         if (p_dfx_dsp_) {
             if (!format_initialized) {
-                p_dfx_dsp_->setSignalFormat(16, 2, 48000, 16);
+                p_dfx_dsp_->setSignalFormat(32, 2, 48000, 32);
                 format_initialized = true;
             }
-            dsp_res = p_dfx_dsp_->processAudio(input_buffer, output_buffer, num_samples, 0);
+            dsp_res = p_dfx_dsp_->processAudio(reinterpret_cast<short*>(input_buffer), reinterpret_cast<short*>(output_buffer), num_samples, 0);
             if (dsp_res != 0) {
                 memcpy(output_buffer, input_buffer, buf_size);
             }
@@ -642,13 +674,31 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         }
 
         // If DSP output was all zero despite non-zero input, passthrough directly
-        short in_peak_curr = 0, out_peak_curr = 0;
+        float in_peak_curr = 0.0f, out_peak_curr = 0.0f;
         for (int k = 0; k < num_samples * 2; ++k) {
-            if (abs(input_buffer[k]) > in_peak_curr) in_peak_curr = abs(input_buffer[k]);
-            if (abs(output_buffer[k]) > out_peak_curr) out_peak_curr = abs(output_buffer[k]);
+            float in_abs = std::fabs(input_buffer[k]);
+            float out_abs = std::fabs(output_buffer[k]);
+            if (in_abs > in_peak_curr) in_peak_curr = in_abs;
+            if (out_abs > out_peak_curr) out_peak_curr = out_abs;
         }
-        if (in_peak_curr > 0 && out_peak_curr == 0) {
+        if (in_peak_curr > 0.0001f && out_peak_curr == 0.0f) {
             memcpy(output_buffer, input_buffer, buf_size);
+        }
+
+        // Apply transparent C1-continuous soft-knee limiter to prevent DAC distortion on extreme boosts
+        for (int k = 0; k < num_samples * 2; ++k) {
+            float s = output_buffer[k];
+            float abs_s = std::fabs(s);
+            if (abs_s > 0.90f) {
+                float sign = (s > 0.0f) ? 1.0f : -1.0f;
+                if (abs_s < 1.098f) {
+                    float u = (abs_s - 0.90f) / 0.198f;
+                    float compressed = 0.90f + 0.198f * (u - 0.5f * u * u);
+                    output_buffer[k] = sign * compressed;
+                } else {
+                    output_buffer[k] = sign * 0.999f;
+                }
+            }
         }
 
         // Mute if requested
@@ -659,15 +709,16 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         // Write processed audio to hardware
         if (s_write) {
             if (pa_simple_write(s_write, output_buffer, buf_size, &error) < 0) {
-                // If write fails (e.g. device disconnected / unplugged), trigger reconnect
+                // If write fails (e.g. device disconnected / unplugged), trigger reconnect on watch thread
                 pa_simple_free(s_write);
                 s_write = nullptr;
                 current_hw_sink = "";
+                need_reconnect.store(true, std::memory_order_release);
             }
         }
     }
 
-    stop_watch.store(true);
+    stop_watch.store(true, std::memory_order_release);
     if (watch.joinable())
         watch.join();
 
