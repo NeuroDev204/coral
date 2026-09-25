@@ -19,6 +19,14 @@ AudioPassthruCallback* AudioPassthruPrivate::s_callback_ = nullptr;
 namespace
 {
 	constexpr const char* kCoralSink = "CoralSink";
+	constexpr uint32_t kSampleRate = 48000;
+	constexpr int kProcessingChunkSamples = 512;     // ~10.67ms at 48kHz
+	constexpr uint32_t kCaptureFragUsec = 10666;     // 512 samples
+	constexpr uint32_t kPlaybackTargetUsec = 21333;  // 1024 samples (~21.33ms)
+	constexpr uint32_t kPlaybackMinReqUsec = 10666;  // 512 samples
+	constexpr uint32_t kPlaybackPrebufUsec = 10666;  // 512 samples
+	constexpr uint32_t kMaxBufferUsec = 60000;       // 60ms hard ceiling to prevent buffer bloat
+
 
 	bool isAppVirtualSink(const std::string& name)
 	{
@@ -433,7 +441,7 @@ int AudioPassthruPrivate::init()
 	saved_default_sink_ = hw_sink_name_;
 
 	std::string load_cmd = std::string("pactl load-module module-null-sink sink_name=") + kCoralSink
-		+ " sink_properties=device.description=Coral 2>/dev/null";
+		+ " sink_properties='device.description=\"Coral\" node.latency=512/48000 media.class=Audio/Sink' 2>/dev/null";
 	system(load_cmd.c_str());
 	std::string default_cmd = std::string("pactl set-default-sink ") + kCoralSink + " 2>/dev/null";
 	system(default_cmd.c_str());
@@ -528,27 +536,39 @@ DWORD AudioPassthruPrivate::threadWorker(void)
         .channels = 2
     };
 
-    // Larger buffers: 5–20ms fragments caused occasional crackle when DSP
-    // or PipeWire hiccuped. 48ms playback / 24ms capture stays smooth.
-    pa_buffer_attr buffer_attr;
-    buffer_attr.maxlength = (uint32_t)-1;
-    buffer_attr.tlength = pa_usec_to_bytes(48000, &ss);
-    buffer_attr.prebuf = (uint32_t)-1;
-    buffer_attr.minreq = pa_usec_to_bytes(24000, &ss);
-    buffer_attr.fragsize = pa_usec_to_bytes(24000, &ss);
+    // Elevate audio worker thread priority for smooth real-time scheduling
+    struct sched_param sched_p = {};
+    sched_p.sched_priority = 20;
+    pthread_setschedparam(pthread_self(), SCHED_RR, &sched_p);
+
+    // Fine-tuned low-latency buffer attributes
+    // 512 samples (~10.67ms) capture fragment / 1024 samples (~21.33ms) playback target
+    pa_buffer_attr attr_read;
+    attr_read.maxlength = pa_usec_to_bytes(kMaxBufferUsec, &ss); // 60ms ceiling to prevent buffer bloat
+    attr_read.tlength = (uint32_t)-1;
+    attr_read.prebuf = (uint32_t)-1;
+    attr_read.minreq = (uint32_t)-1;
+    attr_read.fragsize = pa_usec_to_bytes(kCaptureFragUsec, &ss);   // 256 samples
+
+    pa_buffer_attr attr_write;
+    attr_write.maxlength = pa_usec_to_bytes(kMaxBufferUsec, &ss); // 40ms ceiling
+    attr_write.tlength = pa_usec_to_bytes(kPlaybackTargetUsec, &ss);  // 512 samples (~10.67ms)
+    attr_write.prebuf = pa_usec_to_bytes(kPlaybackPrebufUsec, &ss);    // 256 samples prebuffering
+    attr_write.minreq = pa_usec_to_bytes(kPlaybackMinReqUsec, &ss);    // 256 samples min request
+    attr_write.fragsize = (uint32_t)-1;
 
     int error = 0;
 
-    usleep(300000);
+    usleep(100000);
 
     std::string monitor = std::string(kCoralSink) + ".monitor";
-    pa_simple *s_read = pa_simple_new(NULL, "Coral", PA_STREAM_RECORD, monitor.c_str(), "Capture", &ss, NULL, &buffer_attr, &error);
+    pa_simple *s_read = pa_simple_new(NULL, "Coral", PA_STREAM_RECORD, monitor.c_str(), "Capture", &ss, NULL, &attr_read, &error);
     if (!s_read) {
         std::cerr << "Failed to create read connection: " << pa_strerror(error) << std::endl;
         return 1;
     }
 
-    const int num_samples = 1024; // ~21ms at 48kHz
+    const int num_samples = kProcessingChunkSamples; // 256 samples = ~5.33ms at 48kHz
     const int buf_size = num_samples * 2 * sizeof(float);
     float *input_buffer = (float*)malloc(buf_size);
     float *output_buffer = (float*)malloc(buf_size);
@@ -563,9 +583,9 @@ DWORD AudioPassthruPrivate::threadWorker(void)
     auto open_write_stream = [&](const std::string& target_sink_name) -> pa_simple* {
         int err = 0;
         const char* target = (!target_sink_name.empty()) ? target_sink_name.c_str() : NULL;
-        pa_simple *w = pa_simple_new(NULL, "Coral", PA_STREAM_PLAYBACK, target, "Playback", &ss, NULL, &buffer_attr, &err);
+        pa_simple *w = pa_simple_new(NULL, "Coral", PA_STREAM_PLAYBACK, target, "Playback", &ss, NULL, &attr_write, &err);
         if (!w && target != NULL) {
-            w = pa_simple_new(NULL, "Coral", PA_STREAM_PLAYBACK, NULL, "Playback", &ss, NULL, &buffer_attr, &err);
+            w = pa_simple_new(NULL, "Coral", PA_STREAM_PLAYBACK, NULL, "Playback", &ss, NULL, &attr_write, &err);
         }
         return w;
     };
